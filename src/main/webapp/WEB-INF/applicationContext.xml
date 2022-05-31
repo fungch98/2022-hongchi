@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+    
+    <bean id="userDAO" class="com.ae21.studio.hongchi.entity.dao.UserDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+<!-- UAT  -->
+     <bean id="fbConfig" class="com.ae21.config.FacebookConfig">
+        <property name="host" value="https://www.ae21.hk"/>
+        <property name="fbId" value="2195476117236873"/>
+        <property name="fbSecret" value=""/>             
+     </bean>
+    
+     <bean id="googleConfig" class="com.ae21.config.GoogleConfig">
+        <property name="host" value="https://www.ae21.hk/folder"/>
+        <property name="googleId" value=""/>
+        <property name="googleSecret" value=""/>             
+     </bean>
+     
+      <bean id="systemConfig" class="com.ae21.config.SystemConfig">
+        <property name="host" value="https://www.ae21.hk/folder"/>
+        <property name="key1" value="UA-47495893-4"/>
+        <property name="key2" value=""/>
+        <property name="key3" value="UAT"/>
+
+    </bean>
+    
+    <bean id="mailConfigBean" class="com.ae21.bean.email.MailConfigBean">
+         <property name="port" value="465"/>
+         <property name="host" value="smtp.gmail.com"/>
+         <property name="username" value="ae21.studio.service@gmail.com"/>
+         <property name="password" value="webcheerup21"/>
+         <property name="env" value="SIT"/>
+     </bean>
+     
+     <bean id="defaultConfig" class="com.ae21.bean.SystemConfigBean">
+        <!-- SIT  -->
+        <property name="absPath" value="P:/Git/DEV/hongchi/web/upload"/>
+        <property name="builtPath" value="P:/Git/DEV/hongchi/build/web/upload"/>
+        
+               <!--UAT    
+        <property name="absPath" value="/opt/tomcat9/webapps/folder/upload"/>
+         <property name="builtPath" value=""/>
+             -->
+            
+        <property name="imgHost" value="/hongchi/upload/"/>
+        <property name="ver" value="1"/>
+        <property name="googleSiteKey" value="6LfZ7g8bAAAAAOE83yQaMAR-R2ux4G-zWI0EzQ-e"/>
+        <property name="googleServerKey" value="6LfZ7g8bAAAAAOE83yQaMAR-R2ux4G-zWI0EzQ-e"/>
+    </bean>
+   
+    <bean id="awsConfig" class="com.ae21.studio.hongchi.entity.system.AWSBean">
+         <property name="status" value="UAT"/>
+         <property name="prefix" value=""/>
+         <property name="bucketName" value="ae21-project/hongchi/upload"/>
+     </bean>
+   
+    <!-- 事务管理 -->
+    <bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+     <!-- enable the configuration of transactional behavior based on annotations -->
+    <tx:annotation-driven transaction-manager="txManager" proxy-target-class="true" />
+   
+     
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://192.168.1.188:3306/aesir_hongchi?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull" />
+		<property name="username" value="webadmin" />
+		<property name="password" value="WEBcheerup21!" />
+    </bean>
+    
+     <bean id="sessionFactory"  class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+            <property name="dataSource" ref="dataSource" />  
+            <property name="hibernateProperties">
+                <props>
+                    <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                    <prop key="hibernate.show_sql">false</prop>
+                    <prop key="hibernate.format_sql">false</prop>
+                    <prop key="hibernate.connection.release_mode">on_close</prop>
+                    <prop key="hibernate.transaction.auto_close_session">true</prop>
+                    <prop key="hibernate.transaction.flush_before_completion">true</prop>
+                    <prop key="hibernate.query.plan_cache_max_soft_references">2048</prop>
+                    <prop key="hibernate.query.plan_cache_max_strong_references">128</prop> 
+                </props>
+            </property> 
+            <property name="packagesToScan" >
+                <array>
+                    <value>entity.bean</value>
+                </array>
+            </property>
+            
+    </bean>
+    
+    <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+        <!-- max upload size in bytes -->
+        <property name="maxUploadSize" value="20971520" /> <!-- 20MB -->
+         
+        <!-- max size of file in memory (in bytes) -->
+        <property name="maxInMemorySize" value="1048576" /> <!-- 1MB -->
+        
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
+
+</beans>
