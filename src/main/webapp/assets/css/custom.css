@@ -1,0 +1,69 @@
+a{
+    color:#61c190;
+}
+
+h1, h2, h3, h4, h5, h6 {
+		color: #1F8A70 !important;
+	}
+        
+        strong, b {
+		color: #1F8A70;
+                font-weight: 600;
+	}
+
+#header .logo, #header .logo:hover{
+    background-color: transparent;
+}
+
+#header .logo{
+   height: 95%;
+}
+
+#header .logo a.title{
+    height: 100%;
+}
+
+
+#header .logo img{
+    height: 100%;
+    padding-top: 0em;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    display: block;
+}
+
+div.split{
+    padding-top:1em;
+}
+
+div.split.left{
+    border-right: 1px solid #dbdbdb;
+}
+
+.icon:before{
+    color: #1F8A70;
+}
+
+/* Color Theme Swatches in Hex */
+.Vitamin-C-1-hex { color: #004358; }
+.Vitamin-C-2-hex { color: #1F8A70; }
+.Vitamin-C-3-hex { color: #BEDB39; }
+.Vitamin-C-4-hex { color: #FFE11A; }
+.Vitamin-C-5-hex { color: #FD7400; }
+
+/* Color Theme Swatches in RGBA */
+.Vitamin-C-1-rgba { color: rgba(0, 66, 87, 1); }
+.Vitamin-C-2-rgba { color: rgba(31, 137, 112, 1); }
+.Vitamin-C-3-rgba { color: rgba(189, 219, 56, 1); }
+.Vitamin-C-4-rgba { color: rgba(255, 225, 26, 1); }
+.Vitamin-C-5-rgba { color: rgba(253, 116, 0, 1); }
+
+/* Color Theme Swatches in HSLA */
+.Vitamin-C-1-hsla { color: hsla(194, 100, 17, 1); }
+.Vitamin-C-2-hsla { color: hsla(165, 63, 33, 1); }
+.Vitamin-C-3-hsla { color: hsla(70, 69, 54, 1); }
+.Vitamin-C-4-hsla { color: hsla(52, 100, 55, 1); }
+.Vitamin-C-5-hsla { color: hsla(27, 100, 49, 1); }
+
+
+

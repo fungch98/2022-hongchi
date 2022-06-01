@@ -38,9 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "HashtagInfo.findAll", query = "SELECT h FROM HashtagInfo h"),
     @NamedQuery(name = "HashtagInfo.findById", query = "SELECT h FROM HashtagInfo h WHERE h.id = :id"),
     @NamedQuery(name = "HashtagInfo.findByName", query = "SELECT h FROM HashtagInfo h WHERE h.name = :name"),
-    @NamedQuery(name = "HashtagInfo.findByUuid", query = "SELECT h FROM HashtagInfo h WHERE h.uuid = :uuid"),
-    @NamedQuery(name = "HashtagInfo.findByCreateDate", query = "SELECT h FROM HashtagInfo h WHERE h.createDate = :createDate"),
-    @NamedQuery(name = "HashtagInfo.findByModifyDate", query = "SELECT h FROM HashtagInfo h WHERE h.modifyDate = :modifyDate")})
+    @NamedQuery(name = "HashtagInfo.findByUuid", query = "SELECT h FROM HashtagInfo h WHERE h.uuid = :uuid")
+})
 public class HashtagInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -69,18 +68,13 @@ public class HashtagInfo implements Serializable {
     @Column(name = "modify_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifyDate;
-    @ManyToMany(mappedBy = "hashtagInfoList")
-    private List<ProductInfo> productInfoList;
-    @JoinColumns({
-        @JoinColumn(name = "modify_user", referencedColumnName = "id"),
-        @JoinColumn(name = "modify_user", referencedColumnName = "id")})
+
+    @JoinColumn(name = "create_user", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private UserInfo userInfo;
-    @JoinColumns({
-        @JoinColumn(name = "create_user", referencedColumnName = "id"),
-        @JoinColumn(name = "create_user", referencedColumnName = "id")})
+    private UserInfo createUser;
+    @JoinColumn(name = "modify_user", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private UserInfo userInfo1;
+    private UserInfo modifyUser;
 
     public HashtagInfo() {
     }
@@ -137,30 +131,7 @@ public class HashtagInfo implements Serializable {
         this.modifyDate = modifyDate;
     }
 
-    @XmlTransient
-    public List<ProductInfo> getProductInfoList() {
-        return productInfoList;
-    }
-
-    public void setProductInfoList(List<ProductInfo> productInfoList) {
-        this.productInfoList = productInfoList;
-    }
-
-    public UserInfo getUserInfo() {
-        return userInfo;
-    }
-
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
-    }
-
-    public UserInfo getUserInfo1() {
-        return userInfo1;
-    }
-
-    public void setUserInfo1(UserInfo userInfo1) {
-        this.userInfo1 = userInfo1;
-    }
+    
 
     @Override
     public int hashCode() {

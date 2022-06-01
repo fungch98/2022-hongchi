@@ -13,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -34,16 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "UploadInfo.findAll", query = "SELECT u FROM UploadInfo u"),
     @NamedQuery(name = "UploadInfo.findById", query = "SELECT u FROM UploadInfo u WHERE u.id = :id"),
-    @NamedQuery(name = "UploadInfo.findByUuid", query = "SELECT u FROM UploadInfo u WHERE u.uuid = :uuid"),
-    @NamedQuery(name = "UploadInfo.findByName", query = "SELECT u FROM UploadInfo u WHERE u.name = :name"),
-    @NamedQuery(name = "UploadInfo.findByFileType", query = "SELECT u FROM UploadInfo u WHERE u.fileType = :fileType"),
-    @NamedQuery(name = "UploadInfo.findByUrl", query = "SELECT u FROM UploadInfo u WHERE u.url = :url"),
-    @NamedQuery(name = "UploadInfo.findByUploadBucket", query = "SELECT u FROM UploadInfo u WHERE u.uploadBucket = :uploadBucket"),
-    @NamedQuery(name = "UploadInfo.findByUploadFileName", query = "SELECT u FROM UploadInfo u WHERE u.uploadFileName = :uploadFileName"),
-    @NamedQuery(name = "UploadInfo.findByUploadDate", query = "SELECT u FROM UploadInfo u WHERE u.uploadDate = :uploadDate"),
-    @NamedQuery(name = "UploadInfo.findByFileStatus", query = "SELECT u FROM UploadInfo u WHERE u.fileStatus = :fileStatus"),
-    @NamedQuery(name = "UploadInfo.findByAbsPath", query = "SELECT u FROM UploadInfo u WHERE u.absPath = :absPath"),
-    @NamedQuery(name = "UploadInfo.findByIsImage", query = "SELECT u FROM UploadInfo u WHERE u.isImage = :isImage")})
+    @NamedQuery(name = "UploadInfo.findByUuid", query = "SELECT u FROM UploadInfo u WHERE u.uuid = :uuid")
+})
 public class UploadInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -86,18 +77,7 @@ public class UploadInfo implements Serializable {
     @NotNull
     @Column(name = "is_image")
     private int isImage;
-    @JoinColumns({
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id")})
-    @ManyToOne(optional = false)
-    private UserInfo userInfo;
+   
 
     public UploadInfo() {
     }
@@ -199,14 +179,6 @@ public class UploadInfo implements Serializable {
 
     public void setIsImage(int isImage) {
         this.isImage = isImage;
-    }
-
-    public UserInfo getUserInfo() {
-        return userInfo;
-    }
-
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
     }
 
     @Override

@@ -1,0 +1,85 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2021年4月2日, 下午07:46:02
+    Author     : Alex
+*/
+
+.tab-container{
+    width: 100%;
+    /*border:solid 1px #AAA;
+    border-top-width: 0;
+    box-shadow: 3px 2px 2px #AAA;*/
+}
+
+.tab-container .tab-header-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items:stretch;
+    align-content:stretch;
+}
+
+.tab-container .tab-header-container .tab-link{
+    max-width: 25%;
+    min-width: 15em;
+    padding:1em 3em;
+    border:solid 1px #AAA;
+    text-align: center;
+    background-color: #EEE;
+    color:#333;
+    font-weight: bold;
+    z-index: 1;
+}
+
+@media screen and (max-width: 736px) {
+    .tab-container .tab-header-container .tab-link{
+        min-width: inherit;
+        max-width: 33.333%;
+         padding:1.25em 4em;
+    }
+}
+
+.tab-container .tab-header-container .tab-link:first-child{
+    
+}
+
+.tab-container .tab-header-container .tab-link.active{
+    background-color: #FFF;
+    border-bottom-width: 0;
+    border-top: 5px solid  #1472B5 ;
+}
+
+.tab-container .tab-content-container{
+   /*min-height: 20em;*/
+   border:solid 1px #AAA;
+   box-shadow: 3px 2px 2px #AAA;
+   margin-top: -1px;
+   padding: 3em 2em;
+   background-color: #FFF;
+}
+
+.tab-container .tab-content-container .tab-content{
+   /* min-height: 10em;*/
+     margin-bottom: 0.5em;
+     
+}
+
+.tab-container .tab-content-container .tab-content header{
+    width: 100%;
+    border-bottom: 1px solid #AAA;
+    margin-bottom: 1em;
+}
+
+.tab-container .tab-content-container .tab-content header h3{
+    border-bottom: 3px solid #1472B5 ;
+    padding-bottom: 0.5em;
+    margin-bottom: 0;
+    min-width: 10em;
+    width: fit-content;
+}
+

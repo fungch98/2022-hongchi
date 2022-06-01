@@ -39,7 +39,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "UserInfo.findByUsername", query = "SELECT u FROM UserInfo u WHERE u.username = :username and u.pwd = :password and u.userStatus=1"),
     @NamedQuery(name = "UserInfo.findByUuid", query = "SELECT u FROM UserInfo u WHERE u.uuid = :uuid")})
 public class UserInfo implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -101,22 +100,6 @@ public class UserInfo implements Serializable {
     @Size(min = 1, max = 250)
     @Column(name = "uuid")
     private String uuid;
-    @ManyToMany(mappedBy = "userInfoList")
-    private List<GroupInfo> groupInfoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userInfo")
-    private List<HashtagInfo> hashtagInfoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userInfo1")
-    private List<HashtagInfo> hashtagInfoList1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userInfo")
-    private List<GroupInfo> groupInfoList1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "modifyUser")
-    private List<GroupInfo> groupInfoList2;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userInfo")
-    private List<UploadInfo> uploadInfoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userInfo")
-    private List<ProductInfo> productInfoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userInfo1")
-    private List<ProductInfo> productInfoList1;
 
     public UserInfo() {
     }
@@ -256,78 +239,6 @@ public class UserInfo implements Serializable {
         this.uuid = uuid;
     }
 
-    @XmlTransient
-    public List<GroupInfo> getGroupInfoList() {
-        return groupInfoList;
-    }
-
-    public void setGroupInfoList(List<GroupInfo> groupInfoList) {
-        this.groupInfoList = groupInfoList;
-    }
-
-    @XmlTransient
-    public List<HashtagInfo> getHashtagInfoList() {
-        return hashtagInfoList;
-    }
-
-    public void setHashtagInfoList(List<HashtagInfo> hashtagInfoList) {
-        this.hashtagInfoList = hashtagInfoList;
-    }
-
-    @XmlTransient
-    public List<HashtagInfo> getHashtagInfoList1() {
-        return hashtagInfoList1;
-    }
-
-    public void setHashtagInfoList1(List<HashtagInfo> hashtagInfoList1) {
-        this.hashtagInfoList1 = hashtagInfoList1;
-    }
-
-    @XmlTransient
-    public List<GroupInfo> getGroupInfoList1() {
-        return groupInfoList1;
-    }
-
-    public void setGroupInfoList1(List<GroupInfo> groupInfoList1) {
-        this.groupInfoList1 = groupInfoList1;
-    }
-
-    @XmlTransient
-    public List<GroupInfo> getGroupInfoList2() {
-        return groupInfoList2;
-    }
-
-    public void setGroupInfoList2(List<GroupInfo> groupInfoList2) {
-        this.groupInfoList2 = groupInfoList2;
-    }
-
-    @XmlTransient
-    public List<UploadInfo> getUploadInfoList() {
-        return uploadInfoList;
-    }
-
-    public void setUploadInfoList(List<UploadInfo> uploadInfoList) {
-        this.uploadInfoList = uploadInfoList;
-    }
-
-    @XmlTransient
-    public List<ProductInfo> getProductInfoList() {
-        return productInfoList;
-    }
-
-    public void setProductInfoList(List<ProductInfo> productInfoList) {
-        this.productInfoList = productInfoList;
-    }
-
-    @XmlTransient
-    public List<ProductInfo> getProductInfoList1() {
-        return productInfoList1;
-    }
-
-    public void setProductInfoList1(List<ProductInfo> productInfoList1) {
-        this.productInfoList1 = productInfoList1;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -352,5 +263,7 @@ public class UserInfo implements Serializable {
     public String toString() {
         return "com.ae21.studio.hongchi.entity.bean.UserInfo[ id=" + id + " ]";
     }
+
+   
     
 }

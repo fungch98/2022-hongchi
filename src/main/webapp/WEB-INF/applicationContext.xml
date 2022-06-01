@@ -95,7 +95,7 @@
             </property> 
             <property name="packagesToScan" >
                 <array>
-                    <value>entity.bean</value>
+                    <value>com.ae21.studio.hongchi.entity.bean</value>
                 </array>
             </property>
             

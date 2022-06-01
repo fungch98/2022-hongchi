@@ -75,38 +75,10 @@ public class GroupInfo implements Serializable {
     @Column(name = "modify_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifyDate;
-    @JoinTable(name = "group_user", joinColumns = {
-        @JoinColumn(name = "group_id", referencedColumnName = "id"),
-        @JoinColumn(name = "group_id", referencedColumnName = "id"),
-        @JoinColumn(name = "group_id", referencedColumnName = "id"),
-        @JoinColumn(name = "group_id", referencedColumnName = "id"),
-        @JoinColumn(name = "group_id", referencedColumnName = "id"),
-        @JoinColumn(name = "group_id", referencedColumnName = "id"),
-        @JoinColumn(name = "group_id", referencedColumnName = "id"),
-        @JoinColumn(name = "group_id", referencedColumnName = "id"),
-        @JoinColumn(name = "group_id", referencedColumnName = "id"),
-        @JoinColumn(name = "group_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        @JoinColumn(name = "user_id", referencedColumnName = "id")})
-    @ManyToMany
-    private List<UserInfo> userInfoList;
-    @JoinColumns({
-        @JoinColumn(name = "create_user", referencedColumnName = "id"),
-        @JoinColumn(name = "create_user", referencedColumnName = "id"),
-        @JoinColumn(name = "create_user", referencedColumnName = "id"),
-        @JoinColumn(name = "create_user", referencedColumnName = "id"),
-        @JoinColumn(name = "create_user", referencedColumnName = "id"),
-        @JoinColumn(name = "create_user", referencedColumnName = "id")})
+    
+    @JoinColumn(name = "create_user", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private UserInfo userInfo;
+    private UserInfo createUser;
     @JoinColumn(name = "modify_user", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private UserInfo modifyUser;
@@ -181,23 +153,15 @@ public class GroupInfo implements Serializable {
         this.modifyDate = modifyDate;
     }
 
-    @XmlTransient
-    public List<UserInfo> getUserInfoList() {
-        return userInfoList;
+    public UserInfo getCreateUser() {
+        return createUser;
     }
 
-    public void setUserInfoList(List<UserInfo> userInfoList) {
-        this.userInfoList = userInfoList;
+    public void setCreateUser(UserInfo createUser) {
+        this.createUser = createUser;
     }
 
-    public UserInfo getUserInfo() {
-        return userInfo;
-    }
-
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
-    }
-
+    
     public UserInfo getModifyUser() {
         return modifyUser;
     }

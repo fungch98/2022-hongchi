@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -30,6 +31,8 @@ public class MainController {
          CommonHandler common=new CommonHandler();
         ResultBean result=null;
          try{ 
+            request.setAttribute("pageLink", "index.html");
+            request.setAttribute("pagePrefix", "");
             if(request.getSession().getAttribute("ERROR.LOGIN")!=null){
                 result=(ResultBean)request.getSession().getAttribute("ERROR.LOGIN");
                 System.out.println(result.getCode());
@@ -45,6 +48,33 @@ public class MainController {
         }
         return this.frameHandler.getReturnPath(request);
     }
+    
+    @RequestMapping(value = "/{langCode}/{pageName}.html")
+    protected String langIndex(
+            HttpServletRequest request,
+            HttpServletResponse response, 
+             @PathVariable String langCode,
+            @PathVariable String pageName )throws Exception{
+         this.frameHandler=new CustFrameHandler(request, "web/page/"+pageName+".jsp");
+          CommonHandler common=new CommonHandler();
+          try{
+              //System.out.println(langCode+":"+pageName);
+              this.frameHandler.initLang(request, pageName, langCode);
+              this.frameHandler.invalidURLHandler(response, "/"+langCode+"/"+pageName);
+              if(pageName!=null && pageName.equalsIgnoreCase("index")){
+                  return this.index(request, response);
+              }
+         }catch(Exception e){
+            e.printStackTrace();
+            logger.severe("Exception: "+e.getMessage());
+            logger.throwing(this.getClass().getName(), "langIndex", e);
+        }finally{
+            request=this.frameHandler.initPage(request);
+        }
+        return this.frameHandler.getReturnPath(request);
+    }
+    
+    
     
     @RequestMapping(value = "/error.html")
     protected String error(

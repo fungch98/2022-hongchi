@@ -58,8 +58,7 @@ public class CategoryInfo implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(name = "desc")
     private String desc;
-    @ManyToMany(mappedBy = "categoryInfoList")
-    private List<ProductInfo> productInfoList;
+    
 
     public CategoryInfo() {
     }
@@ -107,14 +106,6 @@ public class CategoryInfo implements Serializable {
         this.desc = desc;
     }
 
-    @XmlTransient
-    public List<ProductInfo> getProductInfoList() {
-        return productInfoList;
-    }
-
-    public void setProductInfoList(List<ProductInfo> productInfoList) {
-        this.productInfoList = productInfoList;
-    }
 
     @Override
     public int hashCode() {

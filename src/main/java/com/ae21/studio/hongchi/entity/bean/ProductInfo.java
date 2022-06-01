@@ -40,13 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProductInfo.findAll", query = "SELECT p FROM ProductInfo p"),
     @NamedQuery(name = "ProductInfo.findById", query = "SELECT p FROM ProductInfo p WHERE p.id = :id"),
     @NamedQuery(name = "ProductInfo.findByName", query = "SELECT p FROM ProductInfo p WHERE p.name = :name"),
-    @NamedQuery(name = "ProductInfo.findByUuid", query = "SELECT p FROM ProductInfo p WHERE p.uuid = :uuid"),
-    @NamedQuery(name = "ProductInfo.findByCcreateDate", query = "SELECT p FROM ProductInfo p WHERE p.ccreateDate = :ccreateDate"),
-    @NamedQuery(name = "ProductInfo.findByModifyDate", query = "SELECT p FROM ProductInfo p WHERE p.modifyDate = :modifyDate"),
-    @NamedQuery(name = "ProductInfo.findByProductSrc", query = "SELECT p FROM ProductInfo p WHERE p.productSrc = :productSrc"),
-    @NamedQuery(name = "ProductInfo.findByProductFileName", query = "SELECT p FROM ProductInfo p WHERE p.productFileName = :productFileName"),
-    @NamedQuery(name = "ProductInfo.findByProductRef", query = "SELECT p FROM ProductInfo p WHERE p.productRef = :productRef"),
-    @NamedQuery(name = "ProductInfo.findByProductCreateMethod", query = "SELECT p FROM ProductInfo p WHERE p.productCreateMethod = :productCreateMethod")})
+    @NamedQuery(name = "ProductInfo.findByUuid", query = "SELECT p FROM ProductInfo p WHERE p.uuid = :uuid")
+})
 public class ProductInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -95,36 +90,14 @@ public class ProductInfo implements Serializable {
     private Integer productRef;
     @Column(name = "product_create_method")
     private Integer productCreateMethod;
-    @JoinTable(name = "product_hashtag", joinColumns = {
-        @JoinColumn(name = "product_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "hash_id", referencedColumnName = "id")})
-    @ManyToMany
-    private List<HashtagInfo> hashtagInfoList;
-    @JoinTable(name = "product_category", joinColumns = {
-        @JoinColumn(name = "product_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "category_id", referencedColumnName = "id")})
-    @ManyToMany
-    private List<CategoryInfo> categoryInfoList;
-    @JoinColumns({
-        @JoinColumn(name = "create_user", referencedColumnName = "id"),
-        @JoinColumn(name = "create_user", referencedColumnName = "id"),
-        @JoinColumn(name = "create_user", referencedColumnName = "id"),
-        @JoinColumn(name = "create_user", referencedColumnName = "id"),
-        @JoinColumn(name = "create_user", referencedColumnName = "id"),
-        @JoinColumn(name = "create_user", referencedColumnName = "id"),
-        @JoinColumn(name = "create_user", referencedColumnName = "id"),
-        @JoinColumn(name = "create_user", referencedColumnName = "id"),
-        @JoinColumn(name = "create_user", referencedColumnName = "id")})
+    
+    
+    @JoinColumn(name = "create_user", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private UserInfo userInfo;
-    @JoinColumns({
-        @JoinColumn(name = "modify_user", referencedColumnName = "id"),
-        @JoinColumn(name = "modify_user", referencedColumnName = "id"),
-        @JoinColumn(name = "modify_user", referencedColumnName = "id"),
-        @JoinColumn(name = "modify_user", referencedColumnName = "id"),
-        @JoinColumn(name = "modify_user", referencedColumnName = "id")})
+    private UserInfo createUser;
+    @JoinColumn(name = "modify_user", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private UserInfo userInfo1;
+    private UserInfo modifyUser;
 
     public ProductInfo() {
     }
@@ -230,39 +203,25 @@ public class ProductInfo implements Serializable {
         this.productCreateMethod = productCreateMethod;
     }
 
-    @XmlTransient
-    public List<HashtagInfo> getHashtagInfoList() {
-        return hashtagInfoList;
+
+
+    public UserInfo getCreateUser() {
+        return createUser;
     }
 
-    public void setHashtagInfoList(List<HashtagInfo> hashtagInfoList) {
-        this.hashtagInfoList = hashtagInfoList;
+    public void setCreateUser(UserInfo createUser) {
+        this.createUser = createUser;
     }
 
-    @XmlTransient
-    public List<CategoryInfo> getCategoryInfoList() {
-        return categoryInfoList;
+    public UserInfo getModifyUser() {
+        return modifyUser;
     }
 
-    public void setCategoryInfoList(List<CategoryInfo> categoryInfoList) {
-        this.categoryInfoList = categoryInfoList;
+    public void setModifyUser(UserInfo modifyUser) {
+        this.modifyUser = modifyUser;
     }
 
-    public UserInfo getUserInfo() {
-        return userInfo;
-    }
-
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
-    }
-
-    public UserInfo getUserInfo1() {
-        return userInfo1;
-    }
-
-    public void setUserInfo1(UserInfo userInfo1) {
-        this.userInfo1 = userInfo1;
-    }
+    
 
     @Override
     public int hashCode() {
