@@ -90,6 +90,14 @@ public class ProductInfo implements Serializable {
     private Integer productRef;
     @Column(name = "product_create_method")
     private Integer productCreateMethod;
+    @Size(max = 1000)
+    @Column(name = "search_key")
+    private String searchKey;
+     @Basic(optional = false)
+    @NotNull
+    @Column(name = "prod_status")
+    private int status=1;
+    
     
     
     @JoinColumn(name = "create_user", referencedColumnName = "id")
@@ -219,6 +227,22 @@ public class ProductInfo implements Serializable {
 
     public void setModifyUser(UserInfo modifyUser) {
         this.modifyUser = modifyUser;
+    }
+
+    public String getSearchKey() {
+        return searchKey;
+    }
+
+    public void setSearchKey(String searchKey) {
+        this.searchKey = searchKey;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     

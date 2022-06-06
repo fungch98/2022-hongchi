@@ -60,28 +60,26 @@
                 <!-- Nav -->
                 <nav id="nav">
                     <ul>
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html">主頁</a></li>
+                        <logic:notEmpty name="UserAuthorizedLogin" >
                         <li>
                             <a href="#" class="dropdown">圖庫</a>
                             <ul>
-                                <li><a href="#">Lorem ipsum dolor</a></li>
-                                <li><a href="#">Magna phasellus</a></li>
-                                <li><a href="#">Etiam dolore nisl</a></li>
-                                <li>
-                                    <a href="#">Phasellus consequat</a>
-                                    <ul>
-                                        <li><a href="#">Lorem ipsum dolor</a></li>
-                                        <li><a href="#">Phasellus consequat</a></li>
-                                        <li><a href="#">Magna phasellus</a></li>
-                                        <li><a href="#">Etiam dolore nisl</a></li>
-                                        <li><a href="#">Veroeros feugiat</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Veroeros feugiat</a></li>
+                                <li><a href="#">創建圖片</a></li>
+                                <li><a href="#">圖庫</a></li>
                             </ul>
                         </li>
-                        <li><a href="generic.html">Generic</a></li>
-                        <li><a href="elements.html">Elements</a></li>
+                         <li>
+                            <a href="#" class="dropdown">控制台</a>
+                            <ul>
+                                <li><a href="generic.html">用戶管理</a></li>
+                                <li><a href="${pageContext.request.contextPath}/panel/category/${langCode}/index.html"><bean:message key="title.panel.category" /></a></li>
+                                <li><a href="generic.html">HashTag管理</a></li>
+                                <li><a href="generic.html">Generic</a></li>
+                                <li><a href="elements.html">Elements</a></li>
+                            </ul>
+                         </li>
+                       </logic:notEmpty>
                         <li>
                             <a href="#" class="dropdown"><bean:message key="lang.label" bundle="ae21studio"/></a>
                             <ul>
@@ -100,10 +98,10 @@
                         </li>
                         <li>
                             <logic:notEmpty name="UserAuthorizedLogin" >
-                                <a href="elements.html"><bean:message key="btn.logout" bundle="ae21studio"/></a>
+                                <a href="${pageContext.request.contextPath}/auth/${langCode}/logout.html"><bean:message key="btn.logout" bundle="ae21studio"/></a>
                             </logic:notEmpty>
                             <logic:empty name="UserAuthorizedLogin" >
-                                <a href="${pageContext.request.contextPath}/${langCode}/auth/login.html"><bean:message key="btn.login" bundle="ae21studio"/></a>
+                                <a href="${pageContext.request.contextPath}/auth/${langCode}/login.html"><bean:message key="btn.login" bundle="ae21studio"/></a>
                             </logic:empty>
                             
                         </li>

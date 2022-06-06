@@ -17,8 +17,10 @@
             </header>
 
             <div class="row">
-                <div class="col-6 col-12-small split left">
-
+                <div class="col-6 col-12-small split left center">
+                     <a href="https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com%2Fauth%2Fuserinfo.email+https://www.googleapis.com%2Fauth%2Fuserinfo.profile&amp;state=${isPropertyOwner}&amp;redirect_uri=${googleConfig.host}/auth/google/oauth2callback.html&amp;response_type=code&amp;client_id=${googleConfig.googleId}" class="login-google">
+                         <img  src="${pageContext.request.contextPath}/images/google.png" alt=" <bean:message key="btn.social.google" bundle="ae21studio"/>"/>
+                    </a>
                 </div>
                 <div class="col-6 col-12-small split">
                     <form action="${pageContext.request.contextPath}/auth/${langCode}/login/submit.html" method="POST" autocomplete="off" >

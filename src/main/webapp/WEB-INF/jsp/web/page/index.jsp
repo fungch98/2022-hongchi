@@ -12,10 +12,12 @@
     <article class="full">
         <img src="images/pic01.jpg" alt="" data-position="center" />
         <div class="content">
-            <h2><a href="#">Ipsum consequat lorem</a></h2>
-            <p>Lorem feugiat veroeros dolor sit amet tempus adipiscing amet sed aliquam feugiat veroeros lorem ipsum dolor sit amet consequat tempus adipiscing.</p>
+            <h2><a href="#">匡智元朗晨樂學校<br>
+校本圖庫平台
+</a></h2>
+            
             <ul class="actions special">
-                <li><a href="#" class="button">Full Story</a></li>
+                <li><a href="#" class="button">登入</a></li>
             </ul>
         </div>
     </article>

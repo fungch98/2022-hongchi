@@ -69,7 +69,7 @@ public class CustFrameHandler  extends MainFrameHandler{
                 if(config!=null && config.getKey3()!=null && config.getKey3().equalsIgnoreCase("SIT")){
                     UserDAO userDAO=(UserDAO)common.getDAOObject(request, "userDAO");
                     if(userDAO!=null){
-                        user=userDAO.loadUser(id);
+                        user=userDAO.loadUser(id);                        
                         return this.loadTesting(request, user);
                     }
                 }
@@ -104,10 +104,14 @@ public class CustFrameHandler  extends MainFrameHandler{
          return (userAuth!=null? (UserInfo)userAuth.getLoginedUser():null);
     }
     
-    
     public String logout(HttpServletRequest request)throws Exception{
+        return this.logout(request, this.getLang(request));
+    }
+    
+    
+    public String logout(HttpServletRequest request, String langCode)throws Exception{
         request.getSession().removeAttribute("UserAuthorized");
         request.getSession().removeAttribute("UserAuthorizedLogin");
-        return "redirect:/auth/logout.html";
+        return "redirect:/auth/"+langCode+"/logout.html";
     }
 }

@@ -11,25 +11,34 @@
     <bean id="userDAO" class="com.ae21.studio.hongchi.entity.dao.UserDAO">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="upDAO" class="com.ae21.studio.hongchi.entity.dao.UploadDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="prodDAO" class="com.ae21.studio.hongchi.entity.dao.ProdDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="commDAO" class="com.ae21.studio.hongchi.entity.dao.CommonDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
 <!-- UAT  -->
      <bean id="fbConfig" class="com.ae21.config.FacebookConfig">
-        <property name="host" value="https://www.ae21.hk"/>
+        <property name="host" value="https://localhost:8443/hongchi"/>
         <property name="fbId" value="2195476117236873"/>
         <property name="fbSecret" value=""/>             
      </bean>
     
      <bean id="googleConfig" class="com.ae21.config.GoogleConfig">
-        <property name="host" value="https://www.ae21.hk/folder"/>
-        <property name="googleId" value=""/>
-        <property name="googleSecret" value=""/>             
+        <property name="host" value="https://localhost:8443/hongchi"/>
+        <property name="googleId" value="363263052104-gt3g9vun3635mpj3lifa8ogkj5u0guie.apps.googleusercontent.com"/>
+        <property name="googleSecret" value="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"/>             
      </bean>
      
       <bean id="systemConfig" class="com.ae21.config.SystemConfig">
-        <property name="host" value="https://www.ae21.hk/folder"/>
+        <property name="host" value="https://localhost:8443/hongchi"/>
         <property name="key1" value="UA-47495893-4"/>
         <property name="key2" value=""/>
-        <property name="key3" value="UAT"/>
+        <property name="key3" value="SIT"/>
 
     </bean>
     

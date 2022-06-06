@@ -621,7 +621,7 @@ header.config-header{
     justify-content:space-between;
     align-items: center;
     width: 100%;
-    border-bottom: 5px solid #61c5e0;
+    border-bottom: 5px solid #1F8A70 ;
     margin-bottom: 1.5rem;
 }
 
@@ -688,6 +688,24 @@ ul.contact li:before {
 
 ul.contact li:first-child {
     padding-top: 0;
+}
+
+a.login-google{
+    text-decoration: none;
+    border-bottom-width: 0;
+}
+
+a.login-google img{
+    margin-top: 2em;
+    width: 75px;
+    border-radius: 100%;
+    border: 1px solid #dbdbdb;
+    box-shadow: 2px 3px #888888;
+    /*text-shadow: 2px 2px #888888;*/
+}
+
+div.center{
+    text-align: center;
 }
     
 

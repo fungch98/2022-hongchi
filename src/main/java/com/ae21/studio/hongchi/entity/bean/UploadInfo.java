@@ -77,6 +77,9 @@ public class UploadInfo implements Serializable {
     @NotNull
     @Column(name = "is_image")
     private int isImage;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private UserInfo userId;
    
 
     public UploadInfo() {
@@ -180,6 +183,16 @@ public class UploadInfo implements Serializable {
     public void setIsImage(int isImage) {
         this.isImage = isImage;
     }
+
+    public UserInfo getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UserInfo userId) {
+        this.userId = userId;
+    }
+    
+    
 
     @Override
     public int hashCode() {

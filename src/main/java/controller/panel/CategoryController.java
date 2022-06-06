@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package controller.panel;
 
 import com.ae21.bean.ResultBean;
@@ -16,30 +20,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Alex
  */
 @Controller
-@RequestMapping(value = "/panel")
-public class PanelController {
+@RequestMapping(value = "/panel/category")
+public class CategoryController {
     private Logger logger=Logger.getLogger(this.getClass().getName());
     private CustFrameHandler frameHandler=new CustFrameHandler();
     
-    @RequestMapping(value = "/{langCode}/dashboard.html")
+    @RequestMapping(value = "/{langCode}/index.html")
     protected String dashboard(
             HttpServletRequest request,
             HttpServletResponse response, 
              @PathVariable String langCode
     )throws Exception{
-         this.frameHandler=new CustFrameHandler(request, "panel/page/dashboard.jsp");
+         this.frameHandler=new CustFrameHandler(request, "panel/category/index.jsp");
         CommonHandler common=new CommonHandler();
         ResultBean result=null;
         ProdDAO prodDAO=null;
         String search=request.getParameter("search");
          try{ 
-            request.setAttribute("pageLink", "dashboard");
-            request.setAttribute("pagePrefix", "panel/");
+            request.setAttribute("pageLink", "index.html");
+            request.setAttribute("pagePrefix", "panel/category/");
           
-            //this.frameHandler.loadTesting(request, 0);
+            this.frameHandler.loadTesting(request, 0);
+            System.out.println("OK");
             if(this.frameHandler.isLogin(request)){
-                prodDAO=(ProdDAO)common.getDAOObject(request, "prodDAO");
-                request.setAttribute("prodList", prodDAO.queryProd(search, 30));
+                
             }else{
                 return this.frameHandler.logout(request);
             }
@@ -52,6 +56,4 @@ public class PanelController {
         }
         return this.frameHandler.getReturnPath(request);
     }
-    
-    
 }
