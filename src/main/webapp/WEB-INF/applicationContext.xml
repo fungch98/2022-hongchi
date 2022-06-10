@@ -20,6 +20,9 @@
     <bean id="commDAO" class="com.ae21.studio.hongchi.entity.dao.CommonDAO">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="catDAO" class="com.ae21.studio.hongchi.entity.dao.CategoryDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
 <!-- UAT  -->
      <bean id="fbConfig" class="com.ae21.config.FacebookConfig">

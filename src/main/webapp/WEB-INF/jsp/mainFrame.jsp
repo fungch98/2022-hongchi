@@ -98,7 +98,12 @@
                         </li>
                         <li>
                             <logic:notEmpty name="UserAuthorizedLogin" >
-                                <a href="${pageContext.request.contextPath}/auth/${langCode}/logout.html"><bean:message key="btn.logout" bundle="ae21studio"/></a>
+                                <a href="${pageContext.request.contextPath}/auth/${langCode}/logout.html">
+                                    <logic:notEmpty name="UserAuthorizedLogin" >
+                                        
+                                    </logic:notEmpty>
+                                    <bean:message key="btn.logout" bundle="ae21studio"/>
+                                </a>
                             </logic:notEmpty>
                             <logic:empty name="UserAuthorizedLogin" >
                                 <a href="${pageContext.request.contextPath}/auth/${langCode}/login.html"><bean:message key="btn.login" bundle="ae21studio"/></a>
@@ -127,6 +132,7 @@
                                 <ul class="contact">
                                     <li class="icon solid fa-envelope"><bean:message key="support.email" bundle="ae21studio"/></li>
                                     <li class="icon solid fa-phone"><bean:message key="support.phone" bundle="ae21studio"/></li>
+                                    <li class="icon brands fa-whatsapp"><bean:message key="support.wts" bundle="ae21studio"/></li>
                                     <li class="icon solid fa-home"><bean:message key="support.address" bundle="ae21studio"/></li>
                                 </ul>
                             </div>

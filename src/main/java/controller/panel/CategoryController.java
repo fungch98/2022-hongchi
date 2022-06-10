@@ -6,8 +6,11 @@ package controller.panel;
 
 import com.ae21.bean.ResultBean;
 import com.ae21.handler.CommonHandler;
+import com.ae21.studio.hongchi.entity.bean.CategoryInfo;
+import com.ae21.studio.hongchi.entity.dao.CategoryDAO;
 import com.ae21.studio.hongchi.entity.dao.ProdDAO;
 import com.ae21.studio.hongchi.entity.system.CustFrameHandler;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,15 +38,19 @@ public class CategoryController {
         CommonHandler common=new CommonHandler();
         ResultBean result=null;
         ProdDAO prodDAO=null;
-        String search=request.getParameter("search");
+        CategoryDAO catDAO=null;
+        List<CategoryInfo> catList=null;
+        
          try{ 
             request.setAttribute("pageLink", "index.html");
             request.setAttribute("pagePrefix", "panel/category/");
           
             this.frameHandler.loadTesting(request, 0);
-            System.out.println("OK");
+            //System.out.println("OK");
             if(this.frameHandler.isLogin(request)){
-                
+                catDAO=(CategoryDAO)common.getDAOObject(request, "catDAO");
+                catList=catDAO.loadCategoryList(0);
+                request.setAttribute("catList", catList);
             }else{
                 return this.frameHandler.logout(request);
             }
