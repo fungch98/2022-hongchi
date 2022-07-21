@@ -43,6 +43,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProductInfo.findByUuid", query = "SELECT p FROM ProductInfo p WHERE p.uuid = :uuid")
 })
 public class ProductInfo implements Serializable {
+    
+    public static final int UPLOAD=1;
+    public static final int EDITOR=3;
+    public static final int URL=2;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -64,13 +68,13 @@ public class ProductInfo implements Serializable {
     @NotNull
     @Lob
     @Size(min = 1, max = 65535)
-    @Column(name = "desc")
+    @Column(name = "prod_desc")
     private String desc;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ccreate_date")
+    @Column(name = "create_date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date ccreateDate;
+    private Date createDate;
     @Basic(optional = false)
     @NotNull
     @Column(name = "modify_date")
@@ -86,6 +90,9 @@ public class ProductInfo implements Serializable {
     @Size(max = 2000)
     @Column(name = "product_file_name")
     private String productFileName;
+    @Size(max = 250)
+    @Column(name = "product_uuid")
+    private String productUUID;
     @Column(name = "product_ref")
     private Integer productRef;
     @Column(name = "product_create_method")
@@ -97,6 +104,12 @@ public class ProductInfo implements Serializable {
     @NotNull
     @Column(name = "prod_status")
     private int status=1;
+     @Size(max = 1000)
+    @Column(name = "product_cat")
+    private String productCat;
+     @Size(max = 1000)
+    @Column(name = "product_tag")
+    private String productTag;
     
     
     
@@ -114,12 +127,12 @@ public class ProductInfo implements Serializable {
         this.id = id;
     }
 
-    public ProductInfo(Integer id, String name, String uuid, String desc, Date ccreateDate, Date modifyDate) {
+    public ProductInfo(Integer id, String name, String uuid, String desc, Date createDate, Date modifyDate) {
         this.id = id;
         this.name = name;
         this.uuid = uuid;
         this.desc = desc;
-        this.ccreateDate = ccreateDate;
+        this.createDate = createDate;
         this.modifyDate = modifyDate;
     }
 
@@ -155,12 +168,12 @@ public class ProductInfo implements Serializable {
         this.desc = desc;
     }
 
-    public Date getCcreateDate() {
-        return ccreateDate;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setCcreateDate(Date ccreateDate) {
-        this.ccreateDate = ccreateDate;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public Date getModifyDate() {
@@ -244,6 +257,32 @@ public class ProductInfo implements Serializable {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    public String getProductUUID() {
+        return productUUID;
+    }
+
+    public void setProductUUID(String productUUID) {
+        this.productUUID = productUUID;
+    }
+
+    public String getProductCat() {
+        return productCat;
+    }
+
+    public void setProductCat(String productCat) {
+        this.productCat = productCat;
+    }
+
+    public String getProductTag() {
+        return productTag;
+    }
+
+    public void setProductTag(String productTag) {
+        this.productTag = productTag;
+    }
+    
+    
 
     
 

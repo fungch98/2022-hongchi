@@ -23,6 +23,12 @@
     <bean id="catDAO" class="com.ae21.studio.hongchi.entity.dao.CategoryDAO">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="tagDAO" class="com.ae21.studio.hongchi.entity.dao.HashtagDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="uploadDAO" class="com.ae21.studio.hongchi.entity.dao.UploadDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
 <!-- UAT  -->
      <bean id="fbConfig" class="com.ae21.config.FacebookConfig">
@@ -55,8 +61,8 @@
      
      <bean id="defaultConfig" class="com.ae21.bean.SystemConfigBean">
         <!-- SIT  -->
-        <property name="absPath" value="P:/Git/DEV/hongchi/web/upload"/>
-        <property name="builtPath" value="P:/Git/DEV/hongchi/build/web/upload"/>
+        <property name="absPath" value="P:/Git/DEV/hongchi/src/main/webapp/upload"/>
+        <property name="builtPath" value="P:/Git/DEV/hongchi/target/hongchi-1.0-1.5/upload"/>
         
                <!--UAT    
         <property name="absPath" value="/opt/tomcat9/webapps/folder/upload"/>

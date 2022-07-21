@@ -8,11 +8,8 @@ import com.ae21.bean.ResultBean;
 import com.ae21.bean.UserAuthorizedBean;
 import com.ae21.handler.CommonHandler;
 import com.ae21.studio.hongchi.entity.bean.UserInfo;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
-import java.util.UUID;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import org.hibernate.Query;
@@ -70,6 +67,24 @@ public class UserDAO {
             }
         }
         return user;
+    }
+    
+    public List<UserInfo> loadUserList(int size) throws Exception{
+        List<UserInfo> result=null;
+        Session session = sessionFactory.openSession();
+        Query query = null;
+        try{
+            query=session.getNamedQuery("UserInfo.findAll");
+            if(size>0){
+                query.setMaxResults(size);
+            }
+            result=(List<UserInfo>)query.list();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            try {session.close();} catch (Exception ignore) { }
+        }
+        return result;
     }
     
     public UserAuthorizedBean refresh(UserAuthorizedBean userAuth) throws Exception {
@@ -286,4 +301,176 @@ public class UserDAO {
         }
         return false;
     }
+    
+    public ResultBean changePassword(HttpServletRequest request,UserInfo user, String uuid) throws Exception{
+        ResultBean result=new ResultBean();
+        Transaction tx = null;
+        Session session = sessionFactory.openSession();
+        Query query = null;
+        SQLQuery squery=null;
+        CommonHandler lib = new CommonHandler();
+        String sql="";
+        
+        UserInfo editUser=null;
+        
+        String password=request.getParameter("password");
+        //String newPwd=request.getParameter("password");
+        String confirm=request.getParameter("confrim");
+        try{
+            result.setCode(0);
+            result.setMsg("ERROR.NULL");
+            
+            password=(password!=null?password.trim():"");
+            confirm=(confirm!=null?confirm.trim():"");
+            
+            if(user!=null){
+                editUser=this.loadUser(uuid);
+                
+                if(editUser!=null){
+                    if(user.getIsAdmin()==1 || user.getUuid().equalsIgnoreCase(uuid)){ //Admin User or Owner
+                        if(password.isEmpty()){
+                            result.setCode(-2001);
+                            result.setMsg("ERROR.USER.PWD.EMPTY");
+                        }else{
+                            if(password.length()<8){
+                                result.setCode(-2002);
+                                result.setMsg("ERROR.USER.PWD.LEN");
+                            }
+                            
+                            if(!password.equals(confirm)){
+                                result.setCode(-2003);
+                                result.setMsg("ERROR.USER.PWD.EQUAL");
+                            }
+                        }
+                    }else{
+                        result.setCode(-1003);
+                        result.setMsg("ERROR.ACCESS");
+                    }
+                }else{
+                    result.setCode(-1002);
+                    result.setMsg("ERROR.NOFOUND");
+                }
+                
+            }else{
+                result.setCode(-1001);
+                result.setMsg("ERROR.ACCESS");
+            }
+            
+            if(result.getCode()==0){
+                
+                tx=session.beginTransaction();
+                editUser.setPwd(lib.getPasswordHash(password));
+                session.saveOrUpdate(editUser);
+                tx.commit();
+                
+                result.setCode(1);
+                result.setMsg("label.success");
+                result.setObj(editUser);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {if (tx != null) {tx.rollback();}} catch (Exception ex) {ex.printStackTrace();}
+        } finally {
+            try {session.close();} catch (Exception ignore) {}
+        }
+        return result;
+    }
+    
+    public ResultBean saveInfo(HttpServletRequest request,UserInfo user, String uuid) throws Exception{
+        ResultBean result=new ResultBean();
+        Transaction tx = null;
+        Session session = sessionFactory.openSession();
+        Query query = null;
+        SQLQuery squery=null;
+        CommonHandler lib = new CommonHandler();
+        String sql="";
+        
+        UserInfo editUser=null;
+        
+        String username=request.getParameter("username");
+        String display=request.getParameter("display");
+        String isAdmin=request.getParameter("isAdmin");
+        
+        try{
+            result.setCode(0);
+            result.setMsg("ERROR.NULL");
+            
+            if(user!=null){
+                editUser=this.loadUser(uuid);
+                
+                if(editUser!=null){
+                    
+                   if(user.getIsAdmin()==1){  //Only Admin can change
+                       try{
+                           editUser.setIsAdmin(Integer.parseInt(isAdmin));
+                       }catch(Exception ignore){
+                           result.setCode(-2001);
+                           result.setMsg("ERROR.USER.ISADMIN.INVALID");
+                       }
+                   }
+                   
+                   display=(display!=null?display.trim():"");
+                   if(display.isEmpty()){
+                       result.setCode(-2002);
+                       result.setMsg("ERROR.USER.DISPLAY.EMPTY");
+                   }else{
+                       editUser.setDisplayName(display);
+                   }
+                   
+                   username=(username!=null?username.trim():"");
+                   if(username.isEmpty()){
+                       result.setCode(-2003);
+                       result.setMsg("ERROR.USER.USERNAME.EMPTY");
+                   }else{
+                       try{
+                           sql="Select {u.*} from user_info u where u.uuid!=:uuid and u.username=:user ";
+                           squery=session.createSQLQuery(sql);
+                           squery.addEntity("u", UserInfo.class);
+                           squery.setString("uuid", uuid);
+                           squery.setString("user", username);
+                           List temp=squery.list();
+                           
+                           if(temp!=null && temp.size()>0){  //Username exist
+                               result.setCode(-2012);
+                               result.setMsg("ERROR.USER.USERNAME.UNIQUE");
+                           }else{
+                               editUser.setUsername(username);
+                           }
+                           
+                       }catch(Exception ignore){
+                           result.setCode(-2011);
+                           result.setMsg("ERROR.USER.USERNAME.INVALID");
+                       }
+                   }
+                }else{
+                    result.setCode(-1002);
+                    result.setMsg("ERROR.NOFOUND");
+                }
+                
+            }else{
+                result.setCode(-1001);
+                result.setMsg("ERROR.ACCESS");
+            }
+            
+            result.setObj(editUser);
+            if(result.getCode()==0){
+                tx=session.beginTransaction();
+                session.saveOrUpdate(editUser);
+                tx.commit();
+                
+                result.setCode(1);
+                result.setObj(editUser);
+                result.setMsg("label.success");
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {if (tx != null) {tx.rollback();}} catch (Exception ex) {ex.printStackTrace();}
+        } finally {
+            try {session.close();} catch (Exception ignore) {}
+        }
+        return result;
+    }
 }
+

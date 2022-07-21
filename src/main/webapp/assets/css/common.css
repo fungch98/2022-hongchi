@@ -8,6 +8,13 @@ and open the template in the editor.
     Author     : Alex
 */
 
+label {
+        display: block;
+        font-size: 0.9em;
+        font-weight: 900;
+        margin: 0.75em 0 0.25em 0;
+}
+
 div.msg{
   padding: 0.7em 1em 0.5em 1em;
   width: 100%;
@@ -47,7 +54,11 @@ div.msg strong{
 }
 
 .delete{
-     color:red;
+     color:red !important;
+}
+
+.icon.delete:before{
+    color:red !important;
 }
 
 label.error{
@@ -247,6 +258,10 @@ table.dataTable tbody th, table.dataTable tbody td{
     width: 100%;
     float: none;
     text-align: left;
+}
+
+table.dataTable thead th, table.dataTable tfoot th{
+    
 }
 
 .action-bar{
@@ -621,7 +636,7 @@ header.config-header{
     justify-content:space-between;
     align-items: center;
     width: 100%;
-    border-bottom: 5px solid #1F8A70 ;
+    border-bottom: 5px solid #1c447c ;
     margin-bottom: 1.5rem;
 }
 
@@ -638,6 +653,17 @@ header.config-header div.config{
     font-weight: bold;
 }
 
+header.config-header + div.footer{
+    display:block;
+    margin-top: -1.5em;
+    margin-bottom: 1em;
+    font-size: 12pt;
+}
+
+header.config-header + div.footer span{
+    margin-right: 1em;
+}
+
 
 
 th.record-setting-header{
@@ -651,12 +677,17 @@ td.record-setting{
    
 }
 
+thead.hidden, 
+div.hidden{
+    display:none;
+}
+
 a.del{
     color:red;
 }
 
 ul.actions{
-    margin-top: 1em;
+    margin-top: 1.5em;
 }
 
 span.tab{
@@ -707,5 +738,78 @@ a.login-google img{
 div.center{
     text-align: center;
 }
-    
 
+.text-primary .dot:after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    content: "";
+    height: 24px;
+    width: 24px;
+    margin: -12px 0 0 -12px;
+    -webkit-animation: pulsate 2s linear;
+    animation: pulsate 2s linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    background-color: #09F;
+    border-radius: 100%;
+}
+    
+#sortable{
+    list-style: none;
+    width: 100%;
+    margin: 0;
+    padding: 0 !important;
+    margin-bottom: 0.5em;
+}
+
+.row.alt{
+    margin-left: 0em;
+}
+
+.row > *.trim{
+    padding: 0 !important;
+}
+
+.row > *.trim.alt{
+    padding-right: 1em !important;
+}
+
+
+
+img.fit{
+    width: 100%;
+}
+
+li.alt{
+    padding-left: 1em !important;
+}
+
+.tag-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap:  wrap;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 1em;
+    min-height: 3em;
+}
+
+.tag-container a{
+    text-decoration: none;
+    border-bottom-width: 0;
+    margin-right: 0.5em;
+    background-color: #DEF3FC;
+    border: #4672B8 3px solid;
+    color: #4672B8;
+    padding-left: 1em;
+    padding-right: 1em;
+    border-radius: 3em;
+    margin-bottom: 0.5em;
+}
+
+.tag-container a.alt{
+    padding:0.25em 1em;
+    
+}

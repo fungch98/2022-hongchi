@@ -10,7 +10,9 @@ import com.ae21.handler.CommonHandler;
 import com.ae21.handler.MainFrameHandler;
 import com.ae21.studio.hongchi.entity.bean.UserInfo;
 import com.ae21.studio.hongchi.entity.dao.UserDAO;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.struts.Globals;
 
 /**
  *
@@ -113,5 +115,20 @@ public class CustFrameHandler  extends MainFrameHandler{
         request.getSession().removeAttribute("UserAuthorized");
         request.getSession().removeAttribute("UserAuthorizedLogin");
         return "redirect:/auth/"+langCode+"/logout.html";
+    }
+    
+    @Override
+    public HttpServletRequest initLang(HttpServletRequest request,String langCode){
+        langCode="zh";
+        request.setAttribute("langCode", langCode);
+        request.setAttribute("pageLangCode", langCode);
+        return request;
+    }
+    
+    @Override
+    public void initLanguageCode(HttpServletRequest request) throws Exception {
+        request.getSession().setAttribute(
+                            Globals.LOCALE_KEY, Locale.TRADITIONAL_CHINESE);
+        request.setAttribute("langCode", "zh");
     }
 }

@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "hashtag_info")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "HashtagInfo.findAll", query = "SELECT h FROM HashtagInfo h"),
+    @NamedQuery(name = "HashtagInfo.findAll", query = "SELECT h FROM HashtagInfo h ORDER BY h.name, h.modifyDate desc"),
     @NamedQuery(name = "HashtagInfo.findById", query = "SELECT h FROM HashtagInfo h WHERE h.id = :id"),
     @NamedQuery(name = "HashtagInfo.findByName", query = "SELECT h FROM HashtagInfo h WHERE h.name = :name"),
     @NamedQuery(name = "HashtagInfo.findByUuid", query = "SELECT h FROM HashtagInfo h WHERE h.uuid = :uuid")
@@ -75,6 +75,10 @@ public class HashtagInfo implements Serializable {
     @JoinColumn(name = "modify_user", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private UserInfo modifyUser;
+    
+    @Basic(optional = false)
+    @Column(name = "hit_rate")
+    private Integer hitRate;
 
     public HashtagInfo() {
     }
@@ -129,6 +133,30 @@ public class HashtagInfo implements Serializable {
 
     public void setModifyDate(Date modifyDate) {
         this.modifyDate = modifyDate;
+    }
+
+    public UserInfo getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(UserInfo createUser) {
+        this.createUser = createUser;
+    }
+
+    public UserInfo getModifyUser() {
+        return modifyUser;
+    }
+
+    public void setModifyUser(UserInfo modifyUser) {
+        this.modifyUser = modifyUser;
+    }
+
+    public Integer getHitRate() {
+        return hitRate;
+    }
+
+    public void setHitRate(Integer hitRate) {
+        this.hitRate = hitRate;
     }
 
     

@@ -15,12 +15,13 @@
             <header class="config-header">
                 <h2><bean:message key="title.panel.category" /></h2>
                 <div class="config">
+                    <a href="${pageContext.request.contextPath}/panel/category/${langCode}/new/edit.html" class="icon solid fa-plus-circle"></a>
                     <a href="${pageContext.request.contextPath}/panel/${langCode}/dashboard.html" class="icon solid fa-times"></a>
                 </div>
             </header>
                 
-                <table id="cat-list" class="common-table"  data-page-length="25">
-                    <thead>
+                <table id="cat-list" class="common-table"  data-page-length="25" width="100%">
+                    <thead class="hidden">
                         <tr>
                             <td></td>
                             <td class="action-bar"></td>
@@ -34,7 +35,7 @@
                                         ${cat.name}
                                     </td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/panel/document/${cat.uuid}/edit.html" class="icon solid fa-edit blue"></a>
+                                        <a href="${pageContext.request.contextPath}/panel/category/${langCode}/${cat.uuid}/edit.html" class="icon solid fa-edit blue"></a>
                                     </td>
                                 </tr>
                             </logic:iterate>
@@ -54,9 +55,9 @@
             searching: true,
             "bLengthChange": false,
             "order": [],
-            "columns": [{"width": "calc(100%-6em)"},{"width": "6em"}],
+            "columns": [{"width": "80%"},null],
             "columnDefs": [
-                {"className": "dt-center", "targets": [1]}
+                {"className": "dt-right", "targets": [1]}
             ],
             language: {
                 "info": "<bean:message key="dataTable.info"  bundle="ae21studio"/>",

@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "category_info")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "CategoryInfo.findAll", query = "SELECT c FROM CategoryInfo c ORDER BY c.name"),
+    @NamedQuery(name = "CategoryInfo.findAll", query = "SELECT c FROM CategoryInfo c ORDER BY c.seq, c.name"),
     @NamedQuery(name = "CategoryInfo.findById", query = "SELECT c FROM CategoryInfo c WHERE c.id = :id"),
     @NamedQuery(name = "CategoryInfo.findByName", query = "SELECT c FROM CategoryInfo c WHERE c.name = :name"),
     @NamedQuery(name = "CategoryInfo.findByUuid", query = "SELECT c FROM CategoryInfo c WHERE c.uuid = :uuid")})
@@ -56,8 +56,16 @@ public class CategoryInfo implements Serializable {
     @NotNull
     @Lob
     @Size(min = 1, max = 65535)
-    @Column(name = "desc")
+    @Column(name = "cat_desc")
     private String desc;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "url")
+    private String url;
+     @Basic(optional = false)
+    @Column(name = "seq")
+    private Integer seq;
     
 
     public CategoryInfo() {
@@ -105,6 +113,24 @@ public class CategoryInfo implements Serializable {
     public void setDesc(String desc) {
         this.desc = desc;
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Integer getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Integer seq) {
+        this.seq = seq;
+    }
+    
+    
 
 
     @Override

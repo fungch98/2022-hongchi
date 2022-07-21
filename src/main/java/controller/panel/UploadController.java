@@ -5,6 +5,7 @@
 package controller.panel;
 
 import com.ae21.bean.ResultBean;
+import com.ae21.bean.SystemConfigBean;
 import com.ae21.bean.UserAuthorizedBean;
 import com.ae21.handler.CommonHandler;
 import com.ae21.studio.hongchi.entity.bean.UploadInfo;
@@ -31,6 +32,61 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UploadController {
     private Logger logger=Logger.getLogger(this.getClass().getName());
     private CustFrameHandler frameHandler=new CustFrameHandler();
+    
+    @RequestMapping(value = "/file/{uuid}/submit.html")
+    //@ResponseBody
+    protected String uploadSubmit(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            @PathVariable String uuid) throws Exception {
+        this.frameHandler = new CustFrameHandler(request, "upload/upload.jsp");
+        CommonHandler common = new CommonHandler();
+        UserDAO userDAO = null;
+        UserAuthorizedBean auth = null;
+        String result = "-1";
+        UploadDAO upDAO = null;
+        ResultBean uploadResult = null;
+        SystemConfigBean config = null;
+        UploadInfo upload = null;
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            this.frameHandler.invalidURLHandler(response, uuid);
+            request.setCharacterEncoding("utf-8");
+            userDAO = (UserDAO) common.getDAOObject(request, "userDAO");
+            config = (SystemConfigBean) common.getDAOObject(request, "defaultConfig");
+            auth = this.frameHandler.checkLoginStatus(request);
+            if (auth.isLogined()) {
+                upDAO = (UploadDAO) common.getDAOObject(request, "uploadDAO");
+                uploadResult = upDAO.upload(request, uuid, (UserInfo) auth.getLoginedUser(), config);
+                //System.out.println("Upload Result: "+uploadResult.getCode()+":"+uploadResult.getMsg());
+                upload = (UploadInfo) uploadResult.getObj();
+                response.setHeader("Content-Type", "application/json; charset=UTF-8");
+                response.setContentType("text/html; charset=utf-8");
+                response.setCharacterEncoding("UTF-8");
+                //System.out.println("Result: "+uploadResult.getCode());
+                request.setAttribute("upload", upload);
+                request.setAttribute("result", uploadResult);
+                /*return "{\"code\":\"" + uploadResult.getCode() + "\",\"msg\":\"" + uploadResult.getMsg() + "\",\"src\":\"" + (upload != null ? upload.getUrl() : "") + "\""
+                        + ",\"uuid\":\"" + (upload != null ? upload.getUuid() : "") + "\""
+                        + ",\"user\":\"" + (upload != null && upload.getUserId() != null ? upload.getUserId().getDisplayName() : "") + "\""
+                        + ",\"name\":\"" + (upload != null ? upload.getUploadFileName() : "") + "\""
+                        + ",\"fileType\":\"" + (upload != null ? upload.getFileType() : "") + "\""
+                        + ",\"modify\":\"" + (upload != null ? sf.format(upload.getUploadDate()) : "") + "\""
+                        + "}";*/
+                
+            }else{
+                uploadResult=new ResultBean();
+                uploadResult.setCode(-1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Exception: " + e.getMessage());
+            logger.throwing(this.getClass().getName(), "index", e);
+        } finally {
+            request = this.frameHandler.initPage(request);
+        }
+        return "panel/upload/jsonResp";
+    }
     
     @RequestMapping(value = "/cloud/item/upload.html")
      @ResponseBody
@@ -91,7 +147,54 @@ public class UploadController {
         return rtnResult;
      }
      
-      @RequestMapping(value = "/cloud/{uuid}/preview.html")
+     @RequestMapping(value = "/file/{uuid}/{action}.html")
+     @ResponseBody
+     protected String viewFile(
+            HttpServletRequest request,
+            HttpServletResponse response, 
+             @PathVariable String uuid, 
+             @PathVariable String action
+             )throws Exception{
+         this.frameHandler=new CustFrameHandler(request, "upload/upload.jsp");
+         String rtnResult = "{\"code\":-1,\"msg\":\"\"}";
+        
+         UploadDAO uploadDAO=null;
+        
+         UserInfo user=null;
+         UploadInfo upload=null;
+         //AWSBean aws=null;
+         ResultBean result=null;
+         CommonHandler common=new CommonHandler();
+         try{
+           this.frameHandler.loadTesting(request, 0);
+           if(this.frameHandler.isLogin(request)){  //check Login Status
+                user=this.frameHandler.getLoginUser(request);
+                //docDAO=(DocDAO)common.getDAOObject(request, "docDAO");
+                //aws=(AWSBean)common.getDAOObject(request,"awsConfig");
+                //att=docDAO.loadDocAttach(uuid);
+                //if(att!=null){
+                    //upload=att.getUploadId();
+                    //aws=(AWSBean)common.getDAOObject(request,"awsConfig");
+                    uploadDAO=(UploadDAO)common.getDAOObject(request, "uploadDAO");
+                    
+                    result=uploadDAO.getFile(request, response, uuid, (action!=null && action.equalsIgnoreCase("download")));
+                    //System.out.println("Result: "+result.getCode()+":"+ "");
+                    if(result!=null && result.getCode()==1){
+                    }else{
+                    }
+                //}
+           }
+         }catch(Exception e){
+            e.printStackTrace();
+            logger.severe("Exception: "+e.getMessage());
+            logger.throwing(this.getClass().getName(), "index", e);
+        }finally{
+            request=this.frameHandler.initPage(request);
+        }
+        return rtnResult;
+     }
+     
+     @RequestMapping(value = "/cloud/{uuid}/preview.html")
      @ResponseBody
      protected String viewCloudFile(
             HttpServletRequest request,
@@ -120,7 +223,7 @@ public class UploadController {
                     uploadDAO=(UploadDAO)common.getDAOObject(request, "uploadDAO");
                     
                     result=uploadDAO.getCloudFile(request,response,uuid, aws);
-                    System.out.println("Result: "+result.getCode());
+                    //System.out.println("Result: "+result.getCode());
                     if(result!=null && result.getCode()==1){
                     }else{
                     }

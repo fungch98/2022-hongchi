@@ -62,6 +62,7 @@ function initUploadImageURL(divId, responeDIV, URL, updateField){
     var invalidType=$("#upload_image_msg2").val();
     var overSize=$("#upload_image_msg3").val();
     var tooMany=$("#upload_image_msg4").val();
+    var localRootpath=$("#rootpath").val();
     //console.log( "ready!:"+divId+":"+responeDIV );
     //var myDropzone = new Dropzone(""+divId);
     // Dropzone class:
@@ -95,8 +96,20 @@ function initUploadImageURL(divId, responeDIV, URL, updateField){
                         
                         $(""+responeDIV).val( jsonObj.src );
                         try{
-                            $(""+responeDIV+"-preview").attr( "src", jsonObj.src );
+                            console.log("path: "+localRootpath+jsonObj.src);
+                            $(""+responeDIV+"-preview").attr( "src", localRootpath+jsonObj.src );
                         
+                        }catch(e){}
+                        try{
+                            $(""+responeDIV+"-uuid").val(jsonObj.uuid);
+                        }catch(e){}
+                        try{
+                            if($(""+responeDIV+"-name").val()===''){
+                                var photoName=jsonObj.name;
+                                photoName=photoName.replace("."+jsonObj.fileType,"");
+                                $(""+responeDIV+"-name").val(photoName);
+                            }
+                            
                         }catch(e){}
                         
                         try{
@@ -105,9 +118,10 @@ function initUploadImageURL(divId, responeDIV, URL, updateField){
                             var i;
                             for (i = 0; i < res.length; i++) {
                                 //console.log("Error: "+i+' val(): '+res[i]);
+                                
                                 if( $(""+res[i]).val()===''){
                                     $(""+res[i]).val( jsonObj.src );
-                                    $(""+res[i]+"-preview").attr( "src", jsonObj.src );
+                                    $(""+res[i]+"-preview").attr( "src", localRootpath+jsonObj.src );
                                 }
                               
                             }

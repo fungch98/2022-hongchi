@@ -29,14 +29,20 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.activation.MimetypesFileTypeMap;
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
@@ -205,7 +211,8 @@ public class UploadDAO {
                 upload.setUploadFileName(fileName);
                 upload.setUploadDate(lib.getLocalTime());
                 upload.setUploadFileName(target.getName());
-                url=config.getImgHost()+user.getUuid()+"/"+pathTime+"/"+URLEncoder.encode(target.getName(), "UTF-8");
+                //url=config.getImgHost()+user.getUuid()+"/"+pathTime+"/"+URLEncoder.encode(target.getName(), "UTF-8");
+                url="/panel/upload/file/"+upload.getUuid()+"/preview.html";
                 //System.out.println("URI: "+url);
                 //upload.setUploadUrl(url);
                 upload.setUrl(url);
@@ -463,6 +470,8 @@ public class UploadDAO {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            result.setCode(-9999);
+            result.setMsg("ERROR.NULL");
             try {if (tx != null) {tx.rollback();}} catch (Exception ex) {ex.printStackTrace();}
         } finally {
             try {
@@ -471,6 +480,76 @@ public class UploadDAO {
             }
             
             try{com.amazonaws.http.IdleConnectionReaper.shutdown();}catch(Exception ignore){}
+        }
+        return result;
+    }
+    
+    public ResultBean getFile(HttpServletRequest request,HttpServletResponse response,  String uuid, boolean isDownload)throws Exception{
+        ResultBean result=new ResultBean();
+        Transaction tx = null;
+        Session session = sessionFactory.openSession();
+        Query query = null;
+        CommonHandler lib = new CommonHandler();
+        UploadInfo upRecord=null;
+        File file=null;
+        String mime="image/jpg";
+        
+        try{
+            if(uuid!=null){
+                query=session.getNamedQuery("UploadInfo.findByUuid");
+                query.setString("uuid", uuid);
+                upRecord=(UploadInfo)query.uniqueResult();
+                
+                if(upRecord!=null){
+                    file=new File(upRecord.getAbsPath());
+                    try{
+                        //System.out.println("Path: "+file.getAbsolutePath());
+                        mime=Files.probeContentType(Paths.get(upRecord.getAbsPath()));
+                        response.setContentType(mime+"; charset=utf-8");
+                        response.setContentLength((int)file.length());
+                    }catch(Exception e){}
+                   
+                     // Set to expire far in the past.
+                    response.setDateHeader("Expires", 0);
+                    // Set standard HTTP/1.1 no-cache headers.
+                    
+                    response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+                    // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
+                    response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+                    // Set standard HTTP/1.0 no-cache header.
+                    response.setHeader("Pragma", "no-cache");
+                    
+                    response.setHeader("Content-Disposition",(isDownload?"attach;":"")+"filename=\""+URLEncoder.encode(upRecord.getName(),"utf-8")+"\"");
+                    
+                    
+                    
+                    OutputStream out = response.getOutputStream();
+                    //FileOutputStream fos   = new FileOutputStream(upRecord.getAbsPath());
+                    
+                    //System.out.println("Size: "+file.length());
+                    FileInputStream fileInputStream = new FileInputStream(file);
+                    
+                    // Copy the contents of the file to the output stream
+                     byte[] buf = new byte[1024];
+                     int count = 0;
+                     while ((count = fileInputStream.read(buf)) >= 0) {
+                       out.write(buf, 0, count);
+                    }
+                    //out=fos;
+                    //File file=new File(upRecord.getAbsPath());
+                    //System.out.println("len: "+file.exists()+":"+fileInputStream.available()+":"+upRecord.getAbsPath());
+                    out.close();
+                    fileInputStream.close();
+                    
+                    result.setCode(1);
+                }
+            }
+        } catch (Exception e) {
+            result.setCode(-9999);
+            result.setMsg("ERROR.NULL");
+            //try {if (tx != null) {tx.rollback();}} catch (Exception ex) {ex.printStackTrace();}
+        } finally {
+            try {session.close();} catch (Exception ignore) {}
         }
         return result;
     }
@@ -722,6 +801,7 @@ public class UploadDAO {
         ServletContext cntx= null;
         InputStream fileInputStream = null;
         OutputStream out=null;
+        
         try{
             result.setCode(0);
            

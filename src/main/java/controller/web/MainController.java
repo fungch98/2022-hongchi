@@ -27,8 +27,8 @@ public class MainController {
     protected String index(
             HttpServletRequest request,
             HttpServletResponse response)throws Exception{
-         this.frameHandler=new CustFrameHandler(request, "web/page/index.jsp");
-         CommonHandler common=new CommonHandler();
+        this.frameHandler=new CustFrameHandler(request, "web/page/index.jsp");
+        CommonHandler common=new CommonHandler();
         ResultBean result=null;
          try{ 
             request.setAttribute("pageLink", "index.html");

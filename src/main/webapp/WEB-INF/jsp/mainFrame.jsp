@@ -40,9 +40,9 @@
         <link href="${pageContext.request.contextPath}/assets/plugin/dropzone/dropzone.css" rel="stylesheet" type="text/css"/>
         <link href="${pageContext.request.contextPath}/assets/plugin/dropzone/upload.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/plugin/datatables/datatables.min.css"/>
-
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
         <script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     </head>
     <body class="is-preload">
 
@@ -54,32 +54,46 @@
 
                 <!-- Logo -->
                 <div class="logo">
-                    <a href="index.html" class="title"><img src="${pageContext.request.contextPath}/images/school_logo.png" alt="<bean:message key="title"/>"></a>
+                    <a href="${pageContext.request.contextPath}/index.html" class="title"><img src="${pageContext.request.contextPath}/images/school_logo.png" alt="<bean:message key="title"/>"></a>
                 </div>
 
                 <!-- Nav -->
                 <nav id="nav">
                     <ul>
-                        <li><a href="index.html">主頁</a></li>
+                        <li><a href="${pageContext.request.contextPath}/panel/${langCode}/dashboard.html">主頁</a></li>
+                        
+                        <logic:notEmpty name="isEditor">
+                            <logic:equal name="isEditor" value="Y">
+                                <jsp:include page="panel/editor/editor_nav_bar.jsp"/>
+                            </logic:equal>
+                        </logic:notEmpty>
                         <logic:notEmpty name="UserAuthorizedLogin" >
                         <li>
                             <a href="#" class="dropdown">圖庫</a>
                             <ul>
-                                <li><a href="#">創建圖片</a></li>
+                                <li><a href="${pageContext.request.contextPath}/panel/editor/${langCode}/dashboard.html">創建圖片</a></li>
                                 <li><a href="#">圖庫</a></li>
                             </ul>
                         </li>
                          <li>
                             <a href="#" class="dropdown">控制台</a>
                             <ul>
-                                <li><a href="generic.html">用戶管理</a></li>
+                                
                                 <li><a href="${pageContext.request.contextPath}/panel/category/${langCode}/index.html"><bean:message key="title.panel.category" /></a></li>
                                 <li><a href="generic.html">HashTag管理</a></li>
                                 <li><a href="generic.html">Generic</a></li>
                                 <li><a href="elements.html">Elements</a></li>
+                                 <logic:notEmpty name="UserAuthorizedLogin" >
+                                 <li>
+                                        <a href="${pageContext.request.contextPath}/auth/${langCode}/logout.html">
+                                            <bean:message key="btn.logout" bundle="ae21studio"/>
+                                        </a>
+                                    </li>
+                                </logic:notEmpty>
                             </ul>
                          </li>
                        </logic:notEmpty>
+                         <!--
                         <li>
                             <a href="#" class="dropdown"><bean:message key="lang.label" bundle="ae21studio"/></a>
                             <ul>
@@ -96,20 +110,26 @@
                                 <li><a href="${pageContext.request.contextPath}/${pagePrefix}en/${pageLink}.html"><bean:message key="lang.en.full" bundle="ae21studio"/></a></li>
                             </ul>
                         </li>
+                         -->
+                         <logic:notEmpty name="UserAuthorizedLogin" >
                         <li>
-                            <logic:notEmpty name="UserAuthorizedLogin" >
-                                <a href="${pageContext.request.contextPath}/auth/${langCode}/logout.html">
-                                    <logic:notEmpty name="UserAuthorizedLogin" >
-                                        
-                                    </logic:notEmpty>
-                                    <bean:message key="btn.logout" bundle="ae21studio"/>
-                                </a>
-                            </logic:notEmpty>
-                            <logic:empty name="UserAuthorizedLogin" >
-                                <a href="${pageContext.request.contextPath}/auth/${langCode}/login.html"><bean:message key="btn.login" bundle="ae21studio"/></a>
-                            </logic:empty>
-                            
+                            <a href="#" class="dropdown">${UserAuthorizedLogin.displayName}</a>
+                            <ul>
+                                <li><a href="${pageContext.request.contextPath}/panel/user/${langCode}/index.html"><bean:message key="title.panel.user" /></a></li>
+                               
+                            </ul>
                         </li>
+                         <li>
+                                           <a href="${pageContext.request.contextPath}/auth/${langCode}/logout.html">
+                                               <bean:message key="btn.logout" bundle="ae21studio"/>
+                                           </a>
+                                       </li>
+                        </logic:notEmpty>
+                        <logic:empty name="UserAuthorizedLogin" >
+                        <li>
+                            <a href="${pageContext.request.contextPath}/auth/${langCode}/login.html"><bean:message key="btn.login" bundle="ae21studio"/></a>
+                        </li>
+                        </logic:empty>
                     </ul>
                 </nav>
 
@@ -181,6 +201,7 @@
         <script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/custom.js"></script>
 
     </body>
 </html>
