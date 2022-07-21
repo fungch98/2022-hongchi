@@ -91,7 +91,7 @@ public class CategoryDAO {
         String name=request.getParameter("name");
         String desc=request.getParameter("desc");
         String url=request.getParameter("url");
-        System.out.println("Input: "+desc+":"+url+":"+name);
+        //System.out.println("Input: "+desc+":"+url+":"+name);
         CategoryInfo category=null;
         try{
             result.setCode(0);
