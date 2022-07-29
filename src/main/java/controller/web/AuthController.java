@@ -160,13 +160,17 @@ public class AuthController {
             writer.write("client_secret=" + this.frameHandler.getFreamBean().getGoogleConfig().getGoogleSecret() + "&");   // 這裡請將xxxx替換成自己的client_serect
            // writer.write("client_id=" + "363263052104-gt3g9vun3635mpj3lifa8ogkj5u0guie.apps.googleusercontent.com" + "&");   // 這裡請將xxxx替換成自己的client_id
             //writer.write("client_secret=" + "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" + "&");   // 這裡請將xxxx替換成自己的client_serect
+            /*System.out.println("redirect_uri=" + request.getScheme() + "://"
+                    + request.getServerName() + (request.getServerPort()==443 || request.getServerPort()==80?"": ":" + request.getServerPort())
+                    + request.getContextPath() + "/auth/google/oauth2callback.html&"); */
             writer.write("redirect_uri=" + request.getScheme() + "://"
-                    + request.getServerName() + ":" + request.getServerPort()
+                    + request.getServerName() + (request.getServerPort()==443 || request.getServerPort()==80?"": ":" + request.getServerPort())
                     + request.getContextPath() + "/auth/google/oauth2callback.html&");   // 這裡請將xxxx替換成自己的redirect_uri
             writer.write("grant_type=authorization_code");
             writer.close();
 
             // 如果認證成功
+            //System.out.println("Resp Code: "+connectionObtainToken.getResponseCode());
             if (connectionObtainToken.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 StringBuilder sbLines = new StringBuilder("");
                 //System.out.println("Link: "+connectionObtainToken.toString());

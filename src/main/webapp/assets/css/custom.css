@@ -355,3 +355,45 @@ ul.sortable li{
 .cover-img-container .image{
     margin-bottom: 0em;
 }
+
+.search_footer{
+    display: flex;
+    align-content: center;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1em;
+}
+
+.page-container{
+    max-width: 75%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    
+}
+
+.page-container a{
+    padding:0.2em 0.7em;
+    font-weight: bold;
+    margin-left: 0.25em;
+    margin-right: 0.25em;
+    border-bottom-width: 0;
+    color: #1c447c;
+}
+
+.page-container a:first-child{
+    margin-left: 0.5em;
+}
+
+.page-container a:last-child{
+    margin-right: 0.5em;
+}
+
+.page-container a.active{
+    background-color: #1c447c;
+    border-radius: 100%;
+    color:#FFF;
+}

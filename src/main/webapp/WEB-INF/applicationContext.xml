@@ -30,7 +30,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-<!-- SIT  
+<!-- SIT  -->
      <bean id="fbConfig" class="com.ae21.config.FacebookConfig">
         <property name="host" value="https://localhost:8443/hongchi"/>
         <property name="fbId" value="2195476117236873"/>
@@ -47,10 +47,10 @@
         <property name="host" value="https://localhost:8443/hongchi"/>
         <property name="key1" value="UA-47495893-4"/>
         <property name="key2" value=""/>
-        <property name="key3" value="UAT"/>
+        <property name="key3" value="SIT"/>
 
     </bean>
-  -->
+  <!-- UAT  
     <bean id="fbConfig" class="com.ae21.config.FacebookConfig">
         <property name="host" value="https://www.ae21.hk/hongchi"/>
         <property name="fbId" value="2195476117236873"/>
@@ -59,8 +59,8 @@
     
      <bean id="googleConfig" class="com.ae21.config.GoogleConfig">
         <property name="host" value="https://www.ae21.hk/hongchi"/>
-        <property name="googleId" value="363263052104-gt3g9vun3635mpj3lifa8ogkj5u0guie.apps.googleusercontent.com"/>
-        <property name="googleSecret" value="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"/>             
+        <property name="googleId" value="363263052104-o2183afkbs4d4ioe9k3n4mqkplfrcapi.apps.googleusercontent.com"/>
+        <property name="googleSecret" value="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"/>             
      </bean>
      
       <bean id="systemConfig" class="com.ae21.config.SystemConfig">
@@ -70,7 +70,7 @@
         <property name="key3" value="UAT"/>
 
     </bean>
-      
+      -->
     <bean id="mailConfigBean" class="com.ae21.bean.email.MailConfigBean">
          <property name="port" value="465"/>
          <property name="host" value="smtp.gmail.com"/>
@@ -80,14 +80,14 @@
      </bean>
      
      <bean id="defaultConfig" class="com.ae21.bean.SystemConfigBean">
-        <!-- SIT  
+        <!-- SIT  -->
         <property name="absPath" value="P:/Git/DEV/hongchi/src/main/webapp/upload"/>
         <property name="builtPath" value="P:/Git/DEV/hongchi/target/hongchi-1.0-1.5/upload"/>
-        -->
-               <!--UAT     -->
+        
+               <!--UAT    
         <property name="absPath" value="/opt/tomcat9/webapps/hongchi/upload"/>
          <property name="builtPath" value=""/>
-            
+             -->
             
         <property name="imgHost" value="/hongchi/upload/"/>
         <property name="ver" value="1"/>
@@ -112,7 +112,7 @@
      
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://192.168.1.188:3306/aesir_hongchi_uat?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull" />
+		<property name="url" value="jdbc:mysql://192.168.1.188:3306/aesir_hongchi?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull" />
 		<property name="username" value="webadmin" />
 		<property name="password" value="WEBcheerup21!" />
     </bean>

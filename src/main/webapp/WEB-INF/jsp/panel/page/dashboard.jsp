@@ -23,7 +23,14 @@
                 
                 <div class="row">
                     <div class="col-12">
-                        <input name="search"  id="search" placeholder="<bean:message key="label.search.photo" />" type="text"  value="" maxlength="250"  />
+                        <form id="search_form" action="${pageContext.request.contextPath}/panel/${langCode}/search/query.html" method="POST">
+                        <div class="search_row">
+                            
+                            <input name="key"  id="key" placeholder="<bean:message key="label.search.photo" />" type="text"  value="${key}" maxlength="250"  />
+                            <button class="primary"  onclick="search('#search_form');"><i class="icon solid fa-search"></i></button>
+                            
+                        </div>
+                            </form>
                     </div>
                 </div>
                     <br>

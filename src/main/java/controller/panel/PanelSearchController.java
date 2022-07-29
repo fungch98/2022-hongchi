@@ -50,7 +50,7 @@ public class PanelSearchController {
                 
                 search=prodDAO.searchProduct(key, 0);
                 if(search!=null){
-                    request.getSession().setAttribute("SEARCH.RESULT", search);
+                    request.getSession().setAttribute("SEARCH_RESULT", search);
                 }
             }else{
                 return this.frameHandler.logout(request);
@@ -88,11 +88,11 @@ public class PanelSearchController {
             this.frameHandler.loadTesting(request, 0);
             if(this.frameHandler.isLogin(request)){
                 prodDAO=(ProdDAO)common.getDAOObject(request, "prodDAO");
-                if(request.getSession().getAttribute("SEARCH.RESULT")!=null){
-                    search=(SearchBean)request.getSession().getAttribute("SEARCH.RESULT");
+                if(request.getSession().getAttribute("SEARCH_RESULT")!=null){
+                    search=(SearchBean)request.getSession().getAttribute("SEARCH_RESULT");
                 }else{
                     search=prodDAO.searchProduct(key, 0);
-                    request.getSession().setAttribute("SEARCH.RESULT", search);
+                    request.getSession().setAttribute("SEARCH_RESULT", search);
                 }
                 
                 if(search!=null){
@@ -100,6 +100,7 @@ public class PanelSearchController {
                     curPage=search.getCurPage();
                     prodList=(search.getPageList()!=null?search.getPageList().get(curPage):null);
                     request.setAttribute("prodList", prodList);
+                    
                 }
             }else{
                 return this.frameHandler.logout(request);
@@ -138,8 +139,8 @@ public class PanelSearchController {
             this.frameHandler.loadTesting(request, 0);
             if(this.frameHandler.isLogin(request)){
                 prodDAO=(ProdDAO)common.getDAOObject(request, "prodDAO");
-                if(request.getSession().getAttribute("SEARCH.RESULT")!=null){
-                    search=(SearchBean)request.getSession().getAttribute("SEARCH.RESULT");
+                if(request.getSession().getAttribute("SEARCH_RESULT")!=null){
+                    search=(SearchBean)request.getSession().getAttribute("SEARCH_RESULT");
                     if(search!=null){
                         if(action!=null && action .equalsIgnoreCase("next")){
                             curPage=search.getCurPage()+1;
@@ -165,11 +166,11 @@ public class PanelSearchController {
                     }
                 }else{
                     search=prodDAO.searchProduct(key, 0);
-                    request.getSession().setAttribute("SEARCH.RESULT", search);
+                    request.getSession().setAttribute("SEARCH_RESULT", search);
                 }
                 
                 if(search!=null){
-                    request.getSession().setAttribute("SEARCH.RESULT", search);
+                    request.getSession().setAttribute("SEARCH_RESULT", search);
                 }
             }else{
                 return this.frameHandler.logout(request);
