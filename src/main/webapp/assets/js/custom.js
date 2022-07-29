@@ -68,3 +68,37 @@ function removeFromTag(target){
 }
 
 
+function filterTagList(filter){
+    var itemList=$("a.filter-item");
+    var item, txtValue;
+    
+    for (i = 0; i < itemList.length; i++) {
+        txtValue=itemList[i].innerHTML;
+        //console.log(i+":"+txtValue.toUpperCase().indexOf(filter)+":"+txtValue);
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            itemList[i].style.display = "";
+          } else {
+            itemList[i].style.display = "none";
+          }
+    }
+}
+
+function filterCatList(filter){
+    var itemList=$("a.filter-item");
+    var item, txtValue;
+    
+    for (i = 0; i < itemList.length; i++) {
+        txtValue=itemList[i].getElementsByTagName("span")[0].innerHTML;
+        //console.log(i+":"+txtValue.toUpperCase().indexOf(filter)+":"+txtValue);
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            itemList[i].style.display = "";
+          } else {
+            itemList[i].style.display = "none";
+          }
+    }
+}
+
+function search(target){
+    $(""+target).submit();
+}
+

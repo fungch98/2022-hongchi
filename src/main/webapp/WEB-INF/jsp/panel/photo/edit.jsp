@@ -92,7 +92,7 @@
                             <div class="col-12">
                                 <ul class="actions fit">
                                     <li><input type="submit" class="button primary" value="<bean:message key="btn.save" bundle="ae21studio"/>"/></li>
-                                    <li><a href="${pageContext.request.contextPath}/index.html" class="button   "><bean:message key="btn.back" bundle="ae21studio"/></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/panel/${langCode}/dashboard.html" class="button   "><bean:message key="btn.back" bundle="ae21studio"/></a></li>
                                 </ul>
                             </div>
                         </div>

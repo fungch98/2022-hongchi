@@ -12,6 +12,7 @@ import com.ae21.studio.hongchi.entity.bean.HashtagInfo;
 import com.ae21.studio.hongchi.entity.bean.ProductInfo;
 import com.ae21.studio.hongchi.entity.bean.UploadInfo;
 import com.ae21.studio.hongchi.entity.bean.UserInfo;
+import com.ae21.studio.hongchi.entity.system.SearchBean;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
@@ -203,6 +204,24 @@ public class ProdDAO {
             try {session.close();} catch (Exception ignore) {            }
         }
         return result;
+    }
+    
+    public SearchBean searchProduct(String key, int size) throws Exception{
+        SearchBean search=null;
+        double needPage=0;
+        try{
+            search=new SearchBean();
+            search.setKey(key);
+            search.setCurPage(0);
+            search.setPageItems(24);
+            search.setResultList(this.queryProd(key, size));
+            search.generatePageList();
+            
+            this.addHotKeyWord(search);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return search;
     }
     
     public List<ProductInfo> queryProd(String search, int size) throws Exception{
@@ -563,6 +582,7 @@ public class ProdDAO {
         Session session = sessionFactory.openSession();
         Query query = null;
         SQLQuery squery=null;
+        SQLQuery squery2=null;
         CommonHandler lib = new CommonHandler();
         String sql="";
         
@@ -572,6 +592,7 @@ public class ProdDAO {
         
         String [] tagValList=request.getParameterValues("tagValue");
         List<HashtagInfo> tagList=null;
+        List<HashtagInfo> repeatList=null;
         String tagVal="";
         HashtagInfo tag=null;
         boolean isExist=false;
@@ -590,6 +611,10 @@ public class ProdDAO {
                             sql="SELECT {hi.*} FROM hashtag_info hi WHERE hi.uuid=:uuid ";
                             squery=session.createSQLQuery(sql);
                             squery.addEntity("hi", HashtagInfo.class);
+                            
+                            sql="SELECT {hi.*} FROM hashtag_info hi WHERE hi.name=:name ";
+                            squery2=session.createSQLQuery(sql);
+                            squery2.addEntity("hi", HashtagInfo.class);
                             
                             
                             for(int i=0; i<tagValList.length; i++){
@@ -613,6 +638,14 @@ public class ProdDAO {
                                 if(!isExist){
                                     squery.setString("uuid", tagVal);
                                     tag=(HashtagInfo)squery.uniqueResult();
+                                    
+                                    if(tag==null){
+                                        squery2.setString("name", tagVal);
+                                        repeatList=(List<HashtagInfo>)squery2.list();
+                                        if(repeatList!=null && repeatList.size()>0){
+                                            tag=repeatList.get(0);
+                                        }
+                                    }
 
                                     if(tag==null){
                                         tag=new HashtagInfo();
@@ -677,6 +710,45 @@ public class ProdDAO {
                 result.setCode(-1001);
                 result.setMsg("ERROR.ACCESS");
             }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {if (tx != null) {tx.rollback();}} catch (Exception ex) {ex.printStackTrace();}
+            result.setCode(-9999);
+            result.setMsg("ERROR.NULL");
+        } finally {
+            try {session.close();} catch (Exception ignore) {}
+        }
+        return result;
+    }
+    
+    public ResultBean addHotKeyWord(SearchBean search)throws Exception{
+        ResultBean result=new ResultBean();
+        Transaction tx = null;
+        Session session = sessionFactory.openSession();
+        
+        SQLQuery squery=null;
+        CommonHandler lib = new CommonHandler();
+        String sql="";
+        String key="";
+        String keyList[]=null;
+        try{
+            if(search!=null && search.getKey()!=null  && !search.getKey().isEmpty()){
+                sql="update hashtag_info SET hit_rate=hit_rate+1 WHERE `name` =:tag ";
+                squery=session.createSQLQuery(sql);
+                key=search.getKey();
+                key=(key!=null?key.trim():"");
+                keyList=search.getKey().split(" ");
+                
+                tx=session.beginTransaction();
+                for(int i=0;keyList!=null && i<keyList.length;i++ ){
+                    squery.setString("tag", (keyList[i]!=null?keyList[i].trim():""));
+                    squery.executeUpdate();
+                }
+                tx.commit();
+            }
+            
+            
             
         } catch (Exception e) {
             e.printStackTrace();

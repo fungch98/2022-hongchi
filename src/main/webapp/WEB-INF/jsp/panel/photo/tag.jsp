@@ -41,7 +41,7 @@
                                         <logic:notEmpty name="hashtagList" scope="request">
                                             <logic:iterate id="hashtag"   name="hashtagList" scope="request">
                                                 <div id="tag-${hashtag.uuid}">
-                                                    <a href="#" onclick="removeFromTag('#tag-${hashtag.uuid}');" class="alt"><i class="icon solid fa-times blue"></i>${hashtag.name} </a>
+                                                    <a href="#" onclick="removeFromTag('#tag-${hashtag.uuid}');" class="alt">${hashtag.name}<i class="icon solid fa-times blue right"></i></a>
                                                    <input type="hidden" value="${hashtag.uuid}" name="tagValue" />
                                                </div>
                                             </logic:iterate>

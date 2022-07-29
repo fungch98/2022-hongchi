@@ -39,6 +39,7 @@ public class MainController {
                 request.setAttribute("SAVE_RESULT", result);
                 request.getSession().removeAttribute("ERROR.LOGIN");
             }
+            return "redirect:/auth/zh/login.html";
          }catch(Exception e){
             e.printStackTrace();
             logger.severe("Exception: "+e.getMessage());

@@ -338,5 +338,20 @@ ul.sortable li{
 }
 
 .search_row input[type="text"]{
-    width: 90%!important;
+    width: calc(100%-8em)!important;
+}
+
+.search_row button{
+    width: 8em;
+}
+
+.cover-img-container{
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    border-bottom-width: 0;
+}
+
+.cover-img-container .image{
+    margin-bottom: 0em;
 }

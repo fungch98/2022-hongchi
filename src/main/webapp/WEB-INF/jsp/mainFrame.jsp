@@ -69,10 +69,13 @@
                         </logic:notEmpty>
                         <logic:notEmpty name="UserAuthorizedLogin" >
                         <li>
-                            <a href="#" class="dropdown">圖庫</a>
+                            <a href="#" class="dropdown"><bean:message key="menu.photo"/></a>
                             <ul>
-                                <li><a href="${pageContext.request.contextPath}/panel/editor/${langCode}/dashboard.html">創建圖片</a></li>
+                                <li><a href="${pageContext.request.contextPath}/panel/editor/${langCode}/dashboard.html"><bean:message key="menu.photo.create"/></a></li>
+                                <li><a href="${pageContext.request.contextPath}/panel/photo/${langCode}/new/edit.html"><bean:message key="menu.photo.upload"/></a></li>
                                 <li><a href="#">圖庫</a></li>
+                                <li><a href="${pageContext.request.contextPath}/panel/${langCode}/search/category.html"><bean:message key="menu.photo.search.cat"/></a></li>
+                                <li><a href="${pageContext.request.contextPath}/panel/${langCode}/search/tag.html"><bean:message key="menu.photo.search.tag"/></a></li>
                             </ul>
                         </li>
                          <li>
@@ -80,16 +83,12 @@
                             <ul>
                                 
                                 <li><a href="${pageContext.request.contextPath}/panel/category/${langCode}/index.html"><bean:message key="title.panel.category" /></a></li>
-                                <li><a href="generic.html">HashTag管理</a></li>
+                                <li><a href="${pageContext.request.contextPath}/panel/tag/${langCode}/list.html"><bean:message key="title.panel.tag"/></a></li>
+                                <!--
                                 <li><a href="generic.html">Generic</a></li>
                                 <li><a href="elements.html">Elements</a></li>
-                                 <logic:notEmpty name="UserAuthorizedLogin" >
-                                 <li>
-                                        <a href="${pageContext.request.contextPath}/auth/${langCode}/logout.html">
-                                            <bean:message key="btn.logout" bundle="ae21studio"/>
-                                        </a>
-                                    </li>
-                                </logic:notEmpty>
+                                -->
+                                 
                             </ul>
                          </li>
                        </logic:notEmpty>
@@ -116,7 +115,13 @@
                             <a href="#" class="dropdown">${UserAuthorizedLogin.displayName}</a>
                             <ul>
                                 <li><a href="${pageContext.request.contextPath}/panel/user/${langCode}/index.html"><bean:message key="title.panel.user" /></a></li>
-                               
+                               <logic:notEmpty name="UserAuthorizedLogin" >
+                                 <li>
+                                        <a href="${pageContext.request.contextPath}/auth/${langCode}/logout.html">
+                                            <bean:message key="btn.logout" bundle="ae21studio"/>
+                                        </a>
+                                    </li>
+                                </logic:notEmpty>
                             </ul>
                         </li>
                          <li>
