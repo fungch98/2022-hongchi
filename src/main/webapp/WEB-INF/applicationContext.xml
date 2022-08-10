@@ -29,6 +29,9 @@
     <bean id="uploadDAO" class="com.ae21.studio.hongchi.entity.dao.UploadDAO">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+     <bean id="editorDAO" class="com.ae21.studio.hongchi.entity.dao.EditorDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
 <!-- SIT  -->
      <bean id="fbConfig" class="com.ae21.config.FacebookConfig">

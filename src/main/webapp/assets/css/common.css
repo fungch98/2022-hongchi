@@ -7,6 +7,10 @@ and open the template in the editor.
     Created on : 2021年3月19日, 下午05:38:32
     Author     : Alex
 */
+a.alt{
+    text-decoration: none;
+    border-bottom-width: 0;
+}
 
 label {
         display: block;
@@ -823,6 +827,10 @@ li.alt{
 .tag-container a.alt2{
      padding:0.25em 2em;
     margin-bottom: 1em;
+}
+
+.tag-container a.alt3{
+    font-size: 12pt;
 }
 
 .filter-hidden{

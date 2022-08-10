@@ -4,23 +4,22 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div class="item-list-container">
-    <input type="Search" id="search" name="search" placeholder="Search" value=""/>
+    <div class="search_row alt">
+        <input name="key"  id="search-ajax-key" placeholder="<bean:message key="label.search.photo" />" type="text"  value="" maxlength="250" onchange="photoSearch(this.value);"  />
+        <button class="primary "  onclick="photoSearchTarget('search-ajax-key');"><i class="icon solid fa-search"></i></button>
+    </div>
     
     <div class="tag-container">
-        <a href="#">#陳南昌圖庫</a>
-        <a href="#">#協康圖庫</a>
+        <logic:notEmpty name="catList" >
+            <logic:iterate id="cat" name="catList">
+                <a href="#" onclick="photoSearch('${cat.name}');return false;" class="alt3">#${cat.name}</a>
+            </logic:iterate>
+        </logic:notEmpty>
+        
     </div>
 </div>
 <hr>
 
-<div class="item-list-image-container">
-            <div class="row alt">
-                <c:forEach var="seq" begin="1" end="28"> 
-                     <div class="col-3 col-6-medium col-12-small trim alt">
-                        <img src="${pageContext.request.contextPath}/images/album/demo-0${(((seq+2)%3)+1)}.jpg" class="images fit"/>
-                    </div>
-                </c:forEach>
-                
-               
-            </div>
-        </div>
+<div id="search-photo-result-container" class="item-list-image-container">
+    <jsp:include page="search/imageResult.jsp"/>
+</div>

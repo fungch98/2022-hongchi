@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +22,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -43,7 +45,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProductInfo.findByUuid", query = "SELECT p FROM ProductInfo p WHERE p.uuid = :uuid")
 })
 public class ProductInfo implements Serializable {
-    
+ 
     public static final int UPLOAD=1;
     public static final int EDITOR=3;
     public static final int URL=2;
@@ -110,7 +112,9 @@ public class ProductInfo implements Serializable {
      @Size(max = 1000)
     @Column(name = "product_tag")
     private String productTag;
-    
+    @Size(max = 250)
+    @Column(name = "editor_uuid")
+    private String editorUuid;
     
     
     @JoinColumn(name = "create_user", referencedColumnName = "id")
@@ -310,5 +314,14 @@ public class ProductInfo implements Serializable {
     public String toString() {
         return "com.ae21.studio.hongchi.entity.bean.ProductInfo[ id=" + id + " ]";
     }
-    
+
+    public String getEditorUuid() {
+        return editorUuid;
+    }
+
+    public void setEditorUuid(String editorUuid) {
+        this.editorUuid = editorUuid;
+    }
+
+ 
 }

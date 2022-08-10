@@ -9,6 +9,8 @@
     <class>com.ae21.studio.hongchi.entity.bean.UploadInfo</class>
     <class>com.ae21.studio.hongchi.entity.bean.ProductInfo</class>
     <class>com.ae21.studio.hongchi.entity.bean.ParaInfo</class>
+    <class>com.ae21.studio.hongchi.entity.bean.EditorInfo</class>
+    <class>com.ae21.studio.hongchi.entity.bean.EditorItem</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.188:3306/aesir_hongchi?zeroDateTimeBehavior=CONVERT_TO_NULL"/>

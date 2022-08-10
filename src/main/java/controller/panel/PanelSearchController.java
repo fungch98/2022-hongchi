@@ -248,4 +248,104 @@ public class PanelSearchController {
         }
         return this.frameHandler.getReturnPath(request);
     }
+    
+    @RequestMapping(value = "/{langCode}/editor/search.html")
+    protected String editorSearch(
+            HttpServletRequest request,
+            HttpServletResponse response, 
+             @PathVariable String langCode
+    )throws Exception{
+         this.frameHandler=new CustFrameHandler(request, "panel/search/result.jsp");
+        CommonHandler common=new CommonHandler();
+        ResultBean result=null;
+        ProdDAO prodDAO=null;
+        //String search=request.getParameter("search");
+        String key=request.getParameter("searchKey");
+        
+        SearchBean search=null;
+        int curPage=0;
+        List<ProductInfo> prodList=null;
+        try{ 
+            this.frameHandler.loadTesting(request, 0);
+            if(this.frameHandler.isLogin(request)){
+                prodDAO=(ProdDAO)common.getDAOObject(request, "prodDAO");
+                System.out.println("Key: "+key+":"+common.getLocalTime());
+                search=prodDAO.searchProduct(key, 0,32);
+                
+                if(search!=null){
+                    request.setAttribute("key", search.getKey());
+                    curPage=search.getCurPage();
+                    prodList=(search.getPageList()!=null?search.getPageList().get(curPage):null);
+                    request.setAttribute("userPhotoList", prodList);
+                    
+                }
+            }else{
+                return this.frameHandler.logout(request);
+            }
+         }catch(Exception e){
+            e.printStackTrace();
+            logger.severe("Exception: "+e.getMessage());
+            logger.throwing(this.getClass().getName(), "search", e);
+        }finally{
+            request=this.frameHandler.initPage(request);
+        }
+        return "panel/editor/search/imageResult";
+    }
+    
+    @RequestMapping(value = "/{langCode}/editor/page/{page}/next.html")
+    protected String editorSearchNext(
+            HttpServletRequest request,
+            HttpServletResponse response, 
+             @PathVariable String langCode, 
+             @PathVariable int page
+    )throws Exception{
+         this.frameHandler=new CustFrameHandler(request, "panel/search/result.jsp");
+        CommonHandler common=new CommonHandler();
+        ResultBean result=null;
+        ProdDAO prodDAO=null;
+        //String search=request.getParameter("search");
+        String key=request.getParameter("key");
+        
+        SearchBean search=null;
+        int curPage=0;
+        List<ProductInfo> prodList=null;
+         try{ 
+           
+          
+            this.frameHandler.loadTesting(request, 0);
+            if(this.frameHandler.isLogin(request)){
+                prodDAO=(ProdDAO)common.getDAOObject(request, "prodDAO");
+                if(request.getSession().getAttribute("SEARCH_EDITOR_RESULT")!=null){
+                    search=(SearchBean)request.getSession().getAttribute("SEARCH_EDITOR_RESULT");
+                    if(page>search.getMaxPage()){
+                        search.setCurPage(search.getMaxPage());
+                    }else if(page<0){
+                        search.setCurPage(0);
+                    }else{
+                        search.setPage(page);
+                    }
+                }else{
+                    search=prodDAO.searchProduct(key, 0);
+                    request.getSession().setAttribute("SEARCH_EDITOR_RESULT", search);
+                }
+                
+                if(search!=null){
+                    request.setAttribute("key", search.getKey());
+                    curPage=search.getCurPage();
+                    prodList=(search.getPageList()!=null?search.getPageList().get(curPage):null);
+                    request.setAttribute("prodList", prodList);
+                    
+                }
+            }else{
+                return this.frameHandler.logout(request);
+            }
+         }catch(Exception e){
+            e.printStackTrace();
+            logger.severe("Exception: "+e.getMessage());
+            logger.throwing(this.getClass().getName(), "search", e);
+        }finally{
+            request=this.frameHandler.initPage(request);
+        }
+        return "panel/editor/search/imageResult";
+    }
 }

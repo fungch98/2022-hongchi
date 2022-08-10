@@ -88,6 +88,31 @@ public class ProdDAO {
         return result;
     }
     
+    public List<ProductInfo> loadUserProd(UserInfo user, int size) throws Exception{
+        Session session = sessionFactory.openSession();
+        SQLQuery query = null;
+        List<ProductInfo> result = null;
+        String sql="SELECT {p.*} FROM product_info p "
+                + " WHERE modify_user=:user AND prod_status=1 "
+                + " ORDER BY modify_date desc, p.name ";
+        try{
+            if(user!=null){
+                query=session.createSQLQuery(sql);
+                query.addEntity("p", ProductInfo.class);
+                query.setInteger("user", user.getId());
+                if(size>0){
+                    query.setMaxResults(size);
+                }
+                result=(List<ProductInfo>)query.list();
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            try {session.close();} catch (Exception ignore) {            }
+        }
+        return result;
+    }
+    
     public List<CategoryInfo> getProdCat(ProductInfo prod)throws Exception{
         Session session = sessionFactory.openSession();
         SQLQuery query = null;
@@ -207,13 +232,17 @@ public class ProdDAO {
     }
     
     public SearchBean searchProduct(String key, int size) throws Exception{
+        return this.searchProduct(key, size, 24);
+    }
+    
+    public SearchBean searchProduct(String key, int size, int max) throws Exception{
         SearchBean search=null;
         double needPage=0;
         try{
             search=new SearchBean();
             search.setKey(key);
             search.setCurPage(0);
-            search.setPageItems(24);
+            search.setPageItems(max);
             search.setResultList(this.queryProd(key, size));
             search.generatePageList();
             

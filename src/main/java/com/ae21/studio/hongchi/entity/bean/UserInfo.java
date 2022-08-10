@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "UserInfo.findBySocialId", query = "SELECT u FROM UserInfo u WHERE u.socialType='G' and u.socialId=:id and u.userStatus=1 "),
     @NamedQuery(name = "UserInfo.findByUuid", query = "SELECT u FROM UserInfo u WHERE u.uuid = :uuid")})
 public class UserInfo implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -265,6 +266,5 @@ public class UserInfo implements Serializable {
         return "com.ae21.studio.hongchi.entity.bean.UserInfo[ id=" + id + " ]";
     }
 
-   
     
 }

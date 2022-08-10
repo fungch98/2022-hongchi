@@ -71,7 +71,7 @@
                         <li>
                             <a href="#" class="dropdown"><bean:message key="menu.photo"/></a>
                             <ul>
-                                <li><a href="${pageContext.request.contextPath}/panel/editor/${langCode}/dashboard.html"><bean:message key="menu.photo.create"/></a></li>
+                                <li><a href="${pageContext.request.contextPath}/panel/editor/${langCode}/new/new/dashboard.html"><bean:message key="menu.photo.create"/></a></li>
                                 <li><a href="${pageContext.request.contextPath}/panel/photo/${langCode}/new/edit.html"><bean:message key="menu.photo.upload"/></a></li>
                                 <li><a href="#">圖庫</a></li>
                                 <li><a href="${pageContext.request.contextPath}/panel/${langCode}/search/category.html"><bean:message key="menu.photo.search.cat"/></a></li>
@@ -176,6 +176,7 @@
         </div>
 
         <input type="hidden" id="rootpath" value="${pageContext.request.contextPath}/"/>
+        <input type="hidden" id="langCode" value="${langCode}"/>
 
         <input type="hidden" id="upload_image_msg1"  value="<bean:message key="image.upload.msg1" bundle="ae21studio"/>" />
         <input type="hidden" id="upload_image_msg2"  value="<bean:message key="image.upload.msg2" bundle="ae21studio"/>"/>
