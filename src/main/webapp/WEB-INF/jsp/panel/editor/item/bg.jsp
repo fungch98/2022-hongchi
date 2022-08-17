@@ -5,7 +5,7 @@
 
 
     <div id="item-${itemDetail.uuid}" class="editor-content-container">
-        <header>
+        <header  class="alt">
             <h4><bean:message key="label.editor.bg"/></h4>
         </header>
         
@@ -18,16 +18,16 @@
         <input type="hidden" id="${itemDetail.uuid}-width" name="width" value="${itemDetail.width}"/>
         <input type="hidden" id="${itemDetail.uuid}-height" name="height" value="${itemDetail.height}"/>
         <input type="hidden" id="${itemDetail.uuid}-imgSrc" name="imgSrc" value="${itemDetail.imgSrc}"/>
-        <input type="hidden" id="${itemDetail.uuid}-upSrc" name="upSrc" value="${itemDetail.imgUploadSrc}"/>
-        <input type="hidden" id="${itemDetail.uuid}-upUUID" name="upSrc" value="${itemDetail.imgUploadUuid}"/>
+         <input type="hidden" id="${itemDetail.uuid}-upSrc" name="upSrc" value="${itemDetail.imgUploadSrc}"/>
+        <input type="hidden" id="${itemDetail.uuid}-upUUID" name="upUUID" value="${itemDetail.imgUploadUuid}"/>
         <input type="hidden" id="${itemDetail.uuid}-imgURL" name="imgURL" value="${itemDetail.imgUrl}"/>
         <input type="hidden" id="${itemDetail.uuid}-imgUUID" name="imgUUID" value="${itemDetail.imgUuid}"/>
         <input type="hidden" id="${itemDetail.uuid}-posx" name="posx" value="${itemDetail.posX}"/>
-        <input type="hidden" id="${itemDetail.uuid}-posy" name="posx" value="${itemDetail.posY}"/>
+        <input type="hidden" id="${itemDetail.uuid}-posy" name="posy" value="${itemDetail.posY}"/>
         
         <input type="hidden" id="${itemDetail.uuid}-text" name="text" value="${itemDetail.text}"/>
         <input type="hidden" id="${itemDetail.uuid}-textDesc" name="textDesc" value="${itemDetail.textDesc}"/>
         <input type="hidden" id="${itemDetail.uuid}-zIndex" name="zIndex" value="${itemDetail.zIndex}"/>
         
-        
+        <input type="hidden" id="${itemDetail.uuid}-name" name="name" value="${itemDetail.name}"  />
     </div>

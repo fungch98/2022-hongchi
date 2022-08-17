@@ -30,6 +30,14 @@ h1, h2, h3, h4, h5, h6 {
 		color: #1c447c;
                 font-weight: 600;
 	}
+        
+        header.alt{
+            margin-bottom: 0.5em;
+        }
+        
+        header.alt h4{
+            margin-bottom: 0!important;
+        }
 
 #header .logo, #header .logo:hover{
     background-color: transparent;
@@ -446,7 +454,12 @@ ul.sortable li{
 
 .editor-content-obj{
     position: absolute !important;
-    
+    background-color: transparent!important;
+    border-width: 0 !important;
+}
+
+.editor-content-obj:hover{
+    border-width: 2px !important;
 }
 
 .editor-content-obj img{

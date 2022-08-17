@@ -208,6 +208,7 @@
         <script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/custom.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/common.js"></script>
 
     </body>
 </html>

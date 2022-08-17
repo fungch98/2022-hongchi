@@ -9,7 +9,7 @@
                    
                     <header>
                          
-                        <h4><i class="icon solid fa-arrows-alt-v"></i><bean:message key="label.editor.item.type.${itemDetail.itemType}"/></h4>
+                        <h4><i class="icon solid fa-arrows-alt-v"></i><bean:message key="label.editor.item.type.${itemDetail.itemType}"/><span id="item-list-${itemDetail.uuid}-name"><logic:notEmpty name="itemDetail" property="name"> - ${itemDetail.name}</logic:notEmpty></span></h4>
                         
                         <div class="config">
                             <a href="#" onclick="editItemContent('${itemDetail.uuid}');return false;"><i class="icon solid fa-edit delete"></i></a>

@@ -8,12 +8,10 @@ function editorInit(){
     }
 }
 
-function addItem(type){
-    
-}
 
 function editItemContent(uuid){
     $(".editor-content-container.active").removeClass("active");
+    console.log("#item-"+uuid);
     $("#item-"+uuid).addClass("active");
     return false;
 }
@@ -55,6 +53,7 @@ function updateItemSeq(){
             itemSeqUUID=seqList[i].value;
             $("#"+itemSeqUUID+"-seq").val(i);
             $("#"+itemSeqUUID+"-zIndex").val(i);
+            $("#item-"+itemSeqUUID+"-obj").css("z-index",""+i);
         }
     }catch(e){
         console.log(e);
@@ -97,11 +96,24 @@ function addItem(type, targetKey){
                         if(type==="photo"){
                             console.log("#item-"+targetUUID+"-obj");
                             $( "#item-"+targetUUID+"-obj" ).resizable({
-                                containment: target
+                                containment: target, 
+                                stop: function (evt, ui) {
+                                    //console.log("#"+targetKey+"-width"+":"+ui.size.width+":"+ui.size.height);
+                                    $("#"+targetUUID+"-width").val(ui.size.width);
+                                    $("#"+targetUUID+"-height").val(ui.size.height);
+                                }
                               });
-                              $( "#item-"+targetUUID+"-obj" ).draggable({ containment: target, scroll: false });
-                              changeSize("#item-"+targetUUID+"-obj");
-                               changePos("#item-"+targetUUID+"-obj");
+                              $( "#item-"+targetUUID+"-obj" ).draggable({ 
+                                  containment: target, scroll: false , 
+                                  stop: function (evt, ui) {
+                                    console.log("#"+targetKey+"-width"+":"+ui.position.top+":"+ui.position.left);
+                                    $("#"+targetUUID+"-posx").val(ui.position.top);
+                                    $("#"+targetUUID+"-posy").val(ui.position.left);
+                                    }
+                              });
+                              changePos(targetUUID);
+                              changeSize(targetUUID);
+                              updateItemSeq();
                         }
                     }catch(e){
                         console.log(e);
@@ -203,10 +215,52 @@ function changeSize(uuid){
         width=$("#"+uuid+"-width").val();
         height=$("#"+uuid+"-height").val();
         $("#item-"+uuid+"-obj").css("width",""+width+"px");
-        $("#item-"+uuid+"-obj").css("left",""+height+"px");
+        $("#item-"+uuid+"-obj").css("height",""+height+"px");
     }catch(e){
         console.log(e);
     }
 }
 
+function changeName(uuid,value){
+    try{
+        $("#item-list-"+uuid+"-name").html(" - "+value);
+    }catch(e){
+        console.log(e);
+    }
+}
 
+function editorSave(){
+    var form = $("#editor_content_form");
+    var url = form.attr('action');
+    
+    try{
+        $.ajax({
+                url:url,
+                type:"POST",
+                //contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: form.serialize(),
+                //contentType: 'text/html; charset=UTF-8',
+                success:function(result){
+                    try{
+                        console.log(result.code);
+                        if(result!==undefined && result.code==1){
+                            showSnack("OK");
+                        }else{
+                            showErrorSnack(result.msg);
+                        }
+                    }catch(e){
+                        console.log(e);
+                    }
+                    
+                },
+                error:function(xhr, error){
+                    console.log("Load Next return false: ");
+                    console.debug(xhr); console.debug(error);
+                    showErrorSnack("Can not load image");
+                }
+            });
+    }catch(e){
+        console.log(e);
+    }
+}

@@ -32,8 +32,11 @@
      <bean id="editorDAO" class="com.ae21.studio.hongchi.entity.dao.EditorDAO">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="migDAO" class="com.ae21.studio.hongchi.entity.dao.MigrationDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
-<!-- SIT  -->
+<!-- SIT -->
      <bean id="fbConfig" class="com.ae21.config.FacebookConfig">
         <property name="host" value="https://localhost:8443/hongchi"/>
         <property name="fbId" value="2195476117236873"/>
@@ -52,8 +55,9 @@
         <property name="key2" value=""/>
         <property name="key3" value="SIT"/>
 
-    </bean>
-  <!-- UAT  
+    </bean> 
+      
+  <!-- UAT    
     <bean id="fbConfig" class="com.ae21.config.FacebookConfig">
         <property name="host" value="https://www.ae21.hk/hongchi"/>
         <property name="fbId" value="2195476117236873"/>
@@ -73,7 +77,7 @@
         <property name="key3" value="UAT"/>
 
     </bean>
-      -->
+   --> 
     <bean id="mailConfigBean" class="com.ae21.bean.email.MailConfigBean">
          <property name="port" value="465"/>
          <property name="host" value="smtp.gmail.com"/>
@@ -83,14 +87,17 @@
      </bean>
      
      <bean id="defaultConfig" class="com.ae21.bean.SystemConfigBean">
-        <!-- SIT  -->
+        <!-- SIT -->
         <property name="absPath" value="P:/Git/DEV/hongchi/src/main/webapp/upload"/>
         <property name="builtPath" value="P:/Git/DEV/hongchi/target/hongchi-1.0-1.5/upload"/>
+         <property name="outputPath" value="P:/Git/DEV/hongchi/target/hongchi-1.0-1.5/output"/>
+         
         
-               <!--UAT    
+               <!--UAT     
         <property name="absPath" value="/opt/tomcat9/webapps/hongchi/upload"/>
          <property name="builtPath" value=""/>
-             -->
+         <property name="outputPath" value="/opt/tomcat9/webapps/hongchi/output"/>
+            -->
             
         <property name="imgHost" value="/hongchi/upload/"/>
         <property name="ver" value="1"/>

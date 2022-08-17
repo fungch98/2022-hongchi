@@ -5,9 +5,7 @@
 <logic:notEmpty name="itemDetail">
     <jsp:include page="photo.jsp"/>
     @@SPLIT@@@
-    <div id="item-${itemDetail.uuid}-obj" class="editor-content-obj ui-state-active draggable ui-widget-content">
-        <img src="${pageContext.request.contextPath}${itemDetail.imgUrl}" class="item-obj-img"/>
-    </div>
+    <jsp:include page="photo-view.jsp"/>
     @@SPLIT@@@
     <jsp:include page="item-list.jsp"/>
     @@SPLIT@@@

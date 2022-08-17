@@ -1,6 +1,8 @@
 
 package controller.panel;
 
+import com.ae21.bean.ResultBean;
+import com.ae21.bean.SystemConfigBean;
 import com.ae21.handler.CommonHandler;
 import com.ae21.studio.hongchi.entity.bean.EditorInfo;
 import com.ae21.studio.hongchi.entity.bean.ProductInfo;
@@ -47,6 +49,7 @@ public class PanelEditorController {
             request.setAttribute("pageLink", prod+"/"+uuid+"/dashboard.html");
             request.setAttribute("pagePrefix", "panel/editor/");
             request.setAttribute("isEditor", "Y");
+            request.setAttribute("uuid", uuid);
           
             this.frameHandler.loadTesting(request, 0);
             //System.out.println("OK");
@@ -64,7 +67,7 @@ public class PanelEditorController {
                     request.setAttribute("photo", photo );
                     request.setAttribute("editor", editor );
                     if(editor.getEditorItemList()!=null){
-                        request.setAttribute("itemList", editor.getEditorItemList() );
+                        request.setAttribute("itemList",editorDAO.loadEditorItem(editor) );
                     }
                     request.setAttribute("userPhotoList", prodDAO.loadUserProd(user, 32));
                     request.setAttribute("catList", catDAO.loadCategoryList(0));
@@ -117,5 +120,54 @@ public class PanelEditorController {
             //request=this.frameHandler.initPage(request);
         }
         return "panel/editor/add_item";
+    }
+    
+    @RequestMapping(value = "/{langCode}/{uuid}/save.html")
+    protected String save(
+            HttpServletRequest request,
+            HttpServletResponse response, 
+             @PathVariable String langCode,
+            @PathVariable String uuid
+    )throws Exception{
+         this.frameHandler=new CustFrameHandler(request, "panel/editor/dashboard.jsp");
+        CommonHandler common=new CommonHandler();
+        ProductInfo photo=null;
+        EditorInfo editor=null;
+        UserInfo user=null;
+        EditorDAO editorDAO=null;
+        ProdDAO prodDAO=null;
+        ResultBean result=null;
+        SystemConfigBean config=null;
+        try{ 
+            this.frameHandler.loadTesting(request, 0);
+            //System.out.println("OK");
+            if(this.frameHandler.isLogin(request)){
+                user=this.frameHandler.getLoginUser(request);
+                
+                prodDAO=(ProdDAO)common.getDAOObject(request, "prodDAO");
+                editorDAO=(EditorDAO)common.getDAOObject(request, "editorDAO");
+                config = (SystemConfigBean) common.getDAOObject(request, "defaultConfig");
+               /* String [] nameList=request.getParameterValues("name");
+                System.out.println("Save Action: "+(nameList!=null?nameList.length:"NA"));*/
+               result=editorDAO.save(request, uuid, user);
+                request.setAttribute("result", result);
+                if(result!=null && result.getCode()==1){
+                    editor=(EditorInfo)result.getObj();
+                    editorDAO.generatePhoto(editor, user, config);
+                    prodDAO.generateSearchIndex(editor.getProdId());
+                }
+               //request.setAttribute("itemDetail", editorDAO.addItem(type, uuid));
+                
+            }else{
+                return this.frameHandler.logout(request);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.severe("Exception: "+e.getMessage());
+            logger.throwing(this.getClass().getName(), "save", e);
+        }finally{
+            //request=this.frameHandler.initPage(request);
+        }
+        return "panel/editor/resp/save_resp";
     }
 }

@@ -98,7 +98,8 @@ public class PanelSearchController {
                 if(search!=null){
                     request.setAttribute("key", search.getKey());
                     curPage=search.getCurPage();
-                    prodList=(search.getPageList()!=null?search.getPageList().get(curPage):null);
+                    
+                    prodList=(search.getPageList()!=null && search.getPageList().size()>0?search.getPageList().get(curPage):null);
                     request.setAttribute("prodList", prodList);
                     
                 }

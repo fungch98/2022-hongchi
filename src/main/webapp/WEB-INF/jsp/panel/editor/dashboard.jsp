@@ -21,7 +21,7 @@
                 <div id="editor_view_container">
                     <jsp:include page="editor_view_container.jsp" />
                 </div>
-                 <form id="editor_content_form" action="#" method="post">
+                 <form id="editor_content_form" action="${pageContext.request.contextPath}/panel/editor/${langCode}/${uuid}/save.html" method="post" onsubmit="editorSave();return false;" >
                 <div id="editor_content_detail">
                     <jsp:include page="editor_content_detail.jsp"/>
                 </div>

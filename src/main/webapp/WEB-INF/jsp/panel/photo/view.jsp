@@ -47,6 +47,9 @@
                                 <logic:equal name="photo" property="productCreateMethod" value="2">
                                     <img src="${photo.productUrl}" id="photo-preview" onerror="this.src='${pageContext.request.contextPath}/images/no-image.jpg'" />
                                 </logic:equal>
+                                    <logic:equal name="photo" property="productCreateMethod" value="3">
+                                    <img src="${pageContext.request.contextPath}${photo.productUrl}" id="photo-preview" onerror="this.src='${pageContext.request.contextPath}/images/no-image.jpg'" />
+                                </logic:equal>
                             </div>
                         </div>
                         <div class="col-5 col-6-medium col-12-small">
@@ -59,7 +62,7 @@
                             <div class="photo-category-container">
                                 <logic:notEmpty name="catList">
                                     <logic:iterate id="cat" name="catList" scope="request">
-                                        <a href="#">#${cat.name}</a>
+                                        <a href="${pageContext.request.contextPath}/panel/${langCode}/search/query.html?key=${cat.name}">#${cat.name}</a>
                                     </logic:iterate>
                                 </logic:notEmpty>
                                 

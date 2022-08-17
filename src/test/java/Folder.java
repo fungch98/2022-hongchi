@@ -1,0 +1,60 @@
+
+import com.ae21.handler.CommonHandler;
+import com.ae21.studio.hongchi.entity.bean.UserInfo;
+import com.ae21.studio.hongchi.entity.dao.MigrationDAO;
+import com.ae21.studio.hongchi.entity.dao.UserDAO;
+import com.ae21.studio.hongchi.entity.system.CustImageHandler;
+import java.io.File;
+import java.io.FileFilter;
+import java.util.ArrayList;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ */
+
+/**
+ *
+ * @author Alex
+ */
+public class Folder {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        String root="P:\\temp\\Ernest\\HongChi\\migration\\教學圖庫";
+         ApplicationContext context;
+         MigrationDAO migDAO=null;
+         UserDAO userDAO=null;
+         UserInfo user=null;
+        try{
+            /*System.out.println(root);
+            context
+                   = new FileSystemXmlApplicationContext("P:/Git/DEV/hongchi/src/main/webapp/WEB-INF/applicationContext.xml");
+             migDAO=(MigrationDAO)context.getBean("migDAO");
+             userDAO=(UserDAO)context.getBean("userDAO");
+             //migDAO.migration(root, userDAO.loadUser(0));
+             migDAO.generateSearchIndex();*/
+            
+            String val="#12345678";
+            //System.out.println(val.length()+":"+val.substring(7));
+            //System.out.println(val.length()+":"+val.substring(0,7));
+            CustImageHandler img=new CustImageHandler();
+            //img.ColorParse("#FFFFFF");
+            
+            String hex="9E";
+            int decimal=Integer.parseInt(hex,16);
+            System.out.println(decimal/(double)255);
+            System.out.println(158/255);
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+}

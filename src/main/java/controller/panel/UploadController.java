@@ -147,13 +147,14 @@ public class UploadController {
         return rtnResult;
      }
      
-     @RequestMapping(value = "/file/{uuid}/{action}.html")
+     @RequestMapping(value = "/{type}/{uuid}/{action}.html")
      @ResponseBody
      protected String viewFile(
             HttpServletRequest request,
             HttpServletResponse response, 
              @PathVariable String uuid, 
-             @PathVariable String action
+             @PathVariable String action, 
+             @PathVariable String type
              )throws Exception{
          this.frameHandler=new CustFrameHandler(request, "upload/upload.jsp");
          String rtnResult = "{\"code\":-1,\"msg\":\"\"}";
@@ -177,7 +178,12 @@ public class UploadController {
                     //aws=(AWSBean)common.getDAOObject(request,"awsConfig");
                     uploadDAO=(UploadDAO)common.getDAOObject(request, "uploadDAO");
                     
-                    result=uploadDAO.getFile(request, response, uuid, (action!=null && action.equalsIgnoreCase("download")));
+                    if(type!=null && type.equalsIgnoreCase("editor")){
+                        result=uploadDAO.getEditorFile(request, response, uuid, (action!=null && action.equalsIgnoreCase("download")));
+                    }else{
+                        result=uploadDAO.getFile(request, response, uuid, (action!=null && action.equalsIgnoreCase("download")));
+                    }
+                    
                     //System.out.println("Result: "+result.getCode()+":"+ "");
                     if(result!=null && result.getCode()==1){
                     }else{

@@ -4,11 +4,15 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 
 <div id="editor-content-container">
-        <logic:notEmpty name="editor" property="editorItemList" scope="request">
-            <logic:iterate id="item" name="editor" property="editorItemList" scope="request">
+    <jsp:include page="item/info.jsp"/>
+        <logic:notEmpty name="itemList"  scope="request">
+            <logic:iterate id="item" name="itemList"  scope="request">
                 <c:set var="itemDetail" value="${item}" scope="request"/>
                 <logic:equal name="item" property="itemType" value="bg">
                     <jsp:include page="item/bg.jsp"/>
+                </logic:equal>
+                <logic:equal name="item" property="itemType" value="photo">
+                    <jsp:include page="item/photo.jsp"/>
                 </logic:equal>
             </logic:iterate>
         </logic:notEmpty>

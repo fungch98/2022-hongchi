@@ -17,6 +17,12 @@
                     
                 </div>
             </logic:equal>
+             <logic:equal name="photo" property="productCreateMethod" value="3">
+                <div class="cover" style="background-image: url('${pageContext.request.contextPath}${photo.productUrl}');">
+                    
+                </div>
+                
+            </logic:equal>
         </article>
         
         <div class="overlay">

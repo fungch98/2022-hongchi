@@ -5,10 +5,14 @@
 package com.ae21.studio.hongchi.entity.bean;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -18,6 +22,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -39,8 +44,8 @@ public class EditorItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
     private Integer id;
     @Column(name = "seq")
@@ -48,6 +53,9 @@ public class EditorItem implements Serializable {
     @Size(max = 250)
     @Column(name = "uuid")
     private String uuid;
+     @Size(max = 250)
+    @Column(name = "name")
+    private String name;
     @Size(max = 250)
     @Column(name = "item_type")
     private String itemType;
@@ -101,7 +109,7 @@ public class EditorItem implements Serializable {
     @JoinColumn(name = "modify_user", referencedColumnName = "id")
     @ManyToOne
     private UserInfo modifyUser;
-    
+    @Transient
     private String opacityVal="FF";
 
     public EditorItem() {
@@ -306,6 +314,14 @@ public class EditorItem implements Serializable {
         this.opacityVal = opacityVal;
         this.opacity=this.getOpacityVal(opacityVal);
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     
     
 
@@ -348,11 +364,22 @@ public class EditorItem implements Serializable {
     
     public double getOpacityVal(String hex){
         double result=1;
+        BigDecimal bd = null;
         try{
-            int decimal = Integer.parseInt(hex, 16);
+            
+            /*int decimal = Integer.parseInt(hex, 16);
             if(decimal>=0 && decimal<=255){
                 result=Math.ceil((decimal/255));
+            }*/
+            int decimal=Integer.parseInt(hex,16);
+            if(decimal>=0 && decimal<=255){
+                result=(decimal/(double)255)*100;
+                //System.out.println(hex+":"+result+":"+decimal+":ROUND 1");
+                result=Math.round(result);
+                //System.out.println(hex+":"+result+":"+decimal+":ROUND 2");
+                result=result/100;
             }
+            //System.out.println(hex+":"+result+":"+decimal);
         }catch(Exception e){
             e.printStackTrace();
         }

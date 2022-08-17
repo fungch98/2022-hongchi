@@ -8,6 +8,8 @@ import com.ae21.bean.ResultBean;
 import com.ae21.bean.SystemConfigBean;
 import com.ae21.handler.CommonHandler;
 import com.ae21.handler.ImageHandler;
+import com.ae21.studio.hongchi.entity.bean.EditorInfo;
+import com.ae21.studio.hongchi.entity.bean.ProductInfo;
 import com.ae21.studio.hongchi.entity.bean.UploadInfo;
 import com.ae21.studio.hongchi.entity.bean.UserInfo;
 import com.ae21.studio.hongchi.entity.system.AWSBean;
@@ -540,6 +542,82 @@ public class UploadDAO {
                     //System.out.println("len: "+file.exists()+":"+fileInputStream.available()+":"+upRecord.getAbsPath());
                     out.close();
                     fileInputStream.close();
+                    
+                    result.setCode(1);
+                }
+            }
+        } catch (Exception e) {
+            result.setCode(-9999);
+            result.setMsg("ERROR.NULL");
+            //try {if (tx != null) {tx.rollback();}} catch (Exception ex) {ex.printStackTrace();}
+        } finally {
+            try {session.close();} catch (Exception ignore) {}
+        }
+        return result;
+    }
+    
+    public ResultBean getEditorFile(HttpServletRequest request,HttpServletResponse response,  String uuid, boolean isDownload)throws Exception{
+        ResultBean result=new ResultBean();
+        Transaction tx = null;
+        Session session = sessionFactory.openSession();
+        Query query = null;
+        CommonHandler lib = new CommonHandler();
+        //UploadInfo upRecord=null;
+        File file=null;
+        String mime="image/jpg";
+        EditorInfo editor=null;
+        
+        try{
+            if(uuid!=null){
+                query=session.getNamedQuery("EditorInfo.findByUuid");
+                query.setString("uuid", uuid);
+                editor=(EditorInfo)query.uniqueResult();
+                
+                if(editor!=null){
+                    file=new File(editor.getFileAbsSrc());
+                    try{
+                        //System.out.println("Path: "+file.getAbsolutePath());
+                        mime=Files.probeContentType(Paths.get(editor.getFileAbsSrc()));
+                        response.setContentType(mime+"; charset=utf-8");
+                        response.setContentLength((int)file.length());
+                    }catch(Exception e){}
+                   
+                     // Set to expire far in the past.
+                    response.setDateHeader("Expires", 0);
+                    // Set standard HTTP/1.1 no-cache headers.
+                    
+                    response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+                    // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
+                    response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+                    // Set standard HTTP/1.0 no-cache header.
+                    response.setHeader("Pragma", "no-cache");
+                    
+                    response.setHeader("Content-Disposition",(isDownload?"attach;":"")+"filename=\""+URLEncoder.encode(editor.getName()+".png","utf-8")+"\"");
+                    
+                    
+                    
+                    OutputStream out = response.getOutputStream();
+                    //FileOutputStream fos   = new FileOutputStream(upRecord.getAbsPath());
+                    
+                    //System.out.println("Size: "+file.length());
+                    if(file.exists()){
+                        FileInputStream fileInputStream = new FileInputStream(file);
+
+                        // Copy the contents of the file to the output stream
+                         byte[] buf = new byte[1024];
+                         int count = 0;
+                         while ((count = fileInputStream.read(buf)) >= 0) {
+                           out.write(buf, 0, count);
+                        }
+                         if(fileInputStream!=null){
+                            fileInputStream.close();
+                         }
+                    }
+                    //out=fos;
+                    //File file=new File(upRecord.getAbsPath());
+                    //System.out.println("len: "+file.exists()+":"+fileInputStream.available()+":"+upRecord.getAbsPath());
+                    out.close();
+                   
                     
                     result.setCode(1);
                 }
