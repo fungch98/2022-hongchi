@@ -17,13 +17,13 @@
                 </div>
                 
             </li>
+            
     <logic:notEmpty name="itemList"  scope="request">
         <logic:iterate id="item" name="itemList"  scope="request">
             <c:set var="itemDetail" value="${item}" scope="request"/>
             <jsp:include page="item/item-list.jsp"/>
         </logic:iterate>
     </logic:notEmpty>
-            
             <!--
     <li>
         <div class="editor-item-content-container">

@@ -6,6 +6,13 @@
 <div id="editor_viewer" class="ui-widget-content">
     <logic:notEmpty name="itemList"  scope="request">
         <logic:iterate id="item" name="itemList"  scope="request">
+            <logic:equal name="item" property="itemType" value="bg">
+                <script>
+                   $(document).ready(function () {
+                       setLayerBackground("${item.bgColor}${item.opacityVal}");
+                   });
+                   </script>
+            </logic:equal>
             <logic:equal name="item" property="itemType" value="photo">
                 <c:set var="itemDetail" value="${item}" scope="request"/>
                <jsp:include page="item/photo-view.jsp"/>

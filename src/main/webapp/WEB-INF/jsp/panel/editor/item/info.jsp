@@ -16,8 +16,8 @@
         <div class="row gtr-25">
                 
                 <div class="col-12">
-                    <label for="photo-name"><bean:message key="label.editor.info.name"/></label>
-                    <input type="text" id="photo-name" name="photo-name" value="${editor.name}" />
+                    <label for="photo-info-name"><bean:message key="label.editor.info.name"/></label>
+                    <input type="text" id="photo-info-name" name="photo-name" value="${editor.name}" />
                 </div>
                 
                 <div class="col-12">

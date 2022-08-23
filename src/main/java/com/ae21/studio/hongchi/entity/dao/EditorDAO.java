@@ -17,6 +17,8 @@ import com.ae21.studio.hongchi.entity.system.CustImageHandler;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -170,6 +172,8 @@ public class EditorDAO {
                             bg.setWidth((double)600);
                             bg.setZIndex(0);
                             bg.setName("");
+                            bg.setFontName("");
+                            bg.setFontSize(0);
 
                             itemList.add(bg);
                         //}
@@ -228,6 +232,8 @@ public class EditorDAO {
                 result.setWidth((double)600);
                 result.setZIndex(0);
                 result.setName("");
+                result.setFontName("");
+                result.setFontSize(0);
                 
                 if(type.equalsIgnoreCase("photo")){
                     query=session.getNamedQuery("ProductInfo.findByUuid");
@@ -280,6 +286,8 @@ public class EditorDAO {
         String zIndex[]=request.getParameterValues("zIndex");
         String editorName=request.getParameter("photo-name");
         String editorDesc=request.getParameter("photo-desc");
+        String fontName[]=request.getParameterValues("fontName");
+        String fontSize[]=request.getParameterValues("fontSize");
         
         EditorInfo editor=null;
         EditorItem item=null;
@@ -302,7 +310,7 @@ public class EditorDAO {
                     photo=new ProductInfo();
                     photo.setCreateDate(common.getLocalTime());
                     photo.setCreateUser(user);
-                    photo.setStatus(0);
+                    photo.setStatus(1);
                     photo.setUuid(uuid);
                     photo.setSearchKey("");
                     photo.setProductCreateMethod(ProductInfo.EDITOR);
@@ -379,6 +387,8 @@ public class EditorDAO {
                             item.setUuid(common.generateUUID());
                             item.setWidth((width!=null && width.length>=i?Double.parseDouble(width[i]):0));
                             item.setZIndex((zIndex!=null && zIndex.length>=i?Integer.parseInt(zIndex[i]):0));
+                            item.setFontSize((fontSize!=null && fontSize.length>=i?Integer.parseInt(fontSize[i]):0));
+                            item.setFontName((fontName!=null && fontName.length>=i?fontName[i]:""));
                             
                             itemList.add(item);
                         }catch(Exception ingore){
@@ -463,6 +473,8 @@ public class EditorDAO {
         int newW=0, newH=0;
         double scale=0;
         double scale2=0;
+        int widthOfImage = 0;
+        int heightOfImage = 0;
         
         Graphics2D g=null;
         File photo=null;
@@ -473,6 +485,8 @@ public class EditorDAO {
         
         float opacity=1f;
         int scaleAll=(1200/600);
+        
+        AffineTransform oldAT=null;
         try{
             result.setCode(0);
             result.setMsg("ERROR.NULL");
@@ -484,6 +498,7 @@ public class EditorDAO {
                 g=product.createGraphics();
                 g.setComposite(AlphaComposite.Clear);
                 g.fillRect(0, 0, product.getWidth(), product.getHeight());
+                oldAT = g.getTransform();
                 for(int i=0; itemList!=null && i<itemList.size();i++){
                     item=itemList.get(i);
                     System.out.println("Processing item ("+item.getItemType()+")");
@@ -502,11 +517,69 @@ public class EditorDAO {
                                 System.out.println("y: "+item.getPosY().intValue());
                                 System.out.println("W: "+item.getWidth().intValue());
                                 System.out.println("H: "+item.getHeight().intValue());
-                                g.drawImage(image,item.getPosY().intValue()*scaleAll, item.getPosX().intValue()*scaleAll ,
-                                        item.getWidth().intValue()*scaleAll, item.getHeight().intValue()*scaleAll, null);
+                                
+                                
+                                if(i==3){
+                                    System.out.println("i("+i+")"+item.getName());
+                                    widthOfImage = image.getWidth()*scaleAll;
+                                    heightOfImage = image.getHeight()*scaleAll;
+                                    //g.rotate(Math.toRadians(45),widthOfImage / 2, heightOfImage / 2);
+                                    System.out.println("R: "+item.getPosX().intValue()+":"+scaleAll+":"+widthOfImage);
+                                    System.out.println("R: "+((item.getPosX().intValue()*scaleAll)+(widthOfImage / 2)));
+                                    System.out.println("R: "+(item.getPosY().intValue()*(double)scaleAll+(heightOfImage / 2)));
+                                    int nW=0;
+                                    int nH=0;
+                                    int newX=item.getPosX().intValue()*scaleAll;
+                                    int newY=item.getPosY().intValue()*scaleAll;
+                                    double sw=0;
+                                    double sh=0;
+                                    /*
+                                    AffineTransform affineTransform = new AffineTransform();
+                                    affineTransform.rotate(Math.toRadians(45),item.getPosX().intValue()*scaleAll+(widthOfImage / 2),item.getPosY().intValue()*scaleAll+(heightOfImage / 2));
+                                    AffineTransformOp affineTransformOp = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_BILINEAR);
+                                    affineTransformOp.filter(image);
+*/                      
+                                    AffineTransform trans = new AffineTransform();
+                                    //trans.rotate(Math.toRadians(45),item.getPosX().intValue()*scaleAll+(widthOfImage / 2),item.getPosY().intValue()*scaleAll+(heightOfImage / 2));
+                                    sw=item.getWidth()*scaleAll/image.getWidth();
+                                    sh=item.getHeight()*scaleAll/image.getHeight();
+                                    
+                                    double cx = (image.getWidth()*sw) / 2;
+                                    double cy = (image.getHeight()*sh) / 2;
+                                    //nW=
+                                    trans.translate(cx+newY, cy+newX);
+                                    trans.rotate(Math.toRadians(45));
+                                    trans.translate(-cx, -cy);
+                                    //trans.rotate(Math.toRadians(45), image.getWidth()/2, image.getHeight()/2);
+                                    trans.scale(sw,sh );
+                                    System.out.println("center: "+ ((item.getWidth()*scaleAll)/2)+":"+( (item.getHeight()*scaleAll)/2));
+                                    System.out.println("center: "+ (image.getWidth()*trans.getScaleX())+": - :"+trans.getShearX());
+                                    //trans.rotate(Math.toRadians(45), (item.getWidth()*scaleAll)/2, (item.getHeight()*scaleAll)/2);
+                                    
+                                    //trans.rotate(Math.toRadians(45));
+                                    //trans.translate(item.getPosX().intValue()*scaleAll, item.getPosY().intValue()*scaleAll);
+                                    //trans.
+                                    //trans.scale(item.getWidth().intValue()*scaleAll, item.getHeight().intValue());
+                                    //g.scale((item.getWidth().intValue()*scaleAll/image.getWidth()), (item.getHeight().intValue()*scaleAll/image.getHeight()));
+                                    
+                                    
+                                    //g.rotate(Math.toRadians(45),item.getPosX().intValue()*scaleAll+(widthOfImage / 2),item.getPosY().intValue()*scaleAll+(heightOfImage / 2) );
+                                    g.drawImage(image, trans, null);
+                                    //g.drawImage(image, trans, null);
+                                    /*g.drawImage(image,item.getPosY().intValue()*scaleAll, item.getPosX().intValue()*scaleAll ,
+                                        item.getWidth().intValue()*scaleAll, item.getHeight().intValue()*scaleAll, trans);*/
+                                }else{
+                                    g.drawImage(image,item.getPosY().intValue()*scaleAll, item.getPosX().intValue()*scaleAll ,
+                                        item.getWidth().intValue()*scaleAll, item.getHeight().intValue()*scaleAll, null);    
+                                }
+                                
+                                
+                                
                             }
                         }
                     }
+                    g.setTransform(oldAT);
+
                 }
                 
                 g.dispose();

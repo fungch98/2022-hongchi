@@ -143,6 +143,8 @@ function photoSearch(key){
     try{
         console.log(url);
         console.log(key);
+        $("#search-ajax-key").val(key);
+        
         $.ajax({
                 url:url,
                 type:"POST",
@@ -180,7 +182,7 @@ function photoSearchPage(page){
                 success:function(result){
                     //$(target).append(result);
                     console.log(result);
-                    $(target).append(result);
+                    $(target).html(result);
                 },
                 error:function(xhr, error){
                     console.log("Load Next return false: ");
@@ -232,7 +234,7 @@ function changeName(uuid,value){
 function editorSave(){
     var form = $("#editor_content_form");
     var url = form.attr('action');
-    
+    var rootPath="";
     try{
         $.ajax({
                 url:url,
@@ -245,7 +247,14 @@ function editorSave(){
                     try{
                         console.log(result.code);
                         if(result!==undefined && result.code==1){
-                            showSnack("OK");
+                            if(result.inputKey==="new"){
+                                  $("li.editor.nav").addClass("valid");
+                            }
+                            console.log(""+$("#rootpath").val()+"panel/photo/"+$("#langCode").val()+"/"+result.uuid+"/view.html");
+                            $("#preview-editor-btn").attr("href",""+$("#rootpath").val()+"panel/photo/"+$("#langCode").val()+"/"+result.uuid+"/view.html");
+                            var successMsg=$("#editor-save-success-msg").val();
+                            showSnack(successMsg);
+                            
                         }else{
                             showErrorSnack(result.msg);
                         }
@@ -263,4 +272,118 @@ function editorSave(){
     }catch(e){
         console.log(e);
     }
+}
+
+
+function deleteItem(uuid){
+    var msg="";
+    var itemName="";
+    try{
+        msg=$("#editor-del-confirm-msg").val();
+        itemName=$("#"+uuid+"-name").val();
+    }catch(e){
+        console.log(e);
+    }
+    try{
+        if(confirm(""+msg+" ("+itemName+")")){
+            $("#item-"+uuid).remove();
+            $("#item-"+uuid+"-list").remove();
+            $("#item-"+uuid+"-obj").remove();
+        }
+    }catch(e){
+        console.log(e);
+    }
+    return false;
+}
+
+function accordionTag(){
+    //var accPanel=$("#accordion-action-panel");
+    var accPanel=document.getElementById("accordion-action-panel");
+    try {
+        if (accPanel.style.maxHeight) {
+            accPanel.style.maxHeight = null;
+            
+             $(".accordion").removeClass("open");
+        } else {
+            accPanel.style.maxHeight = accPanel.scrollHeight + "px";
+           $(".accordion").addClass("open");
+        }
+    } catch (e) {
+        console.log(e);
+    }
+    return false;
+}
+
+function uploadPhoto(){
+    var url=""+$("#rootpath").val()+"panel/editor/"+$("#langCode").val()+"/item/upload/add.html";
+    try {
+        //openModal("I am Model");
+        $.ajax({
+                url:url,
+                type:"POST",
+                //contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                //data: form.serialize(),
+                contentType: 'text/html; charset=UTF-8',
+                success:function(result){
+                    try{
+                        openModal(result);
+                    }catch(e){
+                        console.log(e);
+                    }
+                    
+                },
+                error:function(xhr, error){
+                    console.log("Load Next return false: ");
+                    console.debug(xhr); console.debug(error);
+                    showErrorSnack("Can not load image");
+                }
+            });
+    } catch (e) {
+        console.log(e);
+    }
+    return false;
+}
+
+
+function saveUploadPhoto(){
+    var url="";
+     var form = $("#editor-upload-form");
+    var url = form.attr('action');
+    try{
+        url=
+        $.ajax({
+                url:url,
+                type:"POST",
+                //contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: form.serialize(),
+                //contentType: 'text/html; charset=UTF-8',
+                success:function(result){
+                    try{
+                        if(result.code==1){
+                            if(result.uuid!==undefined && result.uuid!=="" && result.uuid!=="new"){
+                                addItem('photo',result.uuid);
+                                closeModal();
+                                showSnack(result.msg);
+                            }
+                        }else{
+                            showErrorSnack(result.msg);
+                        }
+                        
+                    }catch(ee){
+                        console.log(ee);
+                    }
+                    
+                },
+                error:function(xhr, error){
+                    console.log("Load Next return false: ");
+                    console.debug(xhr); console.debug(error);
+                    showErrorSnack("Can not load image");
+                }
+            });
+    } catch (e) {
+        console.log(e);
+    }
+    return false;
 }

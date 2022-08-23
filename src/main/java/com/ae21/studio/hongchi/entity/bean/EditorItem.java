@@ -111,6 +111,11 @@ public class EditorItem implements Serializable {
     private UserInfo modifyUser;
     @Transient
     private String opacityVal="FF";
+     @Column(name = "font_size")
+    private Integer fontSize;
+     @Size(max = 500)
+    @Column(name = "font_name")
+    private String fontName;
 
     public EditorItem() {
     }
@@ -322,6 +327,22 @@ public class EditorItem implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Integer getFontSize() {
+        return fontSize;
+    }
+
+    public void setFontSize(Integer fontSize) {
+        this.fontSize = fontSize;
+    }
+
+    public String getFontName() {
+        return fontName;
+    }
+
+    public void setFontName(String fontName) {
+        this.fontName = fontName;
+    }
     
     
 
@@ -354,8 +375,8 @@ public class EditorItem implements Serializable {
         String result="FF";
         try{
             
-            result=String.format("%02X", (int)Math.ceil(value.intValue()*255));
-            //System.out.println("HEX: "+result+":"+value);
+            result=String.format("%02X", (int)Math.ceil(value*255));
+            System.out.println("HEX: "+result+":"+value+":"+(int)Math.ceil(value*255));
         }catch(Exception e){
             e.printStackTrace();
         }

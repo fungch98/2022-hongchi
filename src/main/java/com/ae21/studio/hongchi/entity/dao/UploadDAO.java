@@ -505,7 +505,7 @@ public class UploadDAO {
                 if(upRecord!=null){
                     file=new File(upRecord.getAbsPath());
                     try{
-                        //System.out.println("Path: "+file.getAbsolutePath());
+                        System.out.println("Path: "+file.getAbsolutePath());
                         mime=Files.probeContentType(Paths.get(upRecord.getAbsPath()));
                         response.setContentType(mime+"; charset=utf-8");
                         response.setContentLength((int)file.length());

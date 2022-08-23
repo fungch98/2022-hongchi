@@ -271,12 +271,13 @@ public class PanelSearchController {
             if(this.frameHandler.isLogin(request)){
                 prodDAO=(ProdDAO)common.getDAOObject(request, "prodDAO");
                 System.out.println("Key: "+key+":"+common.getLocalTime());
-                search=prodDAO.searchProduct(key, 0,32);
+                search=prodDAO.searchProduct(key, 0,24);
                 
                 if(search!=null){
+                    request.getSession().setAttribute("SEARCH_EDITOR_RESULT", search);
                     request.setAttribute("key", search.getKey());
                     curPage=search.getCurPage();
-                    prodList=(search.getPageList()!=null?search.getPageList().get(curPage):null);
+                    prodList=(search.getPageList()!=null && search.getPageList().size()>0?search.getPageList().get(curPage):null);
                     request.setAttribute("userPhotoList", prodList);
                     
                 }
@@ -323,18 +324,19 @@ public class PanelSearchController {
                     }else if(page<0){
                         search.setCurPage(0);
                     }else{
-                        search.setPage(page);
+                        search.setCurPage(page);
                     }
+                    System.out.println("Editor Search: "+page+":"+search.getCurPage()+":"+search.getMaxPage());
                 }else{
-                    search=prodDAO.searchProduct(key, 0);
+                    search=prodDAO.searchProduct(key, 24);
                     request.getSession().setAttribute("SEARCH_EDITOR_RESULT", search);
                 }
                 
-                if(search!=null){
+                if(search!=null  ){
                     request.setAttribute("key", search.getKey());
                     curPage=search.getCurPage();
-                    prodList=(search.getPageList()!=null?search.getPageList().get(curPage):null);
-                    request.setAttribute("prodList", prodList);
+                    prodList=(search.getPageList()!=null && search.getPageList().size()>0?search.getPageList().get(curPage):null);
+                    request.setAttribute("userPhotoList", prodList);
                     
                 }
             }else{

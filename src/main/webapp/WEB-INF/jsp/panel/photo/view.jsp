@@ -17,7 +17,13 @@
                         <logic:equal name="photo" property="productCreateMethod" value="1">
                             <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/${photo.uuid}/edit.html" class="icon solid fa-edit"></a>
                         </logic:equal>
-                        
+                        <logic:equal name="photo" property="productCreateMethod" value="3">
+                            <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/${photo.uuid}/edit.html" class="icon solid fa-edit"></a>
+                            <logic:notEmpty name="photo" property="editorUuid">
+                                <a href="${pageContext.request.contextPath}/panel/editor/${langCode}/${photo.uuid}/${photo.editorUuid}/dashboard.html" class="icon solid fa-palette"></a>
+                            </logic:notEmpty>
+                            
+                        </logic:equal>
                     </logic:notEmpty>
                         
                         <a href="${pageContext.request.contextPath}/panel/${langCode}/dashboard.html" class="icon solid fa-times"></a>

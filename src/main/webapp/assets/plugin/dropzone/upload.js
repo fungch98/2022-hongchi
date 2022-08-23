@@ -104,9 +104,11 @@ function initUploadImageURL(divId, responeDIV, URL, updateField){
                             $(""+responeDIV+"-uuid").val(jsonObj.uuid);
                         }catch(e){}
                         try{
+                            console.log(""+responeDIV+"-name :"+photoName+":"+($(""+responeDIV+"-name").val()===''));
                             if($(""+responeDIV+"-name").val()===''){
                                 var photoName=jsonObj.name;
                                 photoName=photoName.replace("."+jsonObj.fileType,"");
+                                
                                 $(""+responeDIV+"-name").val(photoName);
                             }
                             

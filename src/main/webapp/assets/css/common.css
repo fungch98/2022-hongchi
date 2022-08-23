@@ -12,6 +12,14 @@ a.alt{
     border-bottom-width: 0;
 }
 
+a.alt4{
+    display:inline-block;
+    margin-top: 1em;
+    text-decoration: none;
+    border-bottom-width: 0;
+    margin-bottom: 0.5em;
+}
+
 label {
         display: block;
         font-size: 0.9em;
@@ -618,7 +626,7 @@ article.album .text-w {
 }
 
 .icon{
-    margin-right: 0.5em;
+    margin-right: 0em;
     
 }
 
@@ -802,7 +810,7 @@ li.alt{
     flex-wrap:  wrap;
     align-items: center;
     justify-content: flex-start;
-    margin-top: 1em;
+    margin-top: 0em;
     min-height: 3em;
 }
 
@@ -841,4 +849,38 @@ li.alt{
     display: block;
     width: 100%;
     font-size: 10em;
+}
+
+/* Style the buttons that are used to open and close the accordion panel */
+.accordion span{
+  font-size: 0.9em;
+  color:#1c447c;
+}
+
+.accordion-panel{
+  max-height: 3.5em;
+  padding: 0 18px;
+  display: block;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.accordion span.open{
+    display: inline-block;
+}
+
+.accordion span.close{
+    display: none;
+}
+
+.accordion.open span.open{
+    display: none;
+}
+
+.accordion.open span.close{
+    display: inline-block;
+}
+
+.model-form-container{
+    padding:2em 1em;
 }

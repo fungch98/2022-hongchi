@@ -69,7 +69,7 @@ public class PanelEditorController {
                     if(editor.getEditorItemList()!=null){
                         request.setAttribute("itemList",editorDAO.loadEditorItem(editor) );
                     }
-                    request.setAttribute("userPhotoList", prodDAO.loadUserProd(user, 32));
+                    request.setAttribute("userPhotoList", prodDAO.loadUserProd(user, 24));
                     request.setAttribute("catList", catDAO.loadCategoryList(0));
                 }
                 
@@ -122,6 +122,98 @@ public class PanelEditorController {
         return "panel/editor/add_item";
     }
     
+    @RequestMapping(value = "/{langCode}/item/upload/add.html")
+    protected String addUpload(
+            HttpServletRequest request,
+            HttpServletResponse response, 
+             @PathVariable String langCode
+    )throws Exception{
+         this.frameHandler=new CustFrameHandler(request, "panel/editor/dashboard.jsp");
+        CommonHandler common=new CommonHandler();
+        ProductInfo prod=null;
+        EditorInfo editor=null;
+        UserInfo user=null;
+        EditorDAO editorDAO=null;
+        ProdDAO prodDAO=null;
+        CategoryDAO catDAO=null;
+        String uuid="new";
+        try{ 
+            this.frameHandler.loadTesting(request, 0);
+            //System.out.println("OK");
+            if(this.frameHandler.isLogin(request)){
+                user=this.frameHandler.getLoginUser(request);
+                
+                prodDAO=(ProdDAO)common.getDAOObject(request, "prodDAO");
+                catDAO=(CategoryDAO)common.getDAOObject(request, "catDAO");
+                if(prod==null){
+                    if(uuid!=null && uuid.equalsIgnoreCase("new")){
+                        prod=new ProductInfo();
+                        prod.setCreateDate(common.getLocalTime());
+                        prod.setCreateUser(user);
+                        prod.setModifyDate(common.getLocalTime());
+                        prod.setModifyUser(user);
+                        prod.setStatus(1);
+                        prod.setUuid(uuid);
+                        prod.setProductCreateMethod(1);
+                    }
+                }
+                
+                if(prod!=null){
+                    request.setAttribute("photo", prod);
+                    request.setAttribute("catList", prodDAO.loadSelectedCat(catDAO.loadCategoryList(0), prod));
+                }
+                
+            }else{
+                return this.frameHandler.logout(request);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.severe("Exception: "+e.getMessage());
+            logger.throwing(this.getClass().getName(), "addUpload", e);
+        }finally{
+            //request=this.frameHandler.initPage(request);
+        }
+        return "panel/editor/item/upload-ajax";
+    }
+    
+    @RequestMapping(value = "/{langCode}/item/upload/save.html")
+    protected String saveUpload(
+            HttpServletRequest request,
+            HttpServletResponse response, 
+             @PathVariable String langCode
+    )throws Exception{
+         this.frameHandler=new CustFrameHandler(request, "panel/editor/dashboard.jsp");
+        CommonHandler common=new CommonHandler();
+        ProductInfo prod=null;
+        EditorInfo editor=null;
+        UserInfo user=null;
+        EditorDAO editorDAO=null;
+        ProdDAO prodDAO=null;
+        CategoryDAO catDAO=null;
+        String uuid="new";
+        ResultBean result=null;
+        try{ 
+            this.frameHandler.loadTesting(request, 0);
+            //System.out.println("OK");
+            if(this.frameHandler.isLogin(request)){
+                user=this.frameHandler.getLoginUser(request);
+                
+                prodDAO=(ProdDAO)common.getDAOObject(request, "prodDAO");
+                result=prodDAO.saveProd(request, uuid, user);
+                request.setAttribute("result", result);
+            }else{
+                return this.frameHandler.logout(request);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.severe("Exception: "+e.getMessage());
+            logger.throwing(this.getClass().getName(), "addUpload", e);
+        }finally{
+            //request=this.frameHandler.initPage(request);
+        }
+        return "panel/editor/resp/save_upload";
+    }
+    
     @RequestMapping(value = "/{langCode}/{uuid}/save.html")
     protected String save(
             HttpServletRequest request,
@@ -139,6 +231,7 @@ public class PanelEditorController {
         ResultBean result=null;
         SystemConfigBean config=null;
         try{ 
+            request.setAttribute("inputKey", uuid);
             this.frameHandler.loadTesting(request, 0);
             //System.out.println("OK");
             if(this.frameHandler.isLogin(request)){

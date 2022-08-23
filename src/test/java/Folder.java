@@ -31,13 +31,13 @@ public class Folder {
          UserDAO userDAO=null;
          UserInfo user=null;
         try{
-            /*System.out.println(root);
-            context
+            System.out.println(root);
+            /*context
                    = new FileSystemXmlApplicationContext("P:/Git/DEV/hongchi/src/main/webapp/WEB-INF/applicationContext.xml");
              migDAO=(MigrationDAO)context.getBean("migDAO");
              userDAO=(UserDAO)context.getBean("userDAO");
              //migDAO.migration(root, userDAO.loadUser(0));
-             migDAO.generateSearchIndex();*/
+             //migDAO.generateSearchIndex();
             
             String val="#12345678";
             //System.out.println(val.length()+":"+val.substring(7));
@@ -49,7 +49,19 @@ public class Folder {
             int decimal=Integer.parseInt(hex,16);
             System.out.println(decimal/(double)255);
             System.out.println(158/255);
+*/
+           /* int scaleAll=2;
+            int width=600;
+            int x=0;
+            double val=0;
+            int widthOfImage=0;
             
+            System.out.println(val);
+            widthOfImage=600*2;
+            System.out.println(""+((0*2)+(widthOfImage/2)));*/
+           
+           Double value=new Double(0.38);
+           System.out.println(value*255);
         }catch(Exception e){
             e.printStackTrace();
         }

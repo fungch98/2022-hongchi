@@ -26,7 +26,7 @@
                     <input type="text" id="${itemDetail.uuid}-height" name="height" value="${itemDetail.height}"/>
                 </div>
                 <div class="col-12">
-                    <label for="${itemDetail.uuid}-posx"><bean:message key="label.editor.item.name"/></label>
+                    <label for="${itemDetail.uuid}-name"><bean:message key="label.editor.item.name"/></label>
                     <input type="text" id="${itemDetail.uuid}-name" name="name" value="${itemDetail.name}"  onchange="changeName('${itemDetail.uuid}',this.value);"/>
                 </div>
             </div>
@@ -50,4 +50,6 @@
         <input type="hidden" id="${itemDetail.uuid}-textDesc" name="textDesc" value="${itemDetail.textDesc}"/>
         <input type="hidden" id="${itemDetail.uuid}-zIndex" name="zIndex" value="${itemDetail.zIndex}"/>
       
+        <input type="hidden" id="${itemDetail.uuid}-fontSize" name="fontSize" value="${itemDetail.fontSize}"  />
+        <input type="hidden" id="${itemDetail.uuid}-fontName" name="fontName" value="${itemDetail.fontName}"  />
     </div>

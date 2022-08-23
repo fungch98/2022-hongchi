@@ -30,4 +30,7 @@
         <input type="hidden" id="${itemDetail.uuid}-zIndex" name="zIndex" value="${itemDetail.zIndex}"/>
         
         <input type="hidden" id="${itemDetail.uuid}-name" name="name" value="${itemDetail.name}"  />
+        
+        <input type="hidden" id="${itemDetail.uuid}-fontSize" name="fontSize" value="${itemDetail.fontSize}"  />
+        <input type="hidden" id="${itemDetail.uuid}-fontName" name="fontName" value="${itemDetail.fontName}"  />
     </div>

@@ -29,5 +29,5 @@
     <li><a href="#"><img src="${pageContext.request.contextPath}/images/icon/action_text.png"/><p>文字</p></a></li>
     
     <li><a href="#"><img src="${pageContext.request.contextPath}/images/icon/action_bg.png"/><p>校本角色</p></a></li>
-    <li><a href="#" onclick="addItem('upload','');return false;"><img src="${pageContext.request.contextPath}/images/icon/action_upload.png"/><p>上載</p></a></li>
+    <li><a href="#" onclick="uploadPhoto();return false;"><img src="${pageContext.request.contextPath}/images/icon/action_upload.png"/><p>上載</p></a></li>
 </ul>

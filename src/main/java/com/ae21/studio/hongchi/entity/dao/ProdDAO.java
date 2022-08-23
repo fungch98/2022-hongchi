@@ -323,6 +323,7 @@ public class ProdDAO {
                     photo.setProductUrl("");
                     photo.setProductCat("");
                     photo.setProductTag("");
+                    photo.setProductCreateMethod(1);
                 }else{
                     photo=this.loadProd(uuid);
                 }
@@ -338,7 +339,7 @@ public class ProdDAO {
                         photo.setDesc(desc);
                         
                         
-                        photo.setProductCreateMethod(1);
+                        
                         photo.setProductRef(0);
                         photo.setProductUUID(photoUUID);
                         
