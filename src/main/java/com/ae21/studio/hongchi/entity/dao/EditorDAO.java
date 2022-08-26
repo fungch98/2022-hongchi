@@ -16,8 +16,13 @@ import com.ae21.studio.hongchi.entity.bean.UserInfo;
 import com.ae21.studio.hongchi.entity.system.CustImageHandler;
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -52,6 +57,26 @@ public class EditorDAO {
             query=session.getNamedQuery("EditorInfo.findByUuid");
             query.setString("uuid", uuid);
             result=(EditorInfo)query.uniqueResult();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            try {session.close();} catch (Exception ignore) {            }
+        }
+        return result;
+    }
+    
+    public List<ProductInfo> loadRoleDetail(HttpServletRequest request, int key)throws Exception{
+        List<ProductInfo> result=null;
+        Session session = sessionFactory.openSession();
+        SQLQuery query = null;
+        String sql="";
+        try{
+            sql="SELECT {p.*} FROM para_info i LEFT JOIN product_info p ON p.id=i.value "
+                    + "WHERE i.code='CHAR' AND i.subcode='DETAIL' AND i.dd01=:id ORDER BY i.seq ";
+            query=session.createSQLQuery(sql);
+            query.addEntity("p", ProductInfo.class);
+            query.setInteger("id", key);
+            result=(List<ProductInfo>)query.list();
         } catch (Exception e) {
             throw e;
         } finally {
@@ -174,6 +199,7 @@ public class EditorDAO {
                             bg.setName("");
                             bg.setFontName("");
                             bg.setFontSize(0);
+                            bg.setRotate((double)0);
 
                             itemList.add(bg);
                         //}
@@ -211,8 +237,9 @@ public class EditorDAO {
                 uuid="new-"+common.generateUUID();
                 
                 result=new EditorItem();
-                result.setBgColor("");
-                result.setColor("");
+                
+                
+                
                 result.setHeight((double)450);
                 result.setImgSrc("");
                 result.setImgUploadSrc("");
@@ -232,14 +259,30 @@ public class EditorDAO {
                 result.setWidth((double)600);
                 result.setZIndex(0);
                 result.setName("");
-                result.setFontName("");
-                result.setFontSize(0);
+                
+                result.setRotate((double)0);
+                result.setTextAlign("left");
+                result.setTextBold(0);
+                result.setTextItalic(0);
+                
+                if(type.equalsIgnoreCase("text")){
+                    result.setColor("#000000");
+                    result.setBgColor("#FFFFFF");
+                    result.setOpacity((double)0);
+                    result.setFontName("arial");
+                    result.setFontSize(14);
+                }else{
+                    result.setBgColor("");
+                    result.setColor("");
+                    result.setFontName("");
+                    result.setFontSize(0);
+                }
                 
                 if(type.equalsIgnoreCase("photo")){
                     query=session.getNamedQuery("ProductInfo.findByUuid");
                     query.setString("uuid", target);
                     photo=(ProductInfo)query.uniqueResult();
-                    System.out.println("Photo UUID: "+photo+":"+target);
+                    //System.out.println("Photo UUID: "+photo+":"+target);
                     if(photo!=null){
                         result.setImgSrc(photo.getProductSrc());
                         result.setImgUrl(photo.getProductUrl());
@@ -288,6 +331,11 @@ public class EditorDAO {
         String editorDesc=request.getParameter("photo-desc");
         String fontName[]=request.getParameterValues("fontName");
         String fontSize[]=request.getParameterValues("fontSize");
+        String rotate[]=request.getParameterValues("rotate");
+        
+        String textAlign[]=request.getParameterValues("textAlign");
+        String textBold[]=request.getParameterValues("textBold");
+        String textItalic[]=request.getParameterValues("textItalic");
         
         EditorInfo editor=null;
         EditorItem item=null;
@@ -358,7 +406,7 @@ public class EditorDAO {
                             colorCode=(bgColor!=null && bgColor.length>=i?bgColor[i]:"");
                             item.setBgColor("");
                             item.setOpacity((double)0);
-                            System.out.println("Color: "+colorCode);
+                            //System.out.println("Color: "+colorCode);
                             if(colorCode!=null && colorCode.length()>=7){
                                 item.setBgColor(colorCode.substring(0,7));
                             }
@@ -367,7 +415,7 @@ public class EditorDAO {
                                 item.setOpacityVal(colorCode.substring(7));
                             }
                             
-                            
+                            //System.out.println("Color("+i+"): "+color.length+" val:"+color[i]);
                             item.setColor((color!=null && color.length>=i?color[i]:""));
                             item.setHeight((height!=null && height.length>=i?Double.parseDouble(height[i]):0));
                             item.setImgSrc((imgSrc!=null && imgSrc.length>=i?imgSrc[i]:""));
@@ -382,13 +430,24 @@ public class EditorDAO {
                             item.setPosX((posX!=null && posX.length>=i?Double.parseDouble(posX[i]):0));
                             item.setPosY((posY!=null && posY.length>=i?Double.parseDouble(posY[i]):0));
                             item.setSeq((seq!=null && seq.length>=i?Integer.parseInt(seq[i]):0));
-                            item.setText((text!=null && text.length>=i?text[i]:""));
-                            item.setTextDesc((textDesc!=null && textDesc.length>=i?textDesc[i]:""));
+                            item.setText((textDesc!=null && textDesc.length>=i?textDesc[i]:""));
+                            item.setTextDesc((text!=null && text.length>=i?text[i]:""));
+                            
+                            //System.out.println("("+i+")"+text[i]);
                             item.setUuid(common.generateUUID());
                             item.setWidth((width!=null && width.length>=i?Double.parseDouble(width[i]):0));
                             item.setZIndex((zIndex!=null && zIndex.length>=i?Integer.parseInt(zIndex[i]):0));
                             item.setFontSize((fontSize!=null && fontSize.length>=i?Integer.parseInt(fontSize[i]):0));
                             item.setFontName((fontName!=null && fontName.length>=i?fontName[i]:""));
+                            item.setRotate((rotate!=null && rotate.length>=i?Double.parseDouble(rotate[i]):0));
+                            
+                            item.setTextAlign((textAlign!=null && textAlign.length>=i?textAlign[i]:""));
+                            try{
+                                item.setTextBold((textBold!=null && textBold[i]!=null && textBold[i].equalsIgnoreCase("1")?1:0));
+                                item.setTextItalic((textItalic!=null && textItalic[i]!=null && textItalic[i].equalsIgnoreCase("1")?1:0));
+                            }catch(Exception ignore){
+                                ignore.printStackTrace();
+                            }
                             
                             itemList.add(item);
                         }catch(Exception ingore){
@@ -398,7 +457,7 @@ public class EditorDAO {
                         }
                         
                     }
-                    System.out.println(itemList.size()+":"+itemType.length);
+                    //System.out.println(itemList.size()+":"+itemType.length);
                         if(itemList.size()!=itemType.length){  //Miss Some Item value
                             result.setCode(-1003);
                             result.setMsg("ERROR.EDITOR.SAVE.DIFF");
@@ -406,7 +465,7 @@ public class EditorDAO {
                 }
                 
                 if(result.getCode()==0){
-                    System.out.println("Editor: "+uuid);
+                    //System.out.println("Editor: "+uuid);
                     if(uuid!=null && uuid.equalsIgnoreCase("new")){
                         photo.setUuid(common.generateUUID());
                         editor.setUuid(common.generateUUID());
@@ -485,12 +544,26 @@ public class EditorDAO {
         
         float opacity=1f;
         int scaleAll=(1200/600);
+        int nW=0;
+        int nH=0;
+        int newX=0;
+        int newY=0;
+        double sw=0;
+        double sh=0;
+        
+        double cx = 0;
+        double cy = 0;
+        
+        int alpha=0;
         
         AffineTransform oldAT=null;
+         Rectangle rect2=null;
+         Font font=null;
+         AlphaComposite alphaChannel=null;
         try{
             result.setCode(0);
             result.setMsg("ERROR.NULL");
-            System.out.println("Start to Generate Photo"+editor.getId());
+            //System.out.println("Start to Generate Photo"+editor.getId());
             if(editor!=null && editor.getId()!=null && user!=null && config!=null){
                 itemList=this.loadEditorItem(editor);
                 product  = new BufferedImage(600*scaleAll, 450*scaleAll, BufferedImage.TYPE_INT_ARGB);
@@ -501,59 +574,157 @@ public class EditorDAO {
                 oldAT = g.getTransform();
                 for(int i=0; itemList!=null && i<itemList.size();i++){
                     item=itemList.get(i);
-                    System.out.println("Processing item ("+item.getItemType()+")");
+                    //System.out.println("Processing item ("+item.getItemType()+")");
                     if(item.getItemType()!=null  && item.getItemType().equalsIgnoreCase("bg")){
                         
                         g.setComposite(AlphaComposite.Src);
                         g.setColor(imgHandler.argbParse(item.getBgColor(), item.getOpacity()));
                         g.fillRect(0, 0, product.getWidth(), product.getHeight());
+                    }else if(item.getItemType()!=null  && item.getItemType().equalsIgnoreCase("text")){
+                        newX=item.getPosX().intValue()*scaleAll;
+                        newY=item.getPosY().intValue()*scaleAll;
+                        cx = (newY+((item.getWidth()*scaleAll)/ 2)) ;
+                        cy = (newX+((item.getHeight()*scaleAll)/2)) ;
+                        // System.out.println("X"+(cx)+ "Y" +(cy));
+                        /*
+                        AffineTransform trans = new AffineTransform();
+                        //sw=item.getWidth()*scaleAll/image.getWidth();
+                        //sh=item.getHeight()*scaleAll/image.getHeight();
+                        newX=item.getPosX().intValue()*scaleAll;
+                        newY=item.getPosY().intValue()*scaleAll;
+                        cx = (item.getWidth()*scaleAll) / 2;
+                        cy = (item.getHeight()*scaleAll)/2 ;
+                        //nW=
+                        if(item.getRotate()>0){
+                            System.out.println("X"+(cx+newY)+ "Y" +(cy+newX));
+                            //trans.translate(cx+newY, cy+newX);
+                            //trans.rotate(Math.toRadians(item.getRotate()));
+                            
+                            //trans.translate(-cx, -cy);
+                        
+                        }
+                        //trans.rotate(Math.toRadians(45), image.getWidth()/2, image.getHeight()/2);
+                        //trans.scale(scaleAll,scaleAll );
+                        System.out.println("center: "+ ((item.getWidth()*scaleAll)/2)+":"+( (item.getHeight()*scaleAll)/2));
+                        System.out.println("center: "+ (image.getWidth()*trans.getScaleX())+": - :"+trans.getShearX());
+                                    
+                        //g.drawImage(image, trans, null);
+                        System.out.println( (float)newX+":"+(float)newY);
+                        
+                        /*
+                        AlphaComposite alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f);
+                        g.setComposite(alphaChannel);
+                        g.setFont(new Font("Arial",Font.BOLD, item.getFontSize()));
+                        g.setColor(imgHandler.argbParse(item.getColor(), (double)1));
+                        //g.setTransform(trans);
+                        g.drawString("testing\n"+item.getTextDesc(), (int)newX, (int)newY);
+                        */
+                        /*
+                        g.setComposite(AlphaComposite.Src);
+                        g.setColor(imgHandler.argbParse(item.getBgColor(), item.getOpacity()));
+                        if(item.getRotate()>0){
+                            g.setTransform(trans);
+                        }
+                        System.out.println("Y:"+newY);
+                        System.out.println("X:"+newX);
+                        System.out.println("W:"+(item.getWidth().intValue()*scaleAll));
+                        System.out.println("H:"+(item.getHeight().intValue()*scaleAll));
+                        g.fillRect(newY, newX, item.getWidth().intValue()*scaleAll, item.getHeight().intValue()*scaleAll);
+                      */
+                        //g.setComposite(AlphaComposite.Src);
+                        
+                        alpha=(int)Math.ceil(item.getOpacity()*255);
+                        alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)alpha);
+                        g.setComposite(alphaChannel);
+                        g.setColor(imgHandler.argbParse(item.getBgColor(), item.getOpacity()));
+                        rect2 = new Rectangle(newY, newX, item.getWidth().intValue()*scaleAll, item.getHeight().intValue()*scaleAll);
+                        g.rotate(Math.toRadians(item.getRotate()), cx, cy);
+                        g.draw(rect2);
+                        g.fill(rect2);
+                        
+                        g.setTransform(oldAT);
+                        //g.setComposite(AlphaComposite.Src);
+                        g.rotate(Math.toRadians(item.getRotate()), cx+15, cy+5);
+                        g.setColor(imgHandler.argbParse(item.getColor(), (double)1));
+                        double fSize=item.getFontSize()*2*1.34;
+                        //System.out.println("fSize"+fSize+":"+item.getFontSize());
+                        Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(config.getOutputPath()+"/fonts/Free-HK-Kai_1_02.ttf" ));
+                        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+                        //customFont
+                        ge.registerFont(customFont);
+                        customFont = Font.createFont(Font.TRUETYPE_FONT, new File(config.getOutputPath()+"/fonts/NotoSansTC-Bold.otf" ));
+                        ge.registerFont(customFont);
+                        customFont = Font.createFont(Font.TRUETYPE_FONT, new File(config.getOutputPath()+"/fonts/NotoSansTC-Regular.otf" ));
+                        ge.registerFont(customFont);
+                        /*String fonts[] = ge.getAvailableFontFamilyNames();
+                        for(int a=0; fonts!=null && a<fonts.length;a++){
+                            System.out.println(fonts[a]);
+                        }*/
+                                
+                        
+                        if(item.getTextBold().intValue()==0 && item.getTextItalic().intValue()==0){
+                            font=new Font(this.getFontName(item.getFontName()),Font.PLAIN, (int)fSize);
+                             //font=new Font("自由香港楷書 (4700字)",Font.PLAIN, (int)fSize);
+                        }else if(item.getTextBold().intValue()==1 && item.getTextItalic().intValue()==1){
+                            font=new Font(this.getFontName(item.getFontName()),Font.BOLD | Font.ITALIC, (int)fSize);
+                        }else if(item.getTextBold().intValue()==0 && item.getTextItalic().intValue()!=0){
+                            font=new Font(this.getFontName(item.getFontName()), Font.ITALIC, (int)fSize);
+                        }else if(item.getTextBold().intValue()!=0 && item.getTextItalic().intValue()==0){
+                            font=new Font(this.getFontName(item.getFontName()), Font.BOLD, (int)fSize);
+                        }else{
+                            font=new Font(this.getFontName(item.getFontName()),Font.PLAIN, (int)fSize);
+                        }
+                        
+                       
+                       // FontMetrics m= g.getFontMetrics(font); // g is your current Graphics object
+                        //double totalSize= (item.getFontSize()*2) * (m.getAscent() + m.getDescent()) / m.getAscent();
+                        g.setFont(font);
+                        //System.out.println("new("+i+"): "+newY+"("+item.getPosY()+")"+":"+newX+"("+item.getPosX()+")");
+                        drawString(g, item.getTextDesc(), newY,newX);
+                        
+                        
+                      
                     }else if(item.getItemType()!=null  && item.getItemType().equalsIgnoreCase("photo")){
                         photo=new File(item.getImgSrc());
-                        System.out.println("File: "+photo);
+                        //.out.println("File: "+photo);
                         if(photo.exists()){
                             image=ImageIO.read(photo);
                             if(image!=null){
-                                System.out.println("x: "+item.getPosX().intValue());
-                                System.out.println("y: "+item.getPosY().intValue());
-                                System.out.println("W: "+item.getWidth().intValue());
-                                System.out.println("H: "+item.getHeight().intValue());
+                                //System.out.println("x: "+item.getPosX().intValue());
+                               // System.out.println("y: "+item.getPosY().intValue());
+                                //System.out.println("W: "+item.getWidth().intValue());
+                               // System.out.println("H: "+item.getHeight().intValue());
+                                //g.setComposite(AlphaComposite.Xor);
+                                alphaChannel = AlphaComposite.getInstance(
+                                        AlphaComposite.SRC_OVER, 1f);
+                                g.setComposite(alphaChannel);
                                 
-                                
-                                if(i==3){
-                                    System.out.println("i("+i+")"+item.getName());
+                                if(item.getRotate()>0){
+                                    //System.out.println("i("+i+")"+item.getName());
                                     widthOfImage = image.getWidth()*scaleAll;
                                     heightOfImage = image.getHeight()*scaleAll;
                                     //g.rotate(Math.toRadians(45),widthOfImage / 2, heightOfImage / 2);
-                                    System.out.println("R: "+item.getPosX().intValue()+":"+scaleAll+":"+widthOfImage);
-                                    System.out.println("R: "+((item.getPosX().intValue()*scaleAll)+(widthOfImage / 2)));
-                                    System.out.println("R: "+(item.getPosY().intValue()*(double)scaleAll+(heightOfImage / 2)));
-                                    int nW=0;
-                                    int nH=0;
-                                    int newX=item.getPosX().intValue()*scaleAll;
-                                    int newY=item.getPosY().intValue()*scaleAll;
-                                    double sw=0;
-                                    double sh=0;
-                                    /*
-                                    AffineTransform affineTransform = new AffineTransform();
-                                    affineTransform.rotate(Math.toRadians(45),item.getPosX().intValue()*scaleAll+(widthOfImage / 2),item.getPosY().intValue()*scaleAll+(heightOfImage / 2));
-                                    AffineTransformOp affineTransformOp = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_BILINEAR);
-                                    affineTransformOp.filter(image);
-*/                      
+                                    //System.out.println("R: "+item.getPosX().intValue()+":"+scaleAll+":"+widthOfImage);
+                                   // System.out.println("R: "+((item.getPosX().intValue()*scaleAll)+(widthOfImage / 2)));
+                                   // System.out.println("R: "+(item.getPosY().intValue()*(double)scaleAll+(heightOfImage / 2)));
+                                    
+                                    newX=item.getPosX().intValue()*scaleAll;
+                                    newY=item.getPosY().intValue()*scaleAll;
+                                    
                                     AffineTransform trans = new AffineTransform();
-                                    //trans.rotate(Math.toRadians(45),item.getPosX().intValue()*scaleAll+(widthOfImage / 2),item.getPosY().intValue()*scaleAll+(heightOfImage / 2));
                                     sw=item.getWidth()*scaleAll/image.getWidth();
                                     sh=item.getHeight()*scaleAll/image.getHeight();
                                     
-                                    double cx = (image.getWidth()*sw) / 2;
-                                    double cy = (image.getHeight()*sh) / 2;
+                                    cx = (image.getWidth()*sw) / 2;
+                                    cy = (image.getHeight()*sh) / 2;
                                     //nW=
                                     trans.translate(cx+newY, cy+newX);
-                                    trans.rotate(Math.toRadians(45));
+                                    trans.rotate(Math.toRadians(item.getRotate()));
                                     trans.translate(-cx, -cy);
                                     //trans.rotate(Math.toRadians(45), image.getWidth()/2, image.getHeight()/2);
                                     trans.scale(sw,sh );
-                                    System.out.println("center: "+ ((item.getWidth()*scaleAll)/2)+":"+( (item.getHeight()*scaleAll)/2));
-                                    System.out.println("center: "+ (image.getWidth()*trans.getScaleX())+": - :"+trans.getShearX());
+                                    //System.out.println("center: "+ ((item.getWidth()*scaleAll)/2)+":"+( (item.getHeight()*scaleAll)/2));
+                                    //System.out.println("center: "+ (image.getWidth()*trans.getScaleX())+": - :"+trans.getShearX());
                                     //trans.rotate(Math.toRadians(45), (item.getWidth()*scaleAll)/2, (item.getHeight()*scaleAll)/2);
                                     
                                     //trans.rotate(Math.toRadians(45));
@@ -590,7 +761,7 @@ public class EditorDAO {
                     oProduct.mkdirs();
                 }
                 ImageIO.write(product, "png", oProduct);
-                System.out.println(oProduct.getAbsoluteFile());
+                //System.out.println(oProduct.getAbsoluteFile());
                 
                 tx=session.beginTransaction();
                 editor.setFileAbsSrc(oProduct.getAbsolutePath());
@@ -617,6 +788,36 @@ public class EditorDAO {
             result.setMsg("ERROR.NULL");
         } finally {
             try {session.close();} catch (Exception ignore) {}
+        }
+        return result;
+    }
+    
+    private void drawString(Graphics2D g, String text, int x, int y) {
+        int lineHeight = g.getFontMetrics().getHeight();
+        //y=y-5;
+        for (String line : text.split("\n")){
+            g.drawString(line, x, y+= lineHeight);
+            //y=y+lineHeight;
+        }
+    }
+    
+    public String getFontName(String code){
+        String result="Arial";
+        try{
+            if(code!=null && code.equalsIgnoreCase("hk")){
+                result="自由香港楷書 (4700字)";
+            }else if(code!=null && code.equalsIgnoreCase("noto")){
+                result="Noto Sans TC";
+            }else if(code!=null && code.equalsIgnoreCase("times")){
+                result="Times New Roman";
+            }else if(code!=null && code.equalsIgnoreCase("SimSun")){
+                result="SimSun";
+            }else{
+                result="Arial";
+            }
+            
+            
+        }catch(Exception e){
         }
         return result;
     }

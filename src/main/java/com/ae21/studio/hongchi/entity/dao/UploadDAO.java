@@ -424,18 +424,18 @@ public class UploadDAO {
                     AccessControlList acl = new AccessControlList();
                     acl.grantPermission(GroupGrantee.AllUsers, Permission.Read);
                     acl.grantPermission(GroupGrantee.AuthenticatedUsers, Permission.Write);
-                    System.out.println("Upload FIle Size: "+image.getSize());
+                    //System.out.println("Upload FIle Size: "+image.getSize());
                     //System.out.println("Upload FIle Size: "+upload.getTotalSpace());
                     //PutObjectRequest putObject = new PutObjectRequest(aws.getBucketName(), "user/" + user.getUid().toUpperCase() + lib.getFileType(image.getOriginalFilename()), lib.convert(image)).withAccessControlList(acl);
                     PutObjectRequest putObject = new PutObjectRequest(aws.getBucketName(), upload.getUploadBucket()+ fileName,is,metadata).withAccessControlList(acl);
-                    System.out.println("Upload File: "+putObject.getBucketName()+putObject.getKey()+":"+putObject.getRedirectLocation());
+                    //System.out.println("Upload File: "+putObject.getBucketName()+putObject.getKey()+":"+putObject.getRedirectLocation());
                     PutObjectResult putResult=s3.putObject(putObject);
                     
-                    System.out.println("Upload Result: "+putResult.getVersionId()+":"+putResult.getMetadata().getContentType());
+                    //System.out.println("Upload Result: "+putResult.getVersionId()+":"+putResult.getMetadata().getContentType());
                     //upload.setAwsPath(""+s3.getUrl(aws.getBucketName(), upload.getAwsPath()+fileName));
                     upload.setAbsPath(""+s3.getUrl(aws.getBucketName(), upload.getUploadBucket()+fileName));
                     
-                    System.out.println("URL: "+s3.getUrl(aws.getBucketName(), upload.getUploadBucket()+fileName));
+                    //System.out.println("URL: "+s3.getUrl(aws.getBucketName(), upload.getUploadBucket()+fileName));
                     //upload.deleteOnExit();
                 } catch (AmazonServiceException ase) {
                     System.out.println("Caught an AmazonServiceException, which means your request made it "
@@ -505,8 +505,10 @@ public class UploadDAO {
                 if(upRecord!=null){
                     file=new File(upRecord.getAbsPath());
                     try{
-                        System.out.println("Path: "+file.getAbsolutePath());
+                        //System.out.println("Path: "+file.getAbsolutePath());
                         mime=Files.probeContentType(Paths.get(upRecord.getAbsPath()));
+                        mime=(mime!=null?mime:"image/jpg");
+                        //System.out.println("Path("+mime+"): "+file.getAbsolutePath());
                         response.setContentType(mime+"; charset=utf-8");
                         response.setContentLength((int)file.length());
                     }catch(Exception e){}
@@ -576,9 +578,10 @@ public class UploadDAO {
                 if(editor!=null){
                     file=new File(editor.getFileAbsSrc());
                     try{
-                        //System.out.println("Path: "+file.getAbsolutePath());
+                        
                         mime=Files.probeContentType(Paths.get(editor.getFileAbsSrc()));
-                        response.setContentType(mime+"; charset=utf-8");
+                        //System.out.println("Path("+mime+"): "+file.getAbsolutePath());
+                        response.setContentType((mime!=null?mime:"")+"; charset=utf-8");
                         response.setContentLength((int)file.length());
                     }catch(Exception e){}
                    
@@ -659,14 +662,14 @@ public class UploadDAO {
                 s3=aws.getS3();
                 try{
                     fullObject=s3.getObject(new GetObjectRequest(aws.getBucketName(), upRecord.getUploadBucket()+upRecord.getName()));
-                    System.out.println("Content-Type: " + fullObject.getKey());
-                    System.out.println("Content-Type: " + fullObject.getObjectMetadata().getContentType());
-                    System.out.println("Content: "+ fullObject.getObjectContent());
+                    //System.out.println("Content-Type: " + fullObject.getKey());
+                    //System.out.println("Content-Type: " + fullObject.getObjectMetadata().getContentType());
+                    //System.out.println("Content: "+ fullObject.getObjectContent());
                     //output=new File(""+upRecord.getName());
                     
                     //cntx= request.getServletContext();
                     String mime = fullObject.getObjectMetadata().getContentType();//cntx.getMimeType(fullObject.getKey());
-                    System.out.println("Mime: "+mime);
+                    //System.out.println("Mime: "+mime);
                     response.setContentType(mime);
                     if(this.isImageFile(mime)){
                     }else{

@@ -122,13 +122,18 @@
      
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://192.168.1.188:3306/aesir_hongchi?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull" />
+        <!--
+		<property name="url" value="jdbc:mysql://192.168.1.188:3306/aesir_hongchi?autoReconnect=true&amp;useUnicode=true&amp;character_set_server=utf8mb4&amp;characterEncoding=utf8" />
+        <property name="url" value="jdbc:mysql://192.168.1.188:3306/aesir_hongchi?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull" />
+                -->
+                <property name="url" value="jdbc:mysql://192.168.1.188:3306/aesir_hongchi?autoReconnect=true&amp;useUnicode=true&amp;character_set_server=utf8mb4&amp;zeroDateTimeBehavior=convertToNull" />
 		<property name="username" value="webadmin" />
 		<property name="password" value="WEBcheerup21!" />
     </bean>
     
      <bean id="sessionFactory"  class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-            <property name="dataSource" ref="dataSource" />  
+            <property name="dataSource" ref="dataSource" /> 
+            
             <property name="hibernateProperties">
                 <props>
                     <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
@@ -139,6 +144,9 @@
                     <prop key="hibernate.transaction.flush_before_completion">true</prop>
                     <prop key="hibernate.query.plan_cache_max_soft_references">2048</prop>
                     <prop key="hibernate.query.plan_cache_max_strong_references">128</prop> 
+                    <!--
+                    <prop key="hibernate.connection.characterEncoding">utf-8</prop> 
+                                -->
                 </props>
             </property> 
             <property name="packagesToScan" >

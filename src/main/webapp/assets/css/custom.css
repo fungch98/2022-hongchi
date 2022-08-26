@@ -122,12 +122,13 @@ div#editor_view_container{
 
 div#editor_viewer{
     background-color: #FFF;
-    width: 600px;
-    height: 450px;
+    width: 602px;
+    height: 452px;
     display: block;
     margin-left: auto;
     margin-right: auto;
     position: relative;
+    overflow: hidden;
 }
 
 
@@ -464,12 +465,70 @@ ul.sortable li{
 
 .editor-content-obj{
     position: absolute !important;
-    background-color: transparent!important;
+    background-color: transparent;
+    background: transparent;
     border-width: 0 !important;
+    font-size: 14pt;
+    
+    /*overflow: hidden;*/
 }
 
 .editor-content-obj:hover{
-    border-width: 2px !important;
+    border-width: 1px !important;
+}
+
+
+
+.editor-content-obj pre{
+    font-family: Arial, Helvetica, sans-serif;
+     font-weight: normal;
+     font-style: normal;
+     text-align: left;
+     padding:0;
+     margin: 0;
+     letter-spacing: normal;
+     line-height: normal;
+}
+
+.editor-content-obj.time pre{
+    font-family: "Times New Roman", Times, serif;
+}
+
+.editor-content-obj.arial pre{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.editor-content-obj.noto pre{
+    font-family: 'Noto Sans HK', serif,  Helvetica;
+}
+
+.editor-content-obj.hk pre{
+    font-family: 'freehkfonts', serif,  Helvetica;
+}
+
+.editor-content-obj.SimSun pre{
+    font-family: 'SimSun', serif,  Helvetica;
+}
+
+
+.editor-content-obj.left pre{
+    text-align: left;
+}
+
+.editor-content-obj.center pre{
+    text-align: center;
+}
+
+.editor-content-obj.right pre{
+    text-align: right;
+}
+
+.editor-content-obj.bold pre{
+    font-weight: bold;
+}
+
+.editor-content-obj.italic pre{
+    font-style: italic;
 }
 
 .editor-content-obj img{
@@ -489,5 +548,73 @@ ul.sortable li{
 
 li.editor.nav.valid {
     display: block !important;;
+}
+
+.ui-rotatable-handle {
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+    background-image: url(images/rotate.png);
+    background-size: 100%;
+    right: 10%;
+    bottom: 50%;
+    position: absolute;
+    
+}
+
+.item-detail-container{
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.5s ease-out, opacity 2s ease-out;
+}
+
+.item-detail-container.active{
+    display: block;
+    visibility: visible;
+    opacity: 1;
+}
+
+#item-character-view{
+    padding:1em;
+}
+
+.item-character-container{
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.item-character-container.active{
+    display: block;
+    visibility: visible;
+    opacity: 1;
+}
+
+.item-cover-container{
+    height: 100px;
+    width: 100%;
+    overflow: hidden;
+    display: block;
+    margin-bottom: 1em;
+}
+
+.item-cover{
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+     -moz-transition: -moz-transform 0.2s ease-in-out;
+    -webkit-transition: -webkit-transform 0.2s ease-in-out;
+    -ms-transition: -ms-transform 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out;
+}
+
+.item-cover:hover{
+    -moz-transform: scale(1.075);
+    -webkit-transform: scale(1.075);
+    -ms-transform: scale(1.075);
+    transform: scale(1.075);
 }
 

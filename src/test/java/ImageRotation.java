@@ -40,7 +40,7 @@ public class ImageRotation {
             userDAO=(UserDAO)context.getBean("userDAO");
             edDAO=(EditorDAO)context.getBean("editorDAO");
             config = (SystemConfigBean) context.getBean("defaultConfig");
-            editor=edDAO.loadEditor("D290C161-D4E1-41E2-AFFD-052636163474");
+            editor=edDAO.loadEditor("5A85775C-1B23-4D7E-9D36-198E229C343C");
             if(editor!=null){
                 System.out.println("Process editor: "+editor.getName());
                 user=userDAO.loadUser(0); 

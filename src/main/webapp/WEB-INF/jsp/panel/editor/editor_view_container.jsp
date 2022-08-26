@@ -13,10 +13,17 @@
                    });
                    </script>
             </logic:equal>
+                   <logic:equal name="item" property="itemType" value="text">
+                <c:set var="itemDetail" value="${item}" scope="request"/>
+               <jsp:include page="item/text-view.jsp"/>
+                   </logic:equal>
             <logic:equal name="item" property="itemType" value="photo">
                 <c:set var="itemDetail" value="${item}" scope="request"/>
                <jsp:include page="item/photo-view.jsp"/>
-               <script>
+               
+            </logic:equal>
+            <logic:notEqual name="item" property="itemType" value="bg">
+                <script>
                    $(document).ready(function () {
                        
                        $( "#item-${item.uuid}-obj" ).resizable({
@@ -35,9 +42,18 @@
                                     $("#${item.uuid}-posy").val(ui.position.left);
                                     }
                               });
+                              $( "#item-${item.uuid}-obj" ).rotatable({
+                                    snap: true,
+                                    degrees: ${item.rotate},
+                                    rotate: function(e, ui){
+                                        var degrees = ui.angle.current * 180/Math.PI
+                                        if ( degrees < 0 ) {degrees += 360;}
+                                        $("#${item.uuid}-rotate").val(degrees);
+                                    }
+                               });
                    });
                </script>
-            </logic:equal>
+            </logic:notEqual>
         </logic:iterate>
     </logic:notEmpty>
 </div>

@@ -24,12 +24,7 @@
             <meta name="keywork" content="${frameObj.keyword}">
         </logic:notEmpty>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common.css" />
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/custom.css" />
-        <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-        <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+       
 
         <meta name="author" content="<bean:message key="copyright" bundle="ae21studio"/>">
         <meta name="Copyright" content="&copy;${frameObj.year} <bean:message key="copyright" bundle="ae21studio"/>. All Rights Reserved">
@@ -41,6 +36,14 @@
         <link href="${pageContext.request.contextPath}/assets/plugin/dropzone/upload.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/plugin/datatables/datatables.min.css"/>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+        
+         <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common.css" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/custom.css" />
+        <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+        <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+        
         <script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
         <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     </head>
@@ -73,7 +76,6 @@
                             <ul>
                                 <li><a href="${pageContext.request.contextPath}/panel/editor/${langCode}/new/new/dashboard.html"><bean:message key="menu.photo.create"/></a></li>
                                 <li><a href="${pageContext.request.contextPath}/panel/photo/${langCode}/new/edit.html"><bean:message key="menu.photo.upload"/></a></li>
-                                <li><a href="#">圖庫</a></li>
                                 <li><a href="${pageContext.request.contextPath}/panel/${langCode}/search/category.html"><bean:message key="menu.photo.search.cat"/></a></li>
                                 <li><a href="${pageContext.request.contextPath}/panel/${langCode}/search/tag.html"><bean:message key="menu.photo.search.tag"/></a></li>
                             </ul>

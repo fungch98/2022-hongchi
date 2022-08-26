@@ -8,6 +8,7 @@ import com.ae21.studio.hongchi.entity.bean.EditorInfo;
 import com.ae21.studio.hongchi.entity.bean.ProductInfo;
 import com.ae21.studio.hongchi.entity.bean.UserInfo;
 import com.ae21.studio.hongchi.entity.dao.CategoryDAO;
+import com.ae21.studio.hongchi.entity.dao.CommonDAO;
 import com.ae21.studio.hongchi.entity.dao.EditorDAO;
 import com.ae21.studio.hongchi.entity.dao.ProdDAO;
 import com.ae21.studio.hongchi.entity.system.CustFrameHandler;
@@ -44,6 +45,7 @@ public class PanelEditorController {
         EditorDAO editorDAO=null;
         ProdDAO prodDAO=null;
         CategoryDAO catDAO=null;
+        CommonDAO comDAO=null;
         try{ 
             
             request.setAttribute("pageLink", prod+"/"+uuid+"/dashboard.html");
@@ -59,6 +61,7 @@ public class PanelEditorController {
                 editorDAO=(EditorDAO)common.getDAOObject(request, "editorDAO");
                 prodDAO=(ProdDAO)common.getDAOObject(request, "prodDAO");
                 catDAO=(CategoryDAO)common.getDAOObject(request, "catDAO");
+                comDAO=(CommonDAO)common.getDAOObject(request, "commDAO");
                 
                 photo=editorDAO.loadEditorProduct(prod, user);
                 editor=editorDAO.loadEditor(uuid, photo, user, false);
@@ -71,6 +74,7 @@ public class PanelEditorController {
                     }
                     request.setAttribute("userPhotoList", prodDAO.loadUserProd(user, 24));
                     request.setAttribute("catList", catDAO.loadCategoryList(0));
+                    request.setAttribute("charList", comDAO.getParaList("EDITOR", "CHAR", 0));
                 }
                 
             }else{
@@ -262,5 +266,41 @@ public class PanelEditorController {
             //request=this.frameHandler.initPage(request);
         }
         return "panel/editor/resp/save_resp";
+    }
+    
+    @RequestMapping(value = "/{langCode}/role/{key}/detail/search.html")
+    protected String searchRoleDetail(
+            HttpServletRequest request,
+            HttpServletResponse response, 
+             @PathVariable String langCode, 
+             @PathVariable int key
+    )throws Exception{
+         this.frameHandler=new CustFrameHandler(request, "panel/editor/dashboard.jsp");
+        CommonHandler common=new CommonHandler();
+        ProductInfo prod=null;
+        EditorInfo editor=null;
+        UserInfo user=null;
+        EditorDAO editorDAO=null;
+        String uuid="new";
+        ResultBean result=null;
+        try{ 
+            this.frameHandler.loadTesting(request, 0);
+            //System.out.println("OK");
+            if(this.frameHandler.isLogin(request)){
+                user=this.frameHandler.getLoginUser(request);
+                
+                editorDAO=(EditorDAO)common.getDAOObject(request, "editorDAO");
+                request.setAttribute("userPhotoList", editorDAO.loadRoleDetail(request, key));
+            }else{
+                return this.frameHandler.logout(request);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.severe("Exception: "+e.getMessage());
+            logger.throwing(this.getClass().getName(), "searchRoleDetail", e);
+        }finally{
+            //request=this.frameHandler.initPage(request);
+        }
+        return "panel/editor/search/imageResult";
     }
 }

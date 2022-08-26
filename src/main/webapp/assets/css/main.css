@@ -2075,6 +2075,7 @@ input, select, textarea {
         input[type="tel"],
         input[type="search"],
         input[type="url"],
+        input[type="number"],
 	select,
 	textarea {
 		-moz-appearance: none;
@@ -2101,6 +2102,7 @@ input, select, textarea {
                 input[type="tel"]:invalid,
         input[type="search"]:invalid,
         input[type="url"]:invalid,
+        input[type="number"]:invalid,
 		select:invalid,
 		textarea:invalid {
 			box-shadow: none;
@@ -2129,6 +2131,7 @@ input, select, textarea {
         input[type="tel"],
         input[type="search"],
         input[type="url"],
+        input[type="number"],
 	select {
 		height: 2.75em;
 	}
@@ -2227,6 +2230,7 @@ input, select, textarea {
         input[type="tel"],
         input[type="search"],
         input[type="url"],
+        input[type="number"],
 	select,
 	textarea {
 		background-color: rgba(144, 144, 144, 0.075);
@@ -2241,6 +2245,7 @@ input, select, textarea {
                 input[type="tel"]:focus,
         input[type="search"]:focus,
         input[type="url"]:focus,
+        input[type="number"]:focus,
 		select:focus,
 		textarea:focus {
 			border-color: #0177FB;

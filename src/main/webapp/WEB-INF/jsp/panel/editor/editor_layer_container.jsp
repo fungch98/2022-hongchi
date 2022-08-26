@@ -10,7 +10,7 @@
                         <h4><i class="icon solid fa-arrows-alt-v"></i><bean:message key="label.editor.info"/></h4>
                         
                         <div class="config">
-                            <a href="#" onclick="editItemContent('editor-info');return false;"><i class="icon solid fa-edit delete"></i></a>
+                            <a href="#" onclick="editItemContent('editor-info');return false;"><i class="icon solid fa-edit"></i></a>
                             
                         </div>
                     </header>

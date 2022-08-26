@@ -4,6 +4,7 @@ import com.ae21.studio.hongchi.entity.bean.UserInfo;
 import com.ae21.studio.hongchi.entity.dao.MigrationDAO;
 import com.ae21.studio.hongchi.entity.dao.UserDAO;
 import com.ae21.studio.hongchi.entity.system.CustImageHandler;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
@@ -62,6 +63,15 @@ public class Folder {
            
            Double value=new Double(0.38);
            System.out.println(value*255);
+           String color="#FFAABB";
+           System.out.println(Integer.parseInt(color.substring(1, 3),16));
+           System.out.println(Integer.parseInt(color.substring(3, 5),16));
+           System.out.println(Integer.parseInt(color.substring(5, 7),16));
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+           String fonts[] = ge.getAvailableFontFamilyNames();
+                        for(int a=0; fonts!=null && a<fonts.length;a++){
+                            System.out.println(fonts[a]);
+                        }
         }catch(Exception e){
             e.printStackTrace();
         }

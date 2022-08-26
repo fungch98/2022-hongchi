@@ -12,4 +12,7 @@
     <logic:equal name="itemDetail" property="itemType" value="photo">
         <jsp:include page="item/photo-ajax.jsp"/>
     </logic:equal>
+    <logic:equal name="itemDetail" property="itemType" value="text">
+        <jsp:include page="item/text-ajax.jsp"/>
+    </logic:equal>
 </logic:notEmpty>

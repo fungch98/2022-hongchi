@@ -70,6 +70,8 @@ public class EditorItem implements Serializable {
     private Double height;
     @Column(name = "opacity")
     private Double opacity;
+     @Column(name = "rotate")
+    private Double rotate;
     @Size(max = 50)
     @Column(name = "bg_color")
     private String bgColor;
@@ -81,7 +83,6 @@ public class EditorItem implements Serializable {
     @Size(max = 2000)
     @Column(name = "text")
     private String text;
-    @Lob
     @Size(max = 65535)
     @Column(name = "text_desc")
     private String textDesc;
@@ -116,6 +117,15 @@ public class EditorItem implements Serializable {
      @Size(max = 500)
     @Column(name = "font_name")
     private String fontName;
+    @Size(max = 500)
+    @Column(name = "text_align")
+    private String textAlign;
+    @Column(name = "text_bold")
+    private Integer textBold;
+    @Column(name = "text_italic")
+    private Integer textItalic;
+     @Transient
+    private String rgb="rgba(255,255,255,1)";
 
     public EditorItem() {
     }
@@ -343,6 +353,46 @@ public class EditorItem implements Serializable {
     public void setFontName(String fontName) {
         this.fontName = fontName;
     }
+
+    public Double getRotate() {
+        return rotate;
+    }
+
+    public void setRotate(Double rotate) {
+        this.rotate = rotate;
+    }
+
+    public String getRgb() {
+        return this.getBgRGBCode();
+    }
+
+    public void setRgb(String rgb) {
+        this.rgb = rgb;
+    }
+
+    public String getTextAlign() {
+        return textAlign;
+    }
+
+    public void setTextAlign(String textAlign) {
+        this.textAlign = textAlign;
+    }
+
+    public Integer getTextBold() {
+        return textBold;
+    }
+
+    public void setTextBold(Integer textBold) {
+        this.textBold = textBold;
+    }
+
+    public Integer getTextItalic() {
+        return textItalic;
+    }
+
+    public void setTextItalic(Integer textItalic) {
+        this.textItalic = textItalic;
+    }
     
     
 
@@ -376,7 +426,7 @@ public class EditorItem implements Serializable {
         try{
             
             result=String.format("%02X", (int)Math.ceil(value*255));
-            System.out.println("HEX: "+result+":"+value+":"+(int)Math.ceil(value*255));
+            //System.out.println("HEX: "+result+":"+value+":"+(int)Math.ceil(value*255));
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -401,6 +451,28 @@ public class EditorItem implements Serializable {
                 result=result/100;
             }
             //System.out.println(hex+":"+result+":"+decimal);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
+    public String getBgRGBCode(){
+        String result="rgba(255,255,255,1)";
+        String color=this.getBgColor();
+        double opactiy=this.getOpacity();
+        
+        int cR=255;
+        int cG=255;
+        int cB=255;
+        try{
+            if(color!=null && color.length()>=7){
+                cR=Integer.parseInt(color.substring(1, 3),16);
+                cG=Integer.parseInt(color.substring(3, 5),16);
+                cB=Integer.parseInt(color.substring(5, 7),16);
+            }
+            
+            result="rgba("+cR+","+cG+","+cB+","+opactiy+")";
         }catch(Exception e){
             e.printStackTrace();
         }

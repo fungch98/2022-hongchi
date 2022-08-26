@@ -68,7 +68,7 @@ public class ProductInfo implements Serializable {
     private String uuid;
     @Basic(optional = false)
     @NotNull
-    @Lob
+    //@Lob
     @Size(min = 1, max = 65535)
     @Column(name = "prod_desc")
     private String desc;

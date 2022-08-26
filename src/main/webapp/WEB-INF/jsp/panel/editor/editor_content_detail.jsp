@@ -10,17 +10,22 @@
                 <c:set var="itemDetail" value="${item}" scope="request"/>
                 <logic:equal name="item" property="itemType" value="bg">
                     <jsp:include page="item/bg.jsp"/>
+                    <script>
+                        $(document).ready(function () {
+                            document.getElementById("${itemDetail.uuid}-bg-color").onchange();
+                            //console.log("#${itemDetail.uuid}-bg-color"+":"+$("#${itemDetail.uuid}-bg-color").val());
+                            //setLayerBackground($("#${itemDetail.uuid}-bg-color").val());
+                        });
+                    </script>
                 </logic:equal>
                 <logic:equal name="item" property="itemType" value="photo">
                     <jsp:include page="item/photo.jsp"/>
+                </logic:equal>
+                <logic:equal name="item" property="itemType" value="text">
+                    <jsp:include page="item/text.jsp"/>
                 </logic:equal>
             </logic:iterate>
         </logic:notEmpty>
 </div>
 
 
-<script>
-    $(document).ready(function () {
-        document.getElementById("${itemDetail.uuid}-bg-color").onchange();
-    });
-</script>

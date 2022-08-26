@@ -54,7 +54,7 @@ public class CategoryInfo implements Serializable {
     private String uuid;
     @Basic(optional = false)
     @NotNull
-    @Lob
+    
     @Size(min = 1, max = 65535)
     @Column(name = "cat_desc")
     private String desc;
