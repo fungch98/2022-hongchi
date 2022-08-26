@@ -83,8 +83,13 @@
                                 
                             </div>
                             <ul class="actions stacked fit">
-                                <li><a href="${pageContext.request.contextPath}/panel/upload/file/${photo.productUUID}/download.html" class="button primary"><i class="icons fa solid fa-download"></i> <bean:message key="btn.download" bundle="ae21studio"/></a></li>
-				
+                               
+                                <logic:equal name="photo" property="productCreateMethod" value="1">
+                                    <li><a href="${pageContext.request.contextPath}/panel/upload/file/${photo.productUUID}/download.html" class="button primary"><i class="icons fa solid fa-download"></i> <bean:message key="btn.download" bundle="ae21studio"/></a></li>
+                                </logic:equal>
+                                <logic:equal name="photo" property="productCreateMethod" value="3">
+                                    <li><a href="${pageContext.request.contextPath}/panel/upload/editor/${photo.editorUuid}/download.html" class="button primary"><i class="icons fa solid fa-download"></i> <bean:message key="btn.download" bundle="ae21studio"/></a></li>
+                                </logic:equal>
                             </ul>
                         </div>
                     </div>

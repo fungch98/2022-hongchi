@@ -353,7 +353,7 @@ public class EditorDAO {
             
             if(user!=null){
                 if(uuid!=null && uuid.equalsIgnoreCase("new")){
-                    System.out.println("Editor Create");
+                    //System.out.println("Editor Create");
                     
                     photo=new ProductInfo();
                     photo.setCreateDate(common.getLocalTime());
@@ -465,7 +465,7 @@ public class EditorDAO {
                 }
                 
                 if(result.getCode()==0){
-                    //System.out.println("Editor: "+uuid);
+                    System.out.println("Editor: "+uuid);
                     if(uuid!=null && uuid.equalsIgnoreCase("new")){
                         photo.setUuid(common.generateUUID());
                         editor.setUuid(common.generateUUID());
@@ -632,7 +632,7 @@ public class EditorDAO {
                         g.fillRect(newY, newX, item.getWidth().intValue()*scaleAll, item.getHeight().intValue()*scaleAll);
                       */
                         //g.setComposite(AlphaComposite.Src);
-                        
+                        /*
                         alpha=(int)Math.ceil(item.getOpacity()*255);
                         alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)alpha);
                         g.setComposite(alphaChannel);
@@ -641,9 +641,11 @@ public class EditorDAO {
                         g.rotate(Math.toRadians(item.getRotate()), cx, cy);
                         g.draw(rect2);
                         g.fill(rect2);
-                        
+                        */
                         g.setTransform(oldAT);
-                        //g.setComposite(AlphaComposite.Src);
+                       alphaChannel = AlphaComposite.getInstance(
+                                        AlphaComposite.SRC_OVER, 1f);
+                                g.setComposite(alphaChannel);
                         g.rotate(Math.toRadians(item.getRotate()), cx+15, cy+5);
                         g.setColor(imgHandler.argbParse(item.getColor(), (double)1));
                         double fSize=item.getFontSize()*2*1.34;
@@ -655,6 +657,8 @@ public class EditorDAO {
                         customFont = Font.createFont(Font.TRUETYPE_FONT, new File(config.getOutputPath()+"/fonts/NotoSansTC-Bold.otf" ));
                         ge.registerFont(customFont);
                         customFont = Font.createFont(Font.TRUETYPE_FONT, new File(config.getOutputPath()+"/fonts/NotoSansTC-Regular.otf" ));
+                        ge.registerFont(customFont);
+                        customFont = Font.createFont(Font.TRUETYPE_FONT, new File(config.getOutputPath()+"/fonts/SIMSUN.ttf" ));
                         ge.registerFont(customFont);
                         /*String fonts[] = ge.getAvailableFontFamilyNames();
                         for(int a=0; fonts!=null && a<fonts.length;a++){
@@ -761,7 +765,7 @@ public class EditorDAO {
                     oProduct.mkdirs();
                 }
                 ImageIO.write(product, "png", oProduct);
-                //System.out.println(oProduct.getAbsoluteFile());
+                System.out.println(oProduct.getAbsoluteFile());
                 
                 tx=session.beginTransaction();
                 editor.setFileAbsSrc(oProduct.getAbsolutePath());
@@ -772,6 +776,8 @@ public class EditorDAO {
                 prod.setEditorUuid(editor.getUuid());
                 prod.setProductFileName(oProduct.getName());
                 prod.setProductSrc(outoutPath);
+                System.out.println(prod.getId());
+                session.saveOrUpdate(prod);
                 tx.commit();
                 
                 

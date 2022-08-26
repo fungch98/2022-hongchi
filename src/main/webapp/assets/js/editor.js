@@ -26,7 +26,7 @@ function editorInit(){
 
 function editItemContent(uuid){
     $(".editor-content-container.active").removeClass("active");
-    console.log("#item-"+uuid);
+    //console.log("#item-"+uuid);
     $("#item-"+uuid).addClass("active");
     return false;
 }
@@ -109,7 +109,7 @@ function addItem(type, targetKey){
                         $(".editor-content-container").last().addClass("active");
                         
                         if(type==="photo" || type==="text"){
-                            console.log("#item-"+targetUUID+"-obj");
+                            //console.log("#item-"+targetUUID+"-obj");
                             $( "#item-"+targetUUID+"-obj" ).resizable({
                                 containment: target, 
                                 stop: function (evt, ui) {
@@ -121,7 +121,7 @@ function addItem(type, targetKey){
                               $( "#item-"+targetUUID+"-obj" ).draggable({ 
                                   containment: target, scroll: false , 
                                   stop: function (evt, ui) {
-                                    console.log("#"+targetKey+"-width"+":"+ui.position.top+":"+ui.position.left);
+                                    //console.log("#"+targetKey+"-width"+":"+ui.position.top+":"+ui.position.left);
                                     $("#"+targetUUID+"-posx").val(ui.position.top);
                                     $("#"+targetUUID+"-posy").val(ui.position.left);
                                     }
@@ -161,7 +161,7 @@ function addItem(type, targetKey){
 }
 
 function photoSearchTarget(target){
-    console.log("chage");
+    //console.log("chage");
     photoSearch($("#search-ajax-key").val());
 }
 
@@ -170,8 +170,8 @@ function photoSearch(key){
     var target="#search-photo-result-container";
     
     try{
-        console.log(url);
-        console.log(key);
+        //console.log(url);
+        //console.log(key);
         $("#search-ajax-key").val(key);
         
         $.ajax({
@@ -236,12 +236,12 @@ function changePos(uuid){
         posY=$("#"+uuid+"-posy").val();
         width=$("#"+uuid+"-width").val();
         height=$("#"+uuid+"-height").val();
-        console.log("X"+(posX+height));
+        //console.log("X"+(posX+height));
         if((posX+height)>450){
             posX=450-height;
             $("#"+uuid+"-posx").val(posX);
         }
-        console.log("Y"+(posY+width));
+        //console.log("Y"+(posY+width));
         if((posY+width)>600){
             posY=600-width;
             $("#"+uuid+"-posy").val(posY);
@@ -292,6 +292,7 @@ function editorSave(){
     var url = form.attr('action');
     var rootPath="";
     try{
+        //console.log(url);
         $.ajax({
                 url:url,
                 type:"POST",
@@ -301,13 +302,15 @@ function editorSave(){
                 //contentType: 'text/html; charset=UTF-8',
                 success:function(result){
                     try{
-                        console.log(result.code);
+                        //console.log(result.code);
                         if(result!==undefined && result.code==1){
                             if(result.inputKey==="new"){
                                   $("li.editor.nav").addClass("valid");
                             }
-                            console.log(""+$("#rootpath").val()+"panel/photo/"+$("#langCode").val()+"/"+result.uuid+"/view.html");
-                            $("#preview-editor-btn").attr("href",""+$("#rootpath").val()+"panel/photo/"+$("#langCode").val()+"/"+result.uuid+"/view.html");
+                            //console.log(""+$("#rootpath").val()+"panel/photo/"+$("#langCode").val()+"/"+result.uuid+"/view.html");
+                            $("#preview-editor-btn").attr("href",""+$("#rootpath").val()+"panel/photo/"+$("#langCode").val()+"/"+result.photoUUID+"/view.html");
+                            $("#download-editor-btn").attr("href",""+$("#rootpath").val()+"panel/upload/editor/"+result.uuid+"/download.html");
+                            $("#editor_content_form").attr("action",""+$("#rootpath").val()+"panel/editor/"+$("#langCode").val()+"/"+result.uuid+"/save.html");
                             var successMsg=$("#editor-save-success-msg").val();
                             showSnack(successMsg);
                             
@@ -466,9 +469,9 @@ function updText(uuid, value){
 
 function setTextStyle(uuid,type, value){
     try{
-        console.log("Upd Text action:"+type);
-        console.log("Upd Text ID:"+"#item-"+uuid+"-obj");
-        console.log("Upd Text Value:"+value);
+        //console.log("Upd Text action:"+type);
+        //console.log("Upd Text ID:"+"#item-"+uuid+"-obj");
+        //console.log("Upd Text Value:"+value);
         if(type==='text'){
             $("#item-"+uuid+"-obj pre").html(value);
         }else if(type==='font'){
@@ -479,7 +482,7 @@ function setTextStyle(uuid,type, value){
             $("#item-"+uuid+"-obj").addClass(value);
         }else if(type==='size'){
             $("#item-"+uuid+"-obj").css("font-size",""+value+"pt");
-            console.log("Upd Text upd Value:"+$("#item-"+uuid+"-obj").css("font-size"));
+            //console.log("Upd Text upd Value:"+$("#item-"+uuid+"-obj").css("font-size"));
         }else if(type==='color'){
             $("#item-"+uuid+"-obj").css("color",""+value);
         }else if(type==='bg'){
@@ -491,7 +494,7 @@ function setTextStyle(uuid,type, value){
             }
         }else if(type==='italic'){
             $("#item-"+uuid+"-obj").removeClass("italic");
-            console.log(""+(value==='1'));
+            //console.log(""+(value==='1'));
             if(value==='1'){
                 $("#item-"+uuid+"-obj").addClass("italic");
             }
@@ -527,7 +530,7 @@ function setTextBackground(uuid, value){
             opactiy=opactiy/255;
         }
         //console.log("Color: "+color+"/"+value.substring(1,3)+"/"+value.substring(3,5)+" : Op: "+opactiy);
-        console.log("rgba("+cR+","+cG+","+cB+","+opactiy+")");
+        //console.log("rgba("+cR+","+cG+","+cB+","+opactiy+")");
         
         $("#item-"+uuid+"-obj").css("background-color","rgba("+cR+","+cG+","+cB+","+opactiy+") ");
         

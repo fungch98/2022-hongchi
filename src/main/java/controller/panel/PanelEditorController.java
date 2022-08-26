@@ -246,6 +246,7 @@ public class PanelEditorController {
                 config = (SystemConfigBean) common.getDAOObject(request, "defaultConfig");
                /* String [] nameList=request.getParameterValues("name");
                 System.out.println("Save Action: "+(nameList!=null?nameList.length:"NA"));*/
+               System.out.println(uuid);
                result=editorDAO.save(request, uuid, user);
                 request.setAttribute("result", result);
                 if(result!=null && result.getCode()==1){

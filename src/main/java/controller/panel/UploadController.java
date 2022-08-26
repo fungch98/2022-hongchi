@@ -177,7 +177,7 @@ public class UploadController {
                     //upload=att.getUploadId();
                     //aws=(AWSBean)common.getDAOObject(request,"awsConfig");
                     uploadDAO=(UploadDAO)common.getDAOObject(request, "uploadDAO");
-                    
+                    //System.out.println(action+":"+type+":"+uuid);
                     if(type!=null && type.equalsIgnoreCase("editor")){
                         result=uploadDAO.getEditorFile(request, response, uuid, (action!=null && action.equalsIgnoreCase("download")));
                     }else{

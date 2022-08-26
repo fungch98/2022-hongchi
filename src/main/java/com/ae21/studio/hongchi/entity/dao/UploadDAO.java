@@ -568,7 +568,7 @@ public class UploadDAO {
         File file=null;
         String mime="image/jpg";
         EditorInfo editor=null;
-        
+        SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd-HHmm");
         try{
             if(uuid!=null){
                 query=session.getNamedQuery("EditorInfo.findByUuid");
@@ -595,7 +595,7 @@ public class UploadDAO {
                     // Set standard HTTP/1.0 no-cache header.
                     response.setHeader("Pragma", "no-cache");
                     
-                    response.setHeader("Content-Disposition",(isDownload?"attach;":"")+"filename=\""+URLEncoder.encode(editor.getName()+".png","utf-8")+"\"");
+                    response.setHeader("Content-Disposition",(isDownload?"attach;":"")+"filename=\""+URLEncoder.encode((editor.getName()!=null && !editor.getName().isEmpty()?editor.getName():"download"+sf.format(lib.getLocalTime()))+".png","utf-8")+"\"");
                     
                     
                     

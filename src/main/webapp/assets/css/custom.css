@@ -618,3 +618,11 @@ li.editor.nav.valid {
     transform: scale(1.075);
 }
 
+
+.ui-resizable-s{
+    height: 0px !important;
+}
+
+.ui-resizable-e{
+    width: 0px!important;
+}
