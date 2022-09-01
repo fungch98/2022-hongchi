@@ -25,10 +25,8 @@
                     <label for="${itemDetail.uuid}-height"><bean:message key="label.editor.item.height"/></label>
                     <input type="text" id="${itemDetail.uuid}-height" name="height" value="${itemDetail.height}" onchange="changeSize('${itemDetail.uuid}');" />
                 </div>
-                <div class="col-3 col-6-medium">
-                     <label for="${itemDetail.uuid}-rotate"><bean:message key="label.editor.item.height"/></label>
-                    <input type="hidden" id="${itemDetail.uuid}-rotate" name="rotate" value="${itemDetail.rotate}"  />
-                </div>
+                <input type="hidden" id="${itemDetail.uuid}-rotate" name="rotate" value="${itemDetail.rotate}"  />
+                
                 
                 
                 <div class="col-12">

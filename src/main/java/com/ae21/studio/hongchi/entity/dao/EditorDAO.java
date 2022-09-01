@@ -70,13 +70,18 @@ public class EditorDAO {
         Session session = sessionFactory.openSession();
         SQLQuery query = null;
         String sql="";
+        List temp=null;
         try{
             sql="SELECT {p.*} FROM para_info i LEFT JOIN product_info p ON p.id=i.value "
-                    + "WHERE i.code='CHAR' AND i.subcode='DETAIL' AND i.dd01=:id ORDER BY i.seq ";
+                    + "WHERE i.code='CHAR' AND i.subcode='DETAIL' AND i.dd01=:id AND p.id>0 "
+                    + "ORDER BY i.seq ";
+            //sql="SELECT {p.*} FROM para_info i LEFT JOIN product_info prod ON p.id=i.value WHERE i.code='CHAR' AND i.subcode='DETAIL' AND i.dd01=5 ORDER BY i.seq";
             query=session.createSQLQuery(sql);
             query.addEntity("p", ProductInfo.class);
             query.setInteger("id", key);
             result=(List<ProductInfo>)query.list();
+            
+            
         } catch (Exception e) {
             throw e;
         } finally {

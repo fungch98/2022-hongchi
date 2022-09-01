@@ -841,6 +841,12 @@ li.alt{
     font-size: 12pt;
 }
 
+@media screen and (max-width: 1080px) {
+    .tag-container a.alt3{
+        font-size: 10pt;
+    }
+}
+
 .filter-hidden{
     display: none;
 }
@@ -863,6 +869,18 @@ li.alt{
   display: block;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
+}
+
+@media screen and (max-width: 1680px) {
+    .accordion-panel{
+        max-height: 4.5em;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .accordion-panel{
+        max-height: 5em;
+    }
 }
 
 .accordion span.open{

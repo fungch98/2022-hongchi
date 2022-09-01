@@ -210,7 +210,7 @@ function photoSearchPage(page){
                 //contentType: 'text/html; charset=UTF-8',
                 success:function(result){
                     //$(target).append(result);
-                    console.log(result);
+                    //console.log(result);
                     $(target).html(result);
                 },
                 error:function(xhr, error){

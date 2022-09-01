@@ -13,7 +13,7 @@
             <logic:notEmpty name="charList" scope="request">
                 <logic:iterate id="charItem" name="charList" scope="request">
                     
-                    <div class='col-3 col-4-medium col-6-small'>
+                    <div class='col-3 col-6-large col-6-medium col-6-small'>
                         <a href="#" onclick="photoRoleDetail(${charItem.id});return false;">
                         <div class="item-cover-container">
                             <div class='item-cover' style='background-image: url("${pageContext.request.contextPath}/images/character/${charItem.str02}");'>

@@ -11,13 +11,13 @@
                     </nav>
                 </div>
             </div>
-            <div class="col-3 col-12-medium">
+            <div class="col-3 col-2-large  col-12-medium col-12-small">
                 <div id="editor_item_container">
                     <jsp:include page="editor_layer_item.jsp"/>
                 </div>
             </div>
                
-            <div class="col-6 col-12-medium trim">
+            <div class="col-6 col-7-large col-12-medium trim">
                 <div id="editor_view_container">
                     <jsp:include page="editor_view_container.jsp" />
                 </div>
@@ -42,6 +42,7 @@
 <input type="hidden" id="editor-upload-emprty-photo" value="<bean:message key="ERROR.EDITOR.UPLOAD.EMPTY.UUID" bundle="error"/>"/>                
 <input type="hidden" id="editor-upload-emprty-photo-name" value="<bean:message key="ERROR.EDITOR.UPLOAD.EMPTY.NAME" bundle="error"/>"/>                
 <script src="${pageContext.request.contextPath}/assets/js/jquery.ui.rotatable.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/jquery.ui.touch-punch.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/plugin/jscolor/jscolor.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/editor.js"></script>
 <script src="${pageContext.request.contextPath}/assets/plugin/dropzone/dropzone.min.js" type="text/javascript"></script>

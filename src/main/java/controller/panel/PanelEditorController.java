@@ -52,6 +52,10 @@ public class PanelEditorController {
             request.setAttribute("pagePrefix", "panel/editor/");
             request.setAttribute("isEditor", "Y");
             request.setAttribute("uuid", uuid);
+            
+            if(request.getSession().getAttribute("SEARCH_EDITOR_RESULT")!=null){
+                request.getSession().removeAttribute("SEARCH_EDITOR_RESULT");
+            }
           
             this.frameHandler.loadTesting(request, 0);
             //System.out.println("OK");
@@ -292,6 +296,7 @@ public class PanelEditorController {
                 
                 editorDAO=(EditorDAO)common.getDAOObject(request, "editorDAO");
                 request.setAttribute("userPhotoList", editorDAO.loadRoleDetail(request, key));
+                request.setAttribute("isRole", "Y");
             }else{
                 return this.frameHandler.logout(request);
             }

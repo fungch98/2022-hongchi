@@ -10,25 +10,25 @@
 <div class="row gtr-25">
     <logic:notEmpty name="userPhotoList">
         <logic:iterate id="uPhoto" name="userPhotoList" scope="request" indexId="seq">
-            <div class="col-3 col-3-medium col-3-small">
-                <a href="#" class="alt" onclick="addItem('photo','${uPhoto.uuid}');return false;">
-                <logic:equal name="uPhoto" property="productCreateMethod" value="1">
-                    <img src="${pageContext.request.contextPath}${uPhoto.productUrl}" class="images fit"/>
-                 </logic:equal>
-                 <logic:equal name="uPhoto" property="productCreateMethod" value="2">
-                     <img src="${uPhoto.productUrl}" class="images fit"/>
-                 </logic:equal>
-                 </a>
-            </div>
+            <logic:notEmpty name="uPhoto">
+                <div class="col-3 col-4-large col-3-medium col-3-small">
+                    <a href="#" class="alt" onclick="addItem('photo', '${uPhoto.uuid}');return false;">
+
+                        <logic:equal name="uPhoto" property="productCreateMethod" value="1">
+                            <img src="${pageContext.request.contextPath}${uPhoto.productUrl}" class="images fit"/>
+                        </logic:equal>
+                        <logic:equal name="uPhoto" property="productCreateMethod" value="2">
+                            <img src="${uPhoto.productUrl}" class="images fit"/>
+                        </logic:equal>
+
+                    </a>
+                </div>
+            </logic:notEmpty>
         </logic:iterate>
     </logic:notEmpty>
-
-</div>
-
-   
-<div class="row">
     <div class="col-12">
         <div class="search_footer">
+            <logic:empty name="isRole" >
             <logic:notEmpty name="SEARCH_EDITOR_RESULT" scope="session" >
                 <logic:notEqual name="SEARCH_EDITOR_RESULT" property="curPage" scope="session" value="0">
                     <a href="#" onclick="photoSearchPage(${(SEARCH_EDITOR_RESULT.curPage-1)});return false;"; class="button primary"><bean:message key="btn.previous" bundle="ae21studio"/></a>
@@ -39,10 +39,14 @@
                     <a href="#" onclick="photoSearchPage(${(SEARCH_EDITOR_RESULT.curPage+1)});return false;";  class="button primary"><bean:message key="btn.next" bundle="ae21studio"/>  </a>
                 </logic:lessThan>
             </logic:notEmpty>
+            </logic:empty>
             <logic:empty name="userPhotoList" scope="request" >
                 <bean:message key="label.no_found" bundle="ae21studio"/>
             </logic:empty>
         </div>
-        <br><br>
+        <br></br>
     </div>
 </div>
+
+
+
