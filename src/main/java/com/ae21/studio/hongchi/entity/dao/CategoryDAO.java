@@ -114,7 +114,7 @@ public class CategoryDAO {
         boolean result=false;
         List temp=null;
         try{
-            if(current!=null){
+            if(current!=null && current.getId()!=null){
                 sql="SELECT 1 from category_info c where c.parent_id=:id ";
                 squery=session.createSQLQuery(sql);
                 squery.setInteger("id", current.getId());
