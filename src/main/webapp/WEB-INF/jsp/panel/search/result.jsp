@@ -10,9 +10,10 @@
 
             
             <header class="config-header">
-                <h2><bean:message key="label.search.photo" /></h2>
+                <h2><bean:message key="label.search.folder" /></h2>
                     <div class="config">
-                        <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/new/edit.html" class="icon solid fa-plus-circle"></a>
+                        <a href="${pageContext.request.contextPath}/panel/editor/${langCode}/new/new/dashboard.html" class="icon solid fa-plus-circle"></a>
+                        <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/new/edit.html" class="icon solid  fa-cloud-upload-alt"></a>
                 </div>
             </header>
                 
@@ -58,7 +59,7 @@
                                             </div>
                                         </logic:greaterThan>
                                         <logic:lessThan name="SEARCH_RESULT" property="curPage" scope="session" value="${(SEARCH_RESULT.page-1)}">
-                                            <a href="${pageContext.request.contextPath}/panel/${langCode}/search/next/page.html" class="button primary"><bean:message key="btn.next" bundle="ae21studio"/>  </a>
+                                            <a href="${pageContext.request.contextPath}/panel/folder${langCode}/search/next/page.html" class="button primary"><bean:message key="btn.next" bundle="ae21studio"/>  </a>
                                         </logic:lessThan>
                                     </div>
                                 </logic:notEmpty>

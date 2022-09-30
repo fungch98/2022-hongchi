@@ -161,7 +161,7 @@ public class ProdDAO {
         
     }
     
-    public List<SelectedBean> loadSelectedCat(List<CategoryInfo> catList, ProductInfo photo){
+    public List<SelectedBean> loadSelectedCat(List<CategoryInfo> catList, ProductInfo photo, CategoryInfo curFolder){
         Session session = sessionFactory.openSession();
         SQLQuery query = null;
         List<SelectedBean> result = null;
@@ -177,7 +177,7 @@ public class ProdDAO {
                     sql="SELECT {c.*} "
                             + " FROM product_category pc left join category_info c ON c.id=pc.category_id "
                             + " WHERE  pc.product_id=:prod "
-                            + " ORDER by c.seq, c.name ";
+                            + " ORDER by c.family_id, c.parent_id, c.seq, c.name ";
                     query=session.createSQLQuery(sql);
                     query.addEntity("c", CategoryInfo.class);
                     query.setInteger("prod", (photo!=null && photo.getId()!=null?photo.getId():0));
@@ -193,6 +193,12 @@ public class ProdDAO {
                             photoCat=photoCatList.get(j);
                             if(photoCat!=null && cat!=null
                                     && cat.getId().intValue()==photoCat.getId().intValue()){
+                                selected.setSelected(true);
+                            }
+                        }
+                        
+                        if(!selected.isSelected() && curFolder!=null && curFolder.getId()!=null){
+                            if(cat!=null && cat.getId().intValue()==curFolder.getId().intValue()){
                                 selected.setSelected(true);
                             }
                         }
@@ -232,10 +238,14 @@ public class ProdDAO {
     }
     
     public SearchBean searchProduct(String key, int size) throws Exception{
-        return this.searchProduct(key, size, 24);
+        return this.searchProduct(key,null,  size, 24,null);
     }
     
-    public SearchBean searchProduct(String key, int size, int max) throws Exception{
+    public SearchBean searchProduct(String key,String type,UserInfo user, int size) throws Exception{
+        return this.searchProduct(key,type,  size, 24,user);
+    }
+    
+    public SearchBean searchProduct(String key,String type,  int size, int max, UserInfo user) throws Exception{
         SearchBean search=null;
         double needPage=0;
         try{
@@ -243,7 +253,11 @@ public class ProdDAO {
             search.setKey(key);
             search.setCurPage(0);
             search.setPageItems(max);
-            search.setResultList(this.queryProd(key, size));
+            if(type!=null && type.equalsIgnoreCase("personal")){
+                search.setResultList(this.queryProd(key,user,  size));
+            }else{
+                search.setResultList(this.queryProd(key,null,  size));
+            }
             search.generatePageList();
             
             this.addHotKeyWord(search);
@@ -253,23 +267,53 @@ public class ProdDAO {
         return search;
     }
     
-    public List<ProductInfo> queryProd(String search, int size) throws Exception{
+   
+    
+    public List<ProductInfo> queryProd(String search,UserInfo user, int size) throws Exception{
         Session session = sessionFactory.openSession();
         SQLQuery query = null;
         List<ProductInfo> result = null;
         String sql="";
+        String subSql="";
         String key="";
+        String keyList []=null;
         CommonHandler common=new CommonHandler();
         try {
-            key=((search!=null && !search.isEmpty())?"%"+search.trim()+"%":"%");
-            key=key.replace(" ", "%");
-            
-            sql="Select {p.*} from product_info p where p.prod_status>0 "
-                    + " and search_key like :key "
+            //key=((search!=null && !search.isEmpty())?"%"+search.trim()+"%":"%");
+            //key=key.replace(" ", "%");
+            key=((search!=null && !search.isEmpty())?search.trim():"");
+            keyList=key.split(" ");
+            System.out.println("Key: "+key);
+            sql="Select {p.*} from product_info p where p.prod_status>=0 ";
+                    //+ " and search_key like :key "
+                    
+                    for(int i=0;keyList!=null &&  i<keyList.length; i++){
+                        if(keyList[i]!=null){
+                            subSql+=(subSql!=null && !subSql.isEmpty()?" and ":"")+" search_key like :key"+i+" ";
+                        }
+                        
+                    }
+                    if(subSql!=null && !subSql.isEmpty()){
+                        sql += " and ("+ subSql+") ";
+                    }
+                    sql += (user!=null? " and  p.create_user=:user ":" and p.prod_status>0 and p.is_share=1 ")
                     + " order by p.modify_date desc ";
+                    System.out.println("Search sql: "+sql);
+                    
             query =session.createSQLQuery(sql);
             query.addEntity("p", ProductInfo.class);
-            query.setString("key", key);
+            for(int i=0;keyList!=null &&  i<keyList.length; i++){
+                if(keyList[i]!=null){
+                    key="%"+keyList[i].trim()+"%";
+                    key=key.replace("+", "%");
+                    query.setString("key"+i, key);
+                }
+            }
+            
+            if(user!=null){
+                query.setInteger("user", user.getId());
+                System.out.println("User: "+user.getId()+":"+user.getDisplayName());
+            }
             if(size>0){
                 query.setMaxResults(size);
             }
@@ -300,6 +344,7 @@ public class ProdDAO {
         String photoURL=request.getParameter("photo");
         String photoUUID=request.getParameter("photo-uuid");
         String statusVal=request.getParameter("status");
+        String shareVal=request.getParameter("isShare");
         String [] catArray=request.getParameterValues("cat");
         
         String productCat="";
@@ -324,6 +369,7 @@ public class ProdDAO {
                     photo.setProductCat("");
                     photo.setProductTag("");
                     photo.setProductCreateMethod(1);
+                    photo.setIsShare(0);
                 }else{
                     photo=this.loadProd(uuid);
                 }
@@ -345,11 +391,22 @@ public class ProdDAO {
                         
                         result.setObj(photo);
                         try{
+                            //System.out.println("Status: "+statusVal);
                             int status=Integer.parseInt(statusVal);
                             photo.setStatus(status);
                             result.setObj(photo);
                         }catch(Exception ingore){
                             result.setCode(-2001);
+                            result.setMsg("ERROR.STATUS.INVALID");
+                        }
+                        
+                        try{
+                            int isShare=Integer.parseInt(shareVal);
+                            photo.setIsShare(isShare);
+                            result.setObj(photo);
+                        }catch(Exception ingore){
+                            ingore.printStackTrace();
+                            result.setCode(-2021);
                             result.setMsg("ERROR.STATUS.INVALID");
                         }
                         
@@ -430,6 +487,7 @@ public class ProdDAO {
                     squery=session.createSQLQuery(sql);
                     
                     for(int i=0;catList!=null &&i< catList.size();i++){
+                        //System.out.println();
                         squery.setInteger("prod", photo.getId());
                         squery.setInteger("cat", catList.get(i).getId());
                         squery.executeUpdate();
@@ -526,7 +584,22 @@ public class ProdDAO {
     }
     
     public boolean checkAllowEdit(ProductInfo photo, UserInfo user)throws Exception{
-        return true;
+        boolean result=false;
+        if(user!=null  && user.getId()!=null){
+            if(user.getIsAdmin()==1){
+                return true;
+            }else{
+                if(photo!=null){
+                    if(photo.getUuid()!=null && photo.getUuid().equalsIgnoreCase("new")){
+                        return true;
+                    }else if(photo.getCreateUser()!=null && photo.getCreateUser().getId()!=null && 
+                            photo.getCreateUser().getId().intValue()==user.getId().intValue()){
+                        return true;
+                    }
+                }
+            }
+        }
+        return result;
     }
     
     public ResultBean generateSearchIndex(ProductInfo prod)throws Exception{
@@ -534,6 +607,7 @@ public class ProdDAO {
         Session session = sessionFactory.openSession();
         Query query = null;
         SQLQuery squery=null;
+        SQLQuery squery2=null;
         CommonHandler lib = new CommonHandler();
         String sql="";
         Transaction tx = null;
@@ -546,6 +620,9 @@ public class ProdDAO {
         List<CategoryInfo> catList=null;
         HashtagInfo tag=null;
         CategoryInfo cat=null;
+        CategoryInfo parent=null;
+        
+        int parentID=0;
         try{
             result.setCode(0);
             result.setMsg("ERROR.NULL");
@@ -574,9 +651,29 @@ public class ProdDAO {
                 squery.setInteger("prod", prod.getId());
                 catList=(List<CategoryInfo>)squery.list();
                 
+                sql="Select {ci.*} from category_info ci where ci.id=:id";
+                squery2=session.createSQLQuery(sql);
+                squery2.addEntity("ci", CategoryInfo.class);
+                
+                
                 for(int i=0;catList!=null && i<catList.size();i++ ){
                     cat=catList.get(i);
-                    catIndex+="#"+cat.getName()+" ";
+                    catIndex="#"+cat.getName()+" "+catIndex;
+                    parentID=cat.getParentId();
+                    while(parentID!=0){
+                        System.out.println("ParentID: "+parentID);
+                        squery2.setInteger("id", parentID);
+                        parent=(CategoryInfo)squery2.uniqueResult();
+                        
+                        if(parent!=null){
+                            if(catIndex.indexOf("#"+parent.getName().trim())<0){
+                                 catIndex="#"+parent.getName()+" "+catIndex;
+                            }
+                            parentID=parent.getParentId();
+                        }else{
+                            parentID=0;
+                        }
+                    }
                 }
                 
                 searchIndex="#"+prod.getName()+" "+catIndex+" "+tagIndex;

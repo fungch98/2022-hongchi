@@ -45,8 +45,11 @@
     
      <bean id="googleConfig" class="com.ae21.config.GoogleConfig">
         <property name="host" value="https://localhost:8443/hongchi"/>
-        <property name="googleId" value="363263052104-gt3g9vun3635mpj3lifa8ogkj5u0guie.apps.googleusercontent.com"/>
-        <property name="googleSecret" value="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"/>             
+        <property name="googleId" value="138516131833-ihs6vp3k2h02leb40uvoao1f79d1bnq4.apps.googleusercontent.com"/>
+        <property name="googleSecret" value="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"/>             
+        <!--
+              {"web":{"client_id":"138516131833-ihs6vp3k2h02leb40uvoao1f79d1bnq4.apps.googleusercontent.com","project_id":"ae21-studio","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"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"}}
+                    -->
      </bean>
      
       <bean id="systemConfig" class="com.ae21.config.SystemConfig">

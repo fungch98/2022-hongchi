@@ -83,14 +83,15 @@ public class MigrationDAO {
          File [] dir=null;
         try{
             if(file!=null){
-                //System.out.println(file.getAbsoluteFile());
+                System.out.println(file.getAbsoluteFile());
+                System.out.println("#"+common.isImageFileRex(file.getName().toLowerCase())+":"+file.isFile());
                 if(file.isDirectory() ){
                     dir=file.listFiles();
                      for(int i=0;dir!=null && i<dir.length;i++){
                          output=this.list(dir[i],output);
                      }
-                }else if(file.isFile() && common.isImageFileRex(file.getName().toLowerCase())){
-                    //System.out.println("Add: "+file.getAbsoluteFile());
+                }else if(file.isFile() && common.isImageFileRex(file.getName().toLowerCase().replace(" ", ""))){
+                    System.out.println("Add: "+file.getAbsoluteFile());
                     output.add(file);
                 }
             }
@@ -118,7 +119,7 @@ public class MigrationDAO {
                 upload=new UploadInfo();
                 upload.setIsImage((this.isImageFile(file.getName())?1:0));
                 path=file.getAbsolutePath();
-                path=path.replace("P:\\temp\\Ernest\\HongChi\\migration\\教學圖庫", "/opt/tomcat9/webapps/hongchi/migration/教學圖庫");
+                //path=path.replace("P:\\temp\\Ernest\\HongChi\\migration\\教學圖庫", "/opt/tomcat9/webapps/hongchi/migration/教學圖庫");
                 path=path.replace("\\","/");
                 upload.setAbsPath(path);
                 upload.setName(fileName.replace(fileType, ""));
@@ -163,6 +164,7 @@ public class MigrationDAO {
                     photo.setEditorUuid("");
                     photo.setModifyDate(common.getLocalTime());
                     photo.setModifyUser(user);
+                    photo.setIsShare(1);
                     result.setProd(photo);
             }
         } catch (Exception e) {
@@ -312,7 +314,7 @@ public class MigrationDAO {
         return m.matches();
     }
     
-    public ResultBean generateSearchIndex()throws Exception{
+    public ResultBean generateSearchIndex(int id)throws Exception{
         ResultBean result=new ResultBean();
         Session session = sessionFactory.openSession();
         Query query = null;
@@ -337,8 +339,9 @@ public class MigrationDAO {
             result.setCode(0);
             result.setMsg("ERROR.NULL");
             
-            query2=session.createSQLQuery("Select {p.*} from product_info p where id>0 and search_key=''  ");
+            query2=session.createSQLQuery("Select {p.*} from product_info p where id>:id and search_key=''  ");
             query2.addEntity("p", ProductInfo.class);
+            query2.setInteger("id", id);
             list=(List<ProductInfo>)query2.list();
             
             for(int x=0; list!=null && x<list.size();x++){

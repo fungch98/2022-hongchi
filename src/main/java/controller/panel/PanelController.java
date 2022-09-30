@@ -39,7 +39,7 @@ public class PanelController {
             this.frameHandler.loadTesting(request, 0);
             if(this.frameHandler.isLogin(request)){
                 prodDAO=(ProdDAO)common.getDAOObject(request, "prodDAO");
-                request.setAttribute("prodList", prodDAO.queryProd(search, 30));
+                request.setAttribute("prodList", prodDAO.queryProd(search,null, 30));
             }else{
                 return this.frameHandler.logout(request);
             }

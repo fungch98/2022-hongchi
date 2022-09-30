@@ -22,6 +22,11 @@ public class Testing {
         String hexNumber="FF";
         int decimal = Integer.parseInt(hexNumber, 16);
         System.out.println("Hex value is " + decimal);
+        
+        String target="#ABC #PYE #Sonic";
+        String test="#Sonic";
+                
+        System.out.println(target.indexOf(test));
     }
     
 }

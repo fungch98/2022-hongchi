@@ -17,10 +17,12 @@
                     <label for="${itemDetail.uuid}-text"><bean:message key="label.editor.text.content"/></label>
                     <textarea id="${itemDetail.uuid}-text" name="text" onchange="setTextStyle('${itemDetail.uuid}','text', this.value)" onkeyup="setTextStyle('${itemDetail.uuid}','text', this.value)" rows="4">${itemDetail.textDesc}</textarea>
                 </div>
+                <!--
                 <div class="col-12">
                     <label for="${itemDetail.uuid}-name"><bean:message key="label.editor.item.name"/></label>
                     <input type="text" id="${itemDetail.uuid}-name" name="name" value="${itemDetail.name}"  onchange="changeName('${itemDetail.uuid}',this.value);" onkeyup="changeName('${itemDetail.uuid}',this.value);" maxlength="100"/>
                 </div>
+                -->
             </div>
         </div>
         <div class="col-7 col-12-small" >
@@ -106,7 +108,7 @@
       
                
             </div>
-       
+       <input type="hidden" id="${itemDetail.uuid}-name" name="name" value="${itemDetail.name}"/>
         <input type="hidden" id="${itemDetail.uuid}-rotate" name="rotate" value="${itemDetail.rotate}"  />
         <input type="hidden" id="${itemDetail.uuid}-itemType" name="itemType" value="${itemDetail.itemType}"/>
         <input type="hidden" id="${itemDetail.uuid}-uuid" name="uuid" value="${itemDetail.uuid}"/>

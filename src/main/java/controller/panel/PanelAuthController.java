@@ -5,6 +5,7 @@
 package controller.panel;
 
 import com.ae21.bean.ResultBean;
+import com.ae21.bean.UserAuthorizedBean;
 import com.ae21.handler.CommonHandler;
 import com.ae21.studio.hongchi.entity.bean.UserInfo;
 import com.ae21.studio.hongchi.entity.dao.UserDAO;
@@ -100,9 +101,14 @@ public class PanelAuthController {
                 request.getSession().removeAttribute("ERROR.AUTH.EDIT.ACTION");
             }
             
-            if(request.getSession().getAttribute("SUCCESS.AUTH.EDIT")!=null){
-                request.setAttribute("SUCCESS_AUTH_EDIT", "Y");
-                request.getSession().removeAttribute("SUCCESS.AUTH.EDIT");
+            if(request.getSession().getAttribute("SUCCESS.AUTH.EDIT.INFO")!=null){
+                request.setAttribute("SUCCESS_AUTH_EDIT_IFNO", "Y");
+                request.getSession().removeAttribute("SUCCESS.AUTH.EDIT.INFO");
+            }
+            
+            if(request.getSession().getAttribute("SUCCESS.AUTH.EDIT.PWD")!=null){
+                request.setAttribute("SUCCESS_AUTH_EDIT_PWD", "Y");
+                request.getSession().removeAttribute("SUCCESS.AUTH.EDIT.PWD");
             }
             
             System.out.println(request.getAttribute("SAVE_RESULT_SRC"));
@@ -161,16 +167,23 @@ public class PanelAuthController {
                     }else{
                         result=userDAO.saveInfo(request, user, uuid);
                     }
-                    System.out.println("Code: "+result.getCode()+"("+result.getMsg()+")"+user.getIsAdmin());
+                    //System.out.println("Code: "+result.getCode()+"("+result.getMsg()+")"+user.getIsAdmin());
                     if(result.getCode()==1){
                         if(user!=null && user.getIsAdmin()==1){
                             return "redirect:/panel/user/"+langCode+"/index.html"+"";
                         }else{
-                            request.getSession().setAttribute("SUCCESS.AUTH.EDIT", result);
-                            return "redirect:/panel/user/"+langCode+"/"+action+"/"+uuid+"/edit.html"+"";
+                            UserAuthorizedBean userAuth = null;
+                            userAuth = new UserAuthorizedBean();
+                            userAuth.setLogined(true);
+                            userAuth.setResultCode(1);
+                            userAuth.setLoginedUser( (UserInfo)result.getObj());   //load Guest Account
+                            request.getSession().setAttribute("UserAuthorized",userAuth);
+                            request.getSession().setAttribute("UserAuthorizedLogin", (UserInfo)result.getObj());
+                            request.getSession().setAttribute("SUCCESS.AUTH.EDIT."+(action.equalsIgnoreCase("password")?"PWD":"INFO"), result);
+                            return "redirect:/panel/user/"+langCode+"/info/"+uuid+"/edit.html"+"";
                         }
                     }else{
-                        System.out.println("ERROR.AUTH.EDIT."+(action.equalsIgnoreCase("password")?"PWD":"INFO"));
+                        //System.out.println("ERROR.AUTH.EDIT."+(action.equalsIgnoreCase("password")?"PWD":"INFO"));
                         request.getSession().setAttribute("ERROR.AUTH.EDIT."+(action.equalsIgnoreCase("password")?"PWD":"INFO"), result);
                         return "redirect:/panel/user/"+langCode+"/info/"+uuid+"/edit.html"+"";
                     }

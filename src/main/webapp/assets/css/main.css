@@ -2159,7 +2159,9 @@ input, select, textarea {
 			text-decoration: none;
 			cursor: pointer;
 			display: inline-block;
-			font-size: 1em;
+			/*font-size: 1em;*/
+                        font-size: 12pt;
+                        line-height: normal;
 			font-weight: 300;
 			padding-left: 2.4em;
 			padding-right: 0.75em;
@@ -2433,6 +2435,9 @@ input, select, textarea {
 				ul.alt li:first-child {
 					border-top: 0;
 					padding-top: 0;
+                                        border-top: solid 1px #dbdbdb;
+                                        padding-top: 0.5em;
+
 				}
 
 	dl {

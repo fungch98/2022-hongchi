@@ -4,6 +4,7 @@
  */
 package com.ae21.studio.hongchi.entity.system;
 
+import com.ae21.studio.hongchi.entity.bean.CategoryInfo;
 import com.ae21.studio.hongchi.entity.bean.ProductInfo;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class SearchBean {
     private String key="";
     private int curPage=0;
     private int maxPage=0; //
+    private FamilyBean family=null;
 
     public SearchBean() {
     }
@@ -92,6 +94,16 @@ public class SearchBean {
     public void setPageList(List<List<ProductInfo>> pageList) {
         this.pageList = pageList;
     }
+
+    public FamilyBean getFamily() {
+        return family;
+    }
+
+    public void setFamily(FamilyBean family) {
+        this.family = family;
+    }
+
+    
     
     public void calculatePage(){
         double needPage=0;

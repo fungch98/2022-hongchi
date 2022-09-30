@@ -324,6 +324,10 @@ public class UserDAO {
             confirm=(confirm!=null?confirm.trim():"");
             
             if(user!=null){
+                if(uuid!=null && uuid.equalsIgnoreCase("me") && user.getUuid()!=null ){
+                    uuid=user.getUuid();
+                }
+                
                 editUser=this.loadUser(uuid);
                 
                 if(editUser!=null){
@@ -397,7 +401,12 @@ public class UserDAO {
             result.setMsg("ERROR.NULL");
             
             if(user!=null){
+                if(uuid!=null && uuid.equalsIgnoreCase("me") && user!=null){
+                   uuid=user.getUuid();
+                }
+                
                 editUser=this.loadUser(uuid);
+                
                 
                 if(editUser!=null){
                     

@@ -251,6 +251,11 @@ ul.editor-menu-action li {
     background-color: #1c447c;
 }
 
+li.active .editor-item-content-container{
+    /*background-color: rgba(28,68,124, 0.3);*/
+    background-color:#1F7D16;
+}
+
 ul.sortable li{
     margin-top: 0.5em;
     padding-top: 0.25em;
@@ -285,6 +290,7 @@ ul.sortable li{
     font-size: 12pt;
     max-width: 70%;
     overflow: hidden;
+    font-weight: normal;
 }
 
 .editor-item-content-container header  a{
@@ -400,6 +406,7 @@ ul.sortable li{
   transform: translate(-50%, -50%);
   text-align: center;
   overflow: hidden;
+  line-height: 1.75em;
 }
 
 .edit-tag-container{
@@ -665,4 +672,22 @@ li.editor.nav.valid {
 
 .ui-resizable-e{
     width: 0px!important;
+}
+
+ul.alt li a{
+    text-decoration: none;
+    border-bottom-width: 0;
+}
+
+span.folder-title{
+    font-size: 12pt;
+    line-height: normal;
+    display: inline-block;
+}
+
+label.folder-label-0{
+    font-weight: bold;
+    color:#1c447c ;
+    color:green !important;
+    font-size: 14pt;
 }

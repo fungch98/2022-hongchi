@@ -6,6 +6,7 @@ package controller.panel;
 
 import com.ae21.bean.ResultBean;
 import com.ae21.handler.CommonHandler;
+import com.ae21.studio.hongchi.entity.bean.CategoryInfo;
 import com.ae21.studio.hongchi.entity.bean.HashtagInfo;
 import com.ae21.studio.hongchi.entity.bean.ProductInfo;
 import com.ae21.studio.hongchi.entity.bean.UserInfo;
@@ -47,7 +48,7 @@ public class PanelPhotoController {
         UserInfo user=null;
          try{ 
             request.setAttribute("pageLink", uuid+"/edit");
-            request.setAttribute("pagePrefix", "panel/");
+            request.setAttribute("pagePrefix", "panel/photo");
           
             this.frameHandler.loadTesting(request, 0);
             if(this.frameHandler.isLogin(request)){
@@ -57,7 +58,7 @@ public class PanelPhotoController {
                 catDAO=(CategoryDAO)common.getDAOObject(request, "catDAO");
                 prod=prodDAO.loadProd(uuid);
                 
-                if(prod!=null){
+                if(prod!=null && (prod.getIsShare()==1 || prodDAO.checkAllowEdit(prod, user)) ){
                     request.setAttribute("photo", prod);
                     request.setAttribute("catList", prodDAO.getProdCat(prod));
                     request.setAttribute("hashList", prodDAO.getProdHashtag(prod));
@@ -90,9 +91,11 @@ public class PanelPhotoController {
         CategoryDAO catDAO=null;
         ProductInfo prod=null;
         UserInfo user=null;
+        CategoryInfo parent=null;
+        String folder=request.getParameter("folder");
          try{ 
             request.setAttribute("pageLink", uuid+"/edit");
-            request.setAttribute("pagePrefix", "panel/");
+            request.setAttribute("pagePrefix", "panel/photo");
           
             this.frameHandler.loadTesting(request, 0);
             if(this.frameHandler.isLogin(request)){
@@ -121,9 +124,17 @@ public class PanelPhotoController {
                     }
                 }
                 
-                if(prod!=null){
+                if(prod!=null && prodDAO.checkAllowEdit(prod, user)){
                     request.setAttribute("photo", prod);
-                    request.setAttribute("catList", prodDAO.loadSelectedCat(catDAO.loadCategoryList(0), prod));
+                    if(folder!=null && !folder.isEmpty()){
+                        parent=catDAO.loadCatURL(folder);
+                        if(parent!=null){
+                            request.setAttribute("folder", parent);
+                        }
+                    }
+                    request.setAttribute("catList", prodDAO.loadSelectedCat(catDAO.loadCategoryList(0), prod, parent));
+                    
+                    
                 }
                 
             }else{
@@ -155,7 +166,7 @@ public class PanelPhotoController {
         UserInfo user=null;
          try{ 
             request.setAttribute("pageLink", uuid+"/edit");
-            request.setAttribute("pagePrefix", "panel/");
+            request.setAttribute("pagePrefix", "panel/photo");
           
             this.frameHandler.loadTesting(request, 0);
             if(this.frameHandler.isLogin(request)){
@@ -199,7 +210,7 @@ public class PanelPhotoController {
         UserInfo user=null;
          try{ 
             request.setAttribute("pageLink", uuid+"/edit");
-            request.setAttribute("pagePrefix", "panel/");
+            request.setAttribute("pagePrefix", "panel/photo");
           
             this.frameHandler.loadTesting(request, 0);
             if(this.frameHandler.isLogin(request)){
@@ -244,7 +255,7 @@ public class PanelPhotoController {
         List<HashtagInfo> tagList=null;
          try{ 
             request.setAttribute("pageLink", uuid+"/edit");
-            request.setAttribute("pagePrefix", "panel/");
+            request.setAttribute("pagePrefix", "panel/photo");
           
             this.frameHandler.loadTesting(request, 0);
             if(this.frameHandler.isLogin(request)){
@@ -262,7 +273,7 @@ public class PanelPhotoController {
                     prod=prodDAO.loadProd(uuid);
                 }
                 
-                if(prod!=null){
+                if(prod!=null && prodDAO.checkAllowEdit(prod, user)){
                     request.setAttribute("photo", prod);
                     request.setAttribute("tagList", tagDAO.loadTagList(0));
                     if(tagList!=null){
@@ -302,7 +313,7 @@ public class PanelPhotoController {
         UserInfo user=null;
          try{ 
             request.setAttribute("pageLink", uuid+"/edit");
-            request.setAttribute("pagePrefix", "panel/");
+            request.setAttribute("pagePrefix", "panel/photo");
           
             this.frameHandler.loadTesting(request, 0);
             if(this.frameHandler.isLogin(request)){

@@ -26,8 +26,11 @@ function editorInit(){
 
 function editItemContent(uuid){
     $(".editor-content-container.active").removeClass("active");
+    $(".editor-item-content-container-list").removeClass("active");
     //console.log("#item-"+uuid);
     $("#item-"+uuid).addClass("active");
+    $("#item-"+uuid+"-list").addClass("active");
+    
     return false;
 }
 
@@ -468,12 +471,26 @@ function updText(uuid, value){
 
 
 function setTextStyle(uuid,type, value){
+    var newName="";
     try{
         //console.log("Upd Text action:"+type);
         //console.log("Upd Text ID:"+"#item-"+uuid+"-obj");
         //console.log("Upd Text Value:"+value);
         if(type==='text'){
             $("#item-"+uuid+"-obj pre").html(value);
+            
+            try{
+                
+                newName=value;
+                if(newName.length>10){
+                    newName=newName.substr(0,10);
+                }
+                $("#"+uuid+"-name").val(newName);
+                changeName(uuid, newName);
+                
+            }catch(e){}
+            
+            changeName(uuid, newName);
         }else if(type==='font'){
             $("#item-"+uuid+"-obj").removeClass("arial");
             $("#item-"+uuid+"-obj").removeClass("times");

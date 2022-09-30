@@ -31,11 +31,8 @@
                              <jsp:include page="../../warningMsg.jsp" flush="false"></jsp:include>
                         </logic:equal>
                     </logic:notEmpty>
-                    <logic:notEmpty name="SUCCESS.AUTH.EDIT">
-                        <div class="msg success">
-                            <b><bean:message key="label.success" bundle="error"/></b> <bean:message key="SUCCESS.OK" bundle="error"/>
-                        </div>
-                    </logic:notEmpty>
+                   
+                    
                    
                     </div>
                     <div class="row">
@@ -50,6 +47,11 @@
                                     <logic:equal name="SAVE_RESULT_SRC" value="INFO">
                                          <jsp:include page="../../warningMsg.jsp" flush="false"></jsp:include>
                                     </logic:equal>
+                                </logic:notEmpty>
+                                <logic:notEmpty name="SUCCESS_AUTH_EDIT_IFNO">
+                                    <div class="msg success">
+                                        <b><bean:message key="label.success" bundle="error"/></b> <bean:message key="SUCCESS.OK" bundle="error"/>
+                                    </div>
                                 </logic:notEmpty>
                                 <div class="col-12">
                                     <label for="username"><bean:message key="label.user.google" bundle="ae21studio"/>:</label> <span>${editUser.email} (${editUser.socialId})</span>
@@ -91,6 +93,11 @@
                                     <logic:equal name="SAVE_RESULT_SRC" value="PWD">
                                          <jsp:include page="../../warningMsg.jsp" flush="false"></jsp:include>
                                     </logic:equal>
+                                </logic:notEmpty>
+                                <logic:notEmpty name="SUCCESS_AUTH_EDIT_PWD">
+                                    <div class="msg success">
+                                        <b><bean:message key="label.success" bundle="error"/></b> <bean:message key="SUCCESS.OK" bundle="error"/>
+                                    </div>
                                 </logic:notEmpty>
                                 <div class="col-12">
                                     <label for="password"><bean:message key="label.user.password" bundle="ae21studio"/></label>

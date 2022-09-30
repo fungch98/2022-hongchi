@@ -682,6 +682,11 @@ header.config-header + div.footer span{
     margin-right: 1em;
 }
 
+header.config-header + div.footer a{
+    text-decoration: none;
+    border-bottom-width: 0;
+}
+
 
 
 th.record-setting-header{

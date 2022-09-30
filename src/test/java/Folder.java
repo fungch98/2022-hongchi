@@ -8,6 +8,8 @@ import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
@@ -26,21 +28,32 @@ public class Folder {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String root="P:\\temp\\Ernest\\HongChi\\migration\\教學圖庫";
+        String root="P:\\temp\\upload\\hongchi\\100";
          ApplicationContext context;
          MigrationDAO migDAO=null;
          UserDAO userDAO=null;
          UserInfo user=null;
         try{
             System.out.println(root);
-            /*context
+            
+            context
                    = new FileSystemXmlApplicationContext("P:/Git/DEV/hongchi/src/main/webapp/WEB-INF/applicationContext.xml");
              migDAO=(MigrationDAO)context.getBean("migDAO");
              userDAO=(UserDAO)context.getBean("userDAO");
-             //migDAO.migration(root, userDAO.loadUser(0));
-             //migDAO.generateSearchIndex();
-            
-            String val="#12345678";
+             migDAO.migration(root, userDAO.loadUser(0));
+             migDAO.generateSearchIndex(30324);
+            /*
+             String regex
+                = "([^\\s]+(\\.(?i)(jpe?g|png|gif|bmp|tiff))$)";
+
+//P:/temp/upload/hongchi/100/愛護環境/天壇：有人隨地吐痰，父母老師跟主角們指出這是不對的行為_v2.png
+        // Compile the ReGex 
+        Pattern p = Pattern.compile(regex);
+        
+        Matcher m = p.matcher("P:/temp/upload/hongchi/100/愛護環境/九寨溝：主角見花草很美，想採摘，被父母_老師阻止.png");
+        System.out.println(m.matches());    
+             */
+            /*String val="#12345678";
             //System.out.println(val.length()+":"+val.substring(7));
             //System.out.println(val.length()+":"+val.substring(0,7));
             CustImageHandler img=new CustImageHandler();
@@ -60,7 +73,7 @@ public class Folder {
             System.out.println(val);
             widthOfImage=600*2;
             System.out.println(""+((0*2)+(widthOfImage/2)));*/
-           
+           /*
            Double value=new Double(0.38);
            System.out.println(value*255);
            String color="#FFAABB";
@@ -71,7 +84,7 @@ public class Folder {
            String fonts[] = ge.getAvailableFontFamilyNames();
                         for(int a=0; fonts!=null && a<fonts.length;a++){
                             System.out.println(fonts[a]);
-                        }
+                        }*/
         }catch(Exception e){
             e.printStackTrace();
         }

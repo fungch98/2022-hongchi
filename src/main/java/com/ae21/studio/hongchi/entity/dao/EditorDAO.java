@@ -431,12 +431,24 @@ public class EditorDAO {
                             item.setItemType((itemType!=null && itemType.length>=i?itemType[i]:""));
                             item.setModifyDate(common.getLocalTime());
                             item.setModifyUser(user);
-                            item.setName((name!=null && name.length>=i?name[i]:""));
+                            
+                            
                             item.setPosX((posX!=null && posX.length>=i?Double.parseDouble(posX[i]):0));
                             item.setPosY((posY!=null && posY.length>=i?Double.parseDouble(posY[i]):0));
                             item.setSeq((seq!=null && seq.length>=i?Integer.parseInt(seq[i]):0));
                             item.setText((textDesc!=null && textDesc.length>=i?textDesc[i]:""));
                             item.setTextDesc((text!=null && text.length>=i?text[i]:""));
+                            
+                            if(item.getItemType()!=null && item.getItemType().equalsIgnoreCase("text")){
+                                if(item.getText()!=null && item.getText().length()>10){
+                                    item.setName(item.getTextDesc().substring(0, 10));
+                                }else{
+                                    item.setName(item.getTextDesc());
+                                }
+                                
+                            }else{
+                                item.setName((name!=null && name.length>=i?name[i]:""));
+                            }
                             
                             //System.out.println("("+i+")"+text[i]);
                             item.setUuid(common.generateUUID());

@@ -57,7 +57,7 @@
 
                 <!-- Logo -->
                 <div class="logo">
-                    <a href="${pageContext.request.contextPath}/index.html" class="title"><img src="${pageContext.request.contextPath}/images/school_logo.png" alt="<bean:message key="title"/>"></a>
+                    <a href="${pageContext.request.contextPath}/panel/${langCode}/dashboard.html" class="title"><img src="${pageContext.request.contextPath}/images/school_logo2.png" alt="<bean:message key="title"/>"></a>
                 </div>
 
                 <!-- Nav -->
@@ -76,15 +76,16 @@
                             <ul>
                                 <li><a href="${pageContext.request.contextPath}/panel/editor/${langCode}/new/new/dashboard.html"><bean:message key="menu.photo.create"/></a></li>
                                 <li><a href="${pageContext.request.contextPath}/panel/photo/${langCode}/new/edit.html"><bean:message key="menu.photo.upload"/></a></li>
-                                <li><a href="${pageContext.request.contextPath}/panel/${langCode}/search/category.html"><bean:message key="menu.photo.search.cat"/></a></li>
+                                <li><a href="${pageContext.request.contextPath}/panel/folder/${langCode}/root/view.html"><bean:message key="menu.photo.search.folder"/></a></li>
                                 <li><a href="${pageContext.request.contextPath}/panel/${langCode}/search/tag.html"><bean:message key="menu.photo.search.tag"/></a></li>
+                                <li><a href="${pageContext.request.contextPath}/panel/${langCode}/search/query.html?type=personal"><bean:message key="menu.photo.search.personal"/></a></li>
                             </ul>
                         </li>
                          <li>
                             <a href="#" class="dropdown">控制台</a>
                             <ul>
                                 
-                                <li><a href="${pageContext.request.contextPath}/panel/category/${langCode}/index.html"><bean:message key="title.panel.category" /></a></li>
+                                <li><a href="${pageContext.request.contextPath}/panel/folder/${langCode}/root/view.html"><bean:message key="title.panel.category" /></a></li>
                                 <li><a href="${pageContext.request.contextPath}/panel/tag/${langCode}/list.html"><bean:message key="title.panel.tag"/></a></li>
                                 <!--
                                 <li><a href="generic.html">Generic</a></li>

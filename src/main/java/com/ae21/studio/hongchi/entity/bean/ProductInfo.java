@@ -115,6 +115,8 @@ public class ProductInfo implements Serializable {
     @Size(max = 250)
     @Column(name = "editor_uuid")
     private String editorUuid;
+    @Column(name = "is_share")
+    private Integer isShare;
     
     
     @JoinColumn(name = "create_user", referencedColumnName = "id")
@@ -285,6 +287,16 @@ public class ProductInfo implements Serializable {
     public void setProductTag(String productTag) {
         this.productTag = productTag;
     }
+
+    public Integer getIsShare() {
+        return isShare;
+    }
+
+    public void setIsShare(Integer isShare) {
+        this.isShare = isShare;
+    }
+    
+    
     
     
 

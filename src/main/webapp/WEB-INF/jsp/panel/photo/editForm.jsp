@@ -6,11 +6,11 @@
 
                                 <div class="col-6 col-6-medium col-12-small">
                                     <div class="row gtr-25">
-                                        <div class="col-8 col-12-medium">
+                                        <div class="col-5 col-12-medium">
                                             <label for="photo-name"><bean:message key="label.photo.name"/></label>
                                         <input type="text" id="photo-name" name="photo-name" value="${photo.name}" maxlength="100"/>
                                     </div>
-                                        <div class="col-4 col-12-medium">
+                                        <div class="col-3 col-6-medium col-12-small">
                                             <label for="status"><bean:message key="label.status" bundle="ae21studio"/></label>
                                             <select id="status" name="status">
                                                 
@@ -18,6 +18,14 @@
                                                 <option value="0" <logic:equal name="photo" property="status" value="0">Selected</logic:equal>><bean:message key="label.status.0" bundle="ae21studio"/></option>
                                             </select>
                                         </div>
+                                        <div class="col-4 col-6-medium col-12-small">
+                                            <label for="isShare"><bean:message key="label.status" bundle="ae21studio"/></label>
+                                            <select id="isShare" name="isShare">
+                                                
+                                                <option value="1" <logic:equal name="photo" property="isShare" value="1">Selected</logic:equal> ><bean:message key="label.isShare.1" bundle="ae21studio"/></option>
+                                                <option value="0" <logic:equal name="photo" property="isShare" value="0">Selected</logic:equal>><bean:message key="label.isShare.0" bundle="ae21studio"/></option>
+                                            </select>
+                                        </div>    
                                     <div class="col-12">
                                         <label for="desc"><bean:message key="label.photo.desc"/></label>
                                         <textarea id="desc" name="desc" rows="3">${photo.desc}</textarea>
@@ -58,9 +66,10 @@
                                 <logic:notEmpty name="catList" scope="request">
                                 <div class="row">
                                     <logic:iterate  name="catList" scope="request" id="cat" indexId="seq">
-                                        <div class="col-3 col-4-medium col-6-small">
+                                        <bean:define name="cat" property="para" id="folder"/>
+                                        <div class="col-2 col-3-medium col-4-small">
                                             <input type="checkbox" id="cat-${seq}" name="cat" value="${cat.para.uuid}" <logic:equal name="cat" property="selected" value="true">checked</logic:equal>>
-                                            <label for="cat-${seq}">${cat.para.name}</label>
+                                            <label for="cat-${seq}" class="folder-label-${cat.para.parentId}" >${cat.para.name}</label>
                                         </div>
                                     </logic:iterate>
                                 </div>
@@ -69,7 +78,7 @@
                             <div class="col-12">
                                 <ul class="actions fit">
                                     <li><input type="submit" class="button primary" value="<bean:message key="btn.save" bundle="ae21studio"/>"/></li>
-                                    <li><a id="btn-close" href="${pageContext.request.contextPath}/panel/${langCode}/dashboard.html" class="button   "><bean:message key="btn.back" bundle="ae21studio"/></a></li>
+                                    <li><a id="btn-close" href="${pageContext.request.contextPath}/panel/photo/${langCode}/${photo.uuid}/view.html" class="button   "><bean:message key="btn.back" bundle="ae21studio"/></a></li>
                                 </ul>
                             </div>
                         </div>

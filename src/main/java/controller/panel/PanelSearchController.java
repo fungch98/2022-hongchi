@@ -7,6 +7,7 @@ package controller.panel;
 import com.ae21.bean.ResultBean;
 import com.ae21.handler.CommonHandler;
 import com.ae21.studio.hongchi.entity.bean.ProductInfo;
+import com.ae21.studio.hongchi.entity.bean.UserInfo;
 import com.ae21.studio.hongchi.entity.dao.CategoryDAO;
 import com.ae21.studio.hongchi.entity.dao.HashtagDAO;
 import com.ae21.studio.hongchi.entity.dao.ProdDAO;
@@ -38,17 +39,19 @@ public class PanelSearchController {
         ProdDAO prodDAO=null;
         //String search=request.getParameter("search");
         String key=request.getParameter("key");
-        
+        String type=request.getParameter("type");
         SearchBean search=null;
+        UserInfo user=null;
          try{ 
             request.setAttribute("pageLink", "search/query");
             request.setAttribute("pagePrefix", "panel/");
           
-            this.frameHandler.loadTesting(request, 0);
+            //this.frameHandler.loadTesting(request, 0);
             if(this.frameHandler.isLogin(request)){
                 prodDAO=(ProdDAO)common.getDAOObject(request, "prodDAO");
+                user=this.frameHandler.getLoginUser(request);
                 
-                search=prodDAO.searchProduct(key, 0);
+                search=prodDAO.searchProduct(key,type,user,  0);
                 if(search!=null){
                     request.getSession().setAttribute("SEARCH_RESULT", search);
                 }
@@ -271,7 +274,7 @@ public class PanelSearchController {
             if(this.frameHandler.isLogin(request)){
                 prodDAO=(ProdDAO)common.getDAOObject(request, "prodDAO");
                 System.out.println("Key: "+key+":"+common.getLocalTime());
-                search=prodDAO.searchProduct(key, 0,24);
+                search=prodDAO.searchProduct(key,null, 0,24, null);
                 
                 if(search!=null){
                     request.getSession().setAttribute("SEARCH_EDITOR_RESULT", search);

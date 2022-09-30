@@ -4,6 +4,7 @@ package controller.panel;
 import com.ae21.bean.ResultBean;
 import com.ae21.bean.SystemConfigBean;
 import com.ae21.handler.CommonHandler;
+import com.ae21.studio.hongchi.entity.bean.CategoryInfo;
 import com.ae21.studio.hongchi.entity.bean.EditorInfo;
 import com.ae21.studio.hongchi.entity.bean.ProductInfo;
 import com.ae21.studio.hongchi.entity.bean.UserInfo;
@@ -46,6 +47,8 @@ public class PanelEditorController {
         ProdDAO prodDAO=null;
         CategoryDAO catDAO=null;
         CommonDAO comDAO=null;
+        String parentURL=request.getParameter("folder");
+        CategoryInfo folder=null;
         try{ 
             
             request.setAttribute("pageLink", prod+"/"+uuid+"/dashboard.html");
@@ -79,6 +82,11 @@ public class PanelEditorController {
                     request.setAttribute("userPhotoList", prodDAO.loadUserProd(user, 24));
                     request.setAttribute("catList", catDAO.loadCategoryList(0));
                     request.setAttribute("charList", comDAO.getParaList("EDITOR", "CHAR", 0));
+                    
+                    if(parentURL!=null && !parentURL.isEmpty()){
+                        folder=catDAO.loadCatURL(parentURL);
+                        request.setAttribute("folder", folder);
+                    }
                 }
                 
             }else{
@@ -168,7 +176,7 @@ public class PanelEditorController {
                 
                 if(prod!=null){
                     request.setAttribute("photo", prod);
-                    request.setAttribute("catList", prodDAO.loadSelectedCat(catDAO.loadCategoryList(0), prod));
+                    request.setAttribute("catList", prodDAO.loadSelectedCat(catDAO.loadCategoryList(0), prod,null));
                 }
                 
             }else{
