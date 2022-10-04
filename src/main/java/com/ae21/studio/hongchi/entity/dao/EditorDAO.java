@@ -9,8 +9,10 @@ import com.ae21.bean.SystemConfigBean;
 import com.ae21.config.SystemConfig;
 import com.ae21.handler.CommonHandler;
 import com.ae21.handler.ImageHandler;
+import com.ae21.studio.hongchi.entity.bean.CategoryInfo;
 import com.ae21.studio.hongchi.entity.bean.EditorInfo;
 import com.ae21.studio.hongchi.entity.bean.EditorItem;
+import com.ae21.studio.hongchi.entity.bean.ParaInfo;
 import com.ae21.studio.hongchi.entity.bean.ProductInfo;
 import com.ae21.studio.hongchi.entity.bean.UserInfo;
 import com.ae21.studio.hongchi.entity.system.CustImageHandler;
@@ -231,14 +233,18 @@ public class EditorDAO {
     public EditorItem addItem(String type, String target)throws Exception{
         Session session = sessionFactory.openSession();
         Query query = null;
+        SQLQuery squery=null;
         EditorItem result=null;
         CommonHandler common=new CommonHandler();
         String uuid="";
+        String sql="";
         ProductInfo photo=null;
+        ParaInfo para=null;
         try{
             type=(type!=null?type.toLowerCase():"");
             if(type.equalsIgnoreCase("bg") || type.equalsIgnoreCase("photo")
-                    || type.equalsIgnoreCase("upload") || type.equalsIgnoreCase("text") ){
+                    || type.equalsIgnoreCase("upload") || type.equalsIgnoreCase("text") 
+                    || type.equalsIgnoreCase("material") || type.equalsIgnoreCase("role") ){
                 uuid="new-"+common.generateUUID();
                 
                 result=new EditorItem();
@@ -269,6 +275,8 @@ public class EditorDAO {
                 result.setTextAlign("left");
                 result.setTextBold(0);
                 result.setTextItalic(0);
+                result.setFontName("");
+                result.setFontSize(14);
                 
                 if(type.equalsIgnoreCase("text")){
                     result.setColor("#000000");
@@ -276,6 +284,10 @@ public class EditorDAO {
                     result.setOpacity((double)0);
                     result.setFontName("arial");
                     result.setFontSize(14);
+                    result.setWidth((double)200);
+                    result.setHeight((double)50);
+                }else if(type.equalsIgnoreCase("role")){
+                    result.setWidth((double)200);
                 }else{
                     result.setBgColor("");
                     result.setColor("");
@@ -295,6 +307,35 @@ public class EditorDAO {
                         result.setName(photo.getName());
                     }
                     
+                }else if(type.equalsIgnoreCase("material") || type.equalsIgnoreCase("role")){
+                    try{
+                        sql="SELECT p.* FROM para_info p "
+                                + " WHERE para_status=1 AND CODE='EDITOR' AND subcode=:subcode "
+                                + " AND id=:id ORDER BY seq ";
+                        squery=session.createSQLQuery(sql);
+                        squery.addEntity("p", ParaInfo.class);
+                        squery.setInteger("id", Integer.parseInt(target));
+                        squery.setString("subcode", (type.equalsIgnoreCase("role")?"CHAR":"OBJ"));
+                        
+                        para=(ParaInfo)squery.uniqueResult();
+                        if(para!=null){
+                            //System.out.println(type+":"+para.getStr01());
+                            if(type.equalsIgnoreCase("role")){
+                                result.setImgSrc("images/"+type+"/emotion/"+para.getStr03()+para.getUrl()+".png");
+                                result.setImgUrl("images/"+type+"/emotion/"+para.getStr03()+para.getUrl()+".png");
+                                result.setImgUploadSrc("/images/"+type+"/emotion/"+para.getStr03());
+                                result.setImgUploadUuid(para.getStr03()+para.getUrl());
+                            }else{
+                                result.setImgSrc("images/"+type+"/"+para.getStr02());
+                                result.setImgUrl("images/"+type+"/"+para.getStr02());
+                            }
+                            
+                            result.setImgUuid(target);
+                            result.setName(para.getStr01());
+                        }
+                    }catch(Exception ignore){
+                        
+                    }
                 }
             }
         } catch (Exception e) {
@@ -342,9 +383,13 @@ public class EditorDAO {
         String textBold[]=request.getParameterValues("textBold");
         String textItalic[]=request.getParameterValues("textItalic");
         
+        String folderURL=request.getParameter("photo-info-folder");
+        
         EditorInfo editor=null;
         EditorItem item=null;
         ProductInfo photo=null;
+        CategoryInfo folder=null;
+        boolean needAddFolder=false;
         
         List<EditorItem> itemList=new ArrayList<EditorItem>();
         
@@ -373,6 +418,7 @@ public class EditorDAO {
                     photo.setProductUrl("");
                     photo.setProductCat("");
                     photo.setProductTag("");
+                    photo.setIsShare(0);
                     
                     
                     
@@ -479,6 +525,22 @@ public class EditorDAO {
                             result.setCode(-1003);
                             result.setMsg("ERROR.EDITOR.SAVE.DIFF");
                         }
+                        
+                        if(folderURL!=null && !folderURL.isEmpty()){
+                            sql="Select {c.*} from category_info c where c.url=:url ";
+                            squery=session.createSQLQuery(sql);
+                            squery.addEntity("c", CategoryInfo.class);
+                            squery.setString("url", folderURL);
+                            folder=(CategoryInfo)squery.uniqueResult();
+                            
+                            if(folder!=null){
+                                photo.setProductCat("#"+folder.getName());
+                                photo.setDefaultFolder(folderURL);
+                                
+                                
+                                needAddFolder=false;
+                            }
+                        }
                 }
                 
                 if(result.getCode()==0){
@@ -492,6 +554,19 @@ public class EditorDAO {
                     tx=session.beginTransaction();
                     session.saveOrUpdate(photo);
                     editor.setProdId(photo);
+                    if(folder!=null && folder.getId()!=null){
+                        sql="DELETE from product_category where product_id=:prod and category_id=:cat ";
+                        squery=session.createSQLQuery(sql);
+                        squery.setInteger("prod", photo.getId());
+                        squery.setInteger("cat", folder.getId());
+                        squery.executeUpdate();
+                        
+                        sql="INSERT INTO product_category(`product_id`,`category_id`) VALUES (:prod,:cat)";
+                        squery=session.createSQLQuery(sql);
+                        squery.setInteger("prod", photo.getId());
+                        squery.setInteger("cat", folder.getId());
+                        squery.executeUpdate();
+                    }
                     session.saveOrUpdate(editor);
                     
                     sql="Delete from editor_item where editor_id=:id ";
@@ -557,6 +632,7 @@ public class EditorDAO {
         File oPreview=null;
         File oProduct=null;
         String outoutPath="";
+        String path="";
         Color color=null;
         
         float opacity=1f;
@@ -705,8 +781,17 @@ public class EditorDAO {
                         
                         
                       
-                    }else if(item.getItemType()!=null  && item.getItemType().equalsIgnoreCase("photo")){
-                        photo=new File(item.getImgSrc());
+                    }else if(item.getItemType()!=null  && (item.getItemType().equalsIgnoreCase("photo") || 
+                             item.getItemType().equalsIgnoreCase("material") || item.getItemType().equalsIgnoreCase("role"))){
+                        if(item.getItemType().equalsIgnoreCase("material") || item.getItemType().equalsIgnoreCase("role")){
+                            path=config.getAbsPath();
+                            path=path.replace("/upload", "/");
+                            //System.out.println("Metrail: "+path+item.getImgSrc());
+                            photo=new File(path+item.getImgSrc());
+                        }else{
+                            photo=new File(item.getImgSrc());
+                        }
+                        
                         //.out.println("File: "+photo);
                         if(photo.exists()){
                             image=ImageIO.read(photo);

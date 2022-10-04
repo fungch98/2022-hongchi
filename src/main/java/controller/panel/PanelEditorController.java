@@ -82,10 +82,13 @@ public class PanelEditorController {
                     request.setAttribute("userPhotoList", prodDAO.loadUserProd(user, 24));
                     request.setAttribute("catList", catDAO.loadCategoryList(0));
                     request.setAttribute("charList", comDAO.getParaList("EDITOR", "CHAR", 0));
+                    request.setAttribute("objList", comDAO.getParaList("EDITOR", "OBJ", 0));
+                    request.setAttribute("emotionList", comDAO.getParaList("ROLE", "EMOTION", 0));
+                   request.setAttribute("actionList", comDAO.getParaList("ROLE", "ACTION", 0));
                     
                     if(parentURL!=null && !parentURL.isEmpty()){
-                        folder=catDAO.loadCatURL(parentURL);
-                        request.setAttribute("folder", folder);
+                        //folder=catDAO.loadCatURL(parentURL);
+                        request.setAttribute("folder", parentURL);
                     }
                 }
                 
@@ -116,6 +119,7 @@ public class PanelEditorController {
         EditorInfo editor=null;
         UserInfo user=null;
         EditorDAO editorDAO=null;
+        CommonDAO comDAO=null;
         try{ 
             this.frameHandler.loadTesting(request, 0);
             //System.out.println("OK");
@@ -123,7 +127,13 @@ public class PanelEditorController {
                 user=this.frameHandler.getLoginUser(request);
                 
                 editorDAO=(EditorDAO)common.getDAOObject(request, "editorDAO");
+                comDAO=(CommonDAO)common.getDAOObject(request, "commDAO");
                request.setAttribute("itemDetail", editorDAO.addItem(type, uuid));
+               
+               if(type!=null && type.equalsIgnoreCase("role")){
+                   request.setAttribute("emotionList", comDAO.getParaList("ROLE", "EMOTION", 0));
+                   request.setAttribute("actionList", comDAO.getParaList("ROLE", "ACTION", 0));
+               }
                 
             }else{
                 return this.frameHandler.logout(request);
@@ -153,6 +163,8 @@ public class PanelEditorController {
         ProdDAO prodDAO=null;
         CategoryDAO catDAO=null;
         String uuid="new";
+        String parentURL=request.getParameter("folder");
+        CategoryInfo parent=null;
         try{ 
             this.frameHandler.loadTesting(request, 0);
             //System.out.println("OK");
@@ -171,12 +183,22 @@ public class PanelEditorController {
                         prod.setStatus(1);
                         prod.setUuid(uuid);
                         prod.setProductCreateMethod(1);
+                        prod.setIsShare(0);
                     }
                 }
                 
                 if(prod!=null){
                     request.setAttribute("photo", prod);
-                    request.setAttribute("catList", prodDAO.loadSelectedCat(catDAO.loadCategoryList(0), prod,null));
+                    if(parentURL!=null && !parentURL.isEmpty()){
+                        parent=catDAO.loadCatURL(parentURL);
+                        if(parent!=null){
+                            request.setAttribute("folder", parent);
+                            //System.out.println("P: "+parent.getName());
+                        }
+                    }
+                    request.setAttribute("catList", prodDAO.loadSelectedCat(catDAO.loadCategoryList(0), prod,parent));
+                    
+                    
                 }
                 
             }else{
@@ -258,7 +280,7 @@ public class PanelEditorController {
                 config = (SystemConfigBean) common.getDAOObject(request, "defaultConfig");
                /* String [] nameList=request.getParameterValues("name");
                 System.out.println("Save Action: "+(nameList!=null?nameList.length:"NA"));*/
-               System.out.println(uuid);
+               //System.out.println(uuid);
                result=editorDAO.save(request, uuid, user);
                 request.setAttribute("result", result);
                 if(result!=null && result.getCode()==1){

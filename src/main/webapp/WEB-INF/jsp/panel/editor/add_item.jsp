@@ -15,4 +15,10 @@
     <logic:equal name="itemDetail" property="itemType" value="text">
         <jsp:include page="item/text-ajax.jsp"/>
     </logic:equal>
+    <logic:equal name="itemDetail" property="itemType" value="material">
+        <jsp:include page="item/material-ajax.jsp"/>
+    </logic:equal>
+    <logic:equal name="itemDetail" property="itemType" value="role">
+        <jsp:include page="item/role-ajax.jsp"/>
+    </logic:equal>
 </logic:notEmpty>

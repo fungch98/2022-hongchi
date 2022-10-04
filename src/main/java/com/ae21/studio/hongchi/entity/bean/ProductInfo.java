@@ -26,6 +26,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -125,6 +126,8 @@ public class ProductInfo implements Serializable {
     @JoinColumn(name = "modify_user", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private UserInfo modifyUser;
+     @Transient
+    private String defaultFolder="";
 
     public ProductInfo() {
     }
@@ -294,6 +297,14 @@ public class ProductInfo implements Serializable {
 
     public void setIsShare(Integer isShare) {
         this.isShare = isShare;
+    }
+
+    public String getDefaultFolder() {
+        return defaultFolder;
+    }
+
+    public void setDefaultFolder(String defaultFolder) {
+        this.defaultFolder = defaultFolder;
     }
     
     

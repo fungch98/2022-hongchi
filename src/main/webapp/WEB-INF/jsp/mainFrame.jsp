@@ -85,7 +85,7 @@
                             <a href="#" class="dropdown">控制台</a>
                             <ul>
                                 
-                                <li><a href="${pageContext.request.contextPath}/panel/folder/${langCode}/root/view.html"><bean:message key="title.panel.category" /></a></li>
+                                <li><a href="${pageContext.request.contextPath}/panel/folder/${langCode}/root/view.html"><bean:message key="title.panel.folder" /></a></li>
                                 <li><a href="${pageContext.request.contextPath}/panel/tag/${langCode}/list.html"><bean:message key="title.panel.tag"/></a></li>
                                 <!--
                                 <li><a href="generic.html">Generic</a></li>

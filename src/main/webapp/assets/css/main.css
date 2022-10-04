@@ -2208,19 +2208,33 @@ input, select, textarea {
 
 	::-webkit-input-placeholder {
 		opacity: 1.0;
+                overflow: visible;
+                width: 100%;
 	}
 
 	:-moz-placeholder {
 		opacity: 1.0;
+                overflow: visible;
+                width: 100%;
 	}
 
 	::-moz-placeholder {
 		opacity: 1.0;
+                overflow: visible;
+                width: 100%;
 	}
 
 	:-ms-input-placeholder {
 		opacity: 1.0;
+                overflow: visible;
+                width: 100%;
 	}
+        
+        ::placeholder{
+            width: 100%;
+            overflow: visible;
+            font-size: 12pt;
+        }
 
 	label {
 		color: #404040;
@@ -2240,6 +2254,8 @@ input, select, textarea {
 		border-color: #4672B8;
                 color:#000000;
 	}
+        
+        
 
 		input[type="text"]:focus,
 		input[type="password"]:focus,

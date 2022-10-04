@@ -6,34 +6,46 @@
 
                                 <div class="col-6 col-6-medium col-12-small">
                                     <div class="row gtr-25">
-                                        <div class="col-5 col-12-medium">
+                                        <div class="col-12">
                                             <label for="photo-name"><bean:message key="label.photo.name"/></label>
                                         <input type="text" id="photo-name" name="photo-name" value="${photo.name}" maxlength="100"/>
                                     </div>
-                                        <div class="col-3 col-6-medium col-12-small">
-                                            <label for="status"><bean:message key="label.status" bundle="ae21studio"/></label>
-                                            <select id="status" name="status">
-                                                
-                                                <option value="1" <logic:equal name="photo" property="status" value="1">Selected</logic:equal> ><bean:message key="label.status.1" bundle="ae21studio"/></option>
-                                                <option value="0" <logic:equal name="photo" property="status" value="0">Selected</logic:equal>><bean:message key="label.status.0" bundle="ae21studio"/></option>
-                                            </select>
-                                        </div>
-                                        <div class="col-4 col-6-medium col-12-small">
-                                            <label for="isShare"><bean:message key="label.status" bundle="ae21studio"/></label>
-                                            <select id="isShare" name="isShare">
-                                                
-                                                <option value="1" <logic:equal name="photo" property="isShare" value="1">Selected</logic:equal> ><bean:message key="label.isShare.1" bundle="ae21studio"/></option>
-                                                <option value="0" <logic:equal name="photo" property="isShare" value="0">Selected</logic:equal>><bean:message key="label.isShare.0" bundle="ae21studio"/></option>
-                                            </select>
-                                        </div>    
+                                   
+                                            <div class="col-4 col-6-medium">
+                                                <label for="status"><bean:message key="label.status" bundle="ae21studio"/></label>
+                                                <select id="status" name="status">
+
+                                                    <option value="1" <logic:equal name="photo" property="status" value="1">Selected</logic:equal> ><bean:message key="label.status.1" bundle="ae21studio"/></option>
+                                                    <option value="0" <logic:equal name="photo" property="status" value="0">Selected</logic:equal>><bean:message key="label.status.0" bundle="ae21studio"/></option>
+                                                </select>
+                                            </div>
+                                             <div class="col-4 col-6-medium">
+                                                <label for="isShare"><bean:message key="label.share"/></label>
+                                                <select id="isShare" name="isShare">
+
+                                                    <option value="1" <logic:equal name="photo" property="isShare" value="1">Selected</logic:equal> ><bean:message key="label.isShare.1" bundle="ae21studio"/></option>
+                                                    <option value="0" <logic:equal name="photo" property="isShare" value="0">Selected</logic:equal>><bean:message key="label.isShare.0" bundle="ae21studio"/></option>
+                                                </select>
+                                            </div>
+                                                 <div class="col-4 col-6-medium">
+                                                     <label for="folder"><bean:message key="label.folder"/></label>
+                                                    <select id="folder" name="folder">
+                                                        <logic:notEmpty name="catList" scope="request">
+                                                            <logic:iterate  name="catList" scope="request" id="cat" indexId="seq">
+                                                                <option value="${cat.para.uuid}" <logic:equal name="cat" property="selected" value="true">selected</logic:equal> >${cat.para.name}</option>
+                                                            </logic:iterate>
+                                                        </logic:notEmpty>
+                                                    </select>
+                                                </div>
+                                       
                                     <div class="col-12">
-                                        <label for="desc"><bean:message key="label.photo.desc"/></label>
-                                        <textarea id="desc" name="desc" rows="3">${photo.desc}</textarea>
-                                    </div>    
-                                    <div class="col-12">
-                                        <input type="hidden" id="photo" name="photo" value="${photo.productUrl}" onchange="refreshImage(this);"  placeholder="" />
-                                        <input type="hidden" id="photo-uuid" name="photo-uuid" value="${photo.productUUID}"   placeholder="" />
+                                            <label for="hashtag"><bean:message key="label.tag.name"/></label>
+                                            <input type="text" id="hashtag" name="hashtag" value="${hashtag}" maxlength="1000" placeholder="<bean:message key="label.tag.desc" />"/>
                                     </div>
+                                    
+                                  
+                                    
+                                   
                                     <logic:notEqual name="photo" property="productCreateMethod" value="3">
                                     <div class="col-12">
                                         <br>
@@ -45,22 +57,39 @@
                                         </div>
                                     </div>
                                     </logic:notEqual>
+                                    
+                                     <div class="col-12">
+                                        <input type="hidden" id="photo" name="photo" value="${photo.productUrl}" onchange="refreshImage(this);"  placeholder="" />
+                                        <input type="hidden" id="photo-uuid" name="photo-uuid" value="${photo.productUUID}"   placeholder="" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-6 col-6-medium col-12-small">
-                                <div class="image fit">
-                                    <logic:equal name="photo" property="productCreateMethod" value="1">
-                                            <img src="${pageContext.request.contextPath}${photo.productUrl}" id="photo-preview" onerror="this.src='${pageContext.request.contextPath}/images/no-image.jpg'" />
-                                    </logic:equal>
-                                    <logic:equal name="photo" property="productCreateMethod" value="2">
-                                        <img src="${photo.productUrl}" id="photo-preview" onerror="this.src='${pageContext.request.contextPath}/images/no-image.jpg'" />
-                                    </logic:equal>
-                                    <logic:equal name="photo" property="productCreateMethod" value="3">
-                                            <img src="${pageContext.request.contextPath}${photo.productUrl}" id="photo-preview" onerror="this.src='${pageContext.request.contextPath}/images/no-image.jpg'" />
-                                    </logic:equal>
+                                <div class="row">
+                                    <div class="col-12 col-12-medium">
+                                        <label for="desc"><bean:message key="label.photo.desc"/></label>
+                                        <textarea id="desc" name="desc" rows="3">${photo.desc}</textarea>
+                                 <br>
+                                    </div>   
+                                    <div class="col-12 col-12-medium">
+                                        <div class="image fit">
+                                            <logic:equal name="photo" property="productCreateMethod" value="1">
+                                                    <img src="${pageContext.request.contextPath}${photo.productUrl}" id="photo-preview" onerror="this.src='${pageContext.request.contextPath}/images/no-image.jpg'" />
+                                            </logic:equal>
+                                            <logic:equal name="photo" property="productCreateMethod" value="2">
+                                                <img src="${photo.productUrl}" id="photo-preview" onerror="this.src='${pageContext.request.contextPath}/images/no-image.jpg'" />
+                                            </logic:equal>
+                                            <logic:equal name="photo" property="productCreateMethod" value="3">
+                                                    <img src="${pageContext.request.contextPath}${photo.productUrl}" id="photo-preview" onerror="this.src='${pageContext.request.contextPath}/images/no-image.jpg'" />
+                                            </logic:equal>
+                                        </div>
+                                    </div>   
                                 </div>
-                                <br>
+                                
+                                
+                                
                             </div>
+                                    <%/*
                             <div class="col-12">
                                 <label>圖片分類</label>
                                 <logic:notEmpty name="catList" scope="request">
@@ -75,6 +104,7 @@
                                 </div>
                                 </logic:notEmpty>
                             </div>
+                                   */ %>
                             <div class="col-12">
                                 <ul class="actions fit">
                                     <li><input type="submit" class="button primary" value="<bean:message key="btn.save" bundle="ae21studio"/>"/></li>

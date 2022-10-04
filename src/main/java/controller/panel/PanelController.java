@@ -2,6 +2,7 @@ package controller.panel;
 
 import com.ae21.bean.ResultBean;
 import com.ae21.handler.CommonHandler;
+import com.ae21.studio.hongchi.entity.bean.UserInfo;
 import com.ae21.studio.hongchi.entity.dao.ProdDAO;
 import com.ae21.studio.hongchi.entity.system.CustFrameHandler;
 import java.util.logging.Logger;
@@ -32,14 +33,16 @@ public class PanelController {
         ResultBean result=null;
         ProdDAO prodDAO=null;
         String search=request.getParameter("search");
+        UserInfo user=null;
          try{ 
             request.setAttribute("pageLink", "dashboard");
             request.setAttribute("pagePrefix", "panel/");
             
             this.frameHandler.loadTesting(request, 0);
             if(this.frameHandler.isLogin(request)){
+                user=this.frameHandler.getLoginUser(request);
                 prodDAO=(ProdDAO)common.getDAOObject(request, "prodDAO");
-                request.setAttribute("prodList", prodDAO.queryProd(search,null, 30));
+                request.setAttribute("prodList", prodDAO.queryProd(search,user, false,  (user!=null && user.getIsAdmin()==1?true:false), 30));
             }else{
                 return this.frameHandler.logout(request);
             }

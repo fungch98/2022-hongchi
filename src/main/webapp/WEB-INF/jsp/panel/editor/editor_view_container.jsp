@@ -22,6 +22,14 @@
                <jsp:include page="item/photo-view.jsp"/>
                
             </logic:equal>
+            <logic:equal name="item" property="itemType" value="material">
+                <c:set var="itemDetail" value="${item}" scope="request"/>
+               <jsp:include page="item/material-view.jsp"/>
+            </logic:equal>
+            <logic:equal name="item" property="itemType" value="role">
+                <c:set var="itemDetail" value="${item}" scope="request"/>
+               <jsp:include page="item/role-view.jsp"/>
+            </logic:equal>
             <logic:notEqual name="item" property="itemType" value="bg">
                 <script>
                    $(document).ready(function () {
@@ -51,7 +59,18 @@
                                         $("#${item.uuid}-rotate").val(degrees);
                                     }
                                });
-                   });
+                                        <logic:equal name="item" property="itemType" value="role">
+                                         
+                                                               
+                               $( "#item-${item.uuid}-obj" ).contextMenu({
+                                    selector: 'img', 
+                                    callback: function(key, options) {
+                                        chageRoleEmotion('${item.uuid}', key);
+                                    },
+                                    items: contextMemuItem
+                                });
+                                          
+                   });      </logic:equal>
                </script>
             </logic:notEqual>
         </logic:iterate>

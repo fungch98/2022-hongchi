@@ -207,6 +207,7 @@ public class UserDAO {
                     user.setSocialId(googleId);
                     user.setSocialToken("");
                     user.setSocialType("G");
+                    user.setIsAdmin(0);
                 }
                 user.setSocialCode(fbCode);
                 user.setSocialToken(fbToken);
@@ -214,7 +215,7 @@ public class UserDAO {
                 //gender = (json.getString("gender") != null ? json.getString("gender") : "");
                 //user.setGender((gender.length() > 0 ? gender.toUpperCase().charAt(0) : 'M'));
                 user.setCoverUrl((json.getString("picture") != null ? json.getString("picture") : ""));
-                user.setIsAdmin(0);
+                
                 
                
                 //user.setIsAWS(0);

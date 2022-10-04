@@ -29,6 +29,7 @@
     <li><a href="#"  onclick="addItem('text','');return false;"><img src="${pageContext.request.contextPath}/images/icon/action_text.png"/><p>文字</p></a></li>
     
     <li><a href="#" onclick="showItemDetail('character');return false;"><img src="${pageContext.request.contextPath}/images/icon/action_bg.png"/><p>校本角色</p></a></li>
+    <li><a href="#" onclick="showItemDetail('material');return false;"><img src="${pageContext.request.contextPath}/images/icon/action_material.png"/><p>物件</p></a></li>
     <li><a href="#" onclick="uploadPhoto();return false;"><img src="${pageContext.request.contextPath}/images/icon/action_upload.png"/><p>上載</p></a></li>
     <li><a href="#" onclick="editorSave();return false;"><img src="${pageContext.request.contextPath}/images/icon/save.png"/><p><bean:message key="btn.save" bundle="ae21studio" /></p></a></li>
 </ul>

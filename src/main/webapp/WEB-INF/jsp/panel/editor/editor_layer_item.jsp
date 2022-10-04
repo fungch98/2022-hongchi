@@ -14,12 +14,14 @@
                 <logic:iterate id="charItem" name="charList" scope="request">
                     
                     <div class='col-3 col-6-large col-6-medium col-6-small'>
-                        <a href="#" onclick="photoRoleDetail(${charItem.id});return false;">
-                        <div class="item-cover-container">
-                            <div class='item-cover' style='background-image: url("${pageContext.request.contextPath}/images/character/${charItem.str02}");'>
+                        <a href="#" onclick="addItem('role','${charItem.id}');return false;" class="align-center">
+                        <div class="item-cover-container role">
+                            <div class='item-cover ' style='background-image: url("${pageContext.request.contextPath}/images/role/${charItem.str02}");'>
                             </div>
+                            
                         </div>
-                            </a>
+                            <p>${charItem.str01}</p>
+                        </a>
                     </div>
                     
                 </logic:iterate>
@@ -64,3 +66,28 @@
         <jsp:include page="search/imageResult.jsp"/>
     </div>
 </div>
+    <div id="item-material-view" class="item-detail-container">
+        <section>
+            <header>
+                <h3>物件</h3>
+            </header>
+            <div id='material-main-container'>
+                <div class='row gtr-25'>
+                    <logic:notEmpty name="objList" scope="request">
+                        <logic:iterate id="meterial" name="objList" scope="request">
+
+                            <div class='col-3 col-6-large col-6-medium col-6-small'>
+                                <a href="#" onclick="addItem('material','${meterial.id}');return false;">
+                                <div class="item-cover-container">
+                                    <div class='item-cover' style='background-image: url("${pageContext.request.contextPath}/images/material/${meterial.str02}");'>
+                                    </div>
+                                </div>
+                                    </a>
+                            </div>
+
+                        </logic:iterate>
+                    </logic:notEmpty>
+                    </div>
+            </div>
+        </section>
+    </div>

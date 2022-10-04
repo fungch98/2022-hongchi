@@ -137,6 +137,58 @@ public class ProdDAO {
         
     }
     
+    public List<List<CategoryInfo>> getProdFolder(ProductInfo prod)throws Exception{
+        Session session = sessionFactory.openSession();
+        Query query = null;
+        List<CategoryInfo> catList = null;
+        List<List<CategoryInfo>> result=null;
+        List<CategoryInfo> subList=null;
+        CategoryInfo cat=null;
+        CategoryInfo parent=null;
+        String sql="SELECT {ci.*} "
+                + " FROM product_category pc LEFT JOIN category_info ci ON ci.id=pc.category_id "
+                + " WHERE pc.product_id=:prod"
+                + " ORDER by ci.seq, ci.name ";
+        int parentID=0;
+        try{
+            if(prod!=null){
+               query=session.getNamedQuery("CategoryInfo.findById");
+               catList=this.getProdCat(prod);
+               for(int i=0;catList!=null &&  i<catList.size(); i++){
+                   cat=catList.get(i);
+                   if(cat!=null){
+                        subList=new ArrayList<CategoryInfo>();
+                        subList.add(cat);
+                        parentID=cat.getParentId();
+
+                        while(parentID!=0){
+                            query.setInteger("id", parentID);
+                            parent=(CategoryInfo)query.uniqueResult();
+                            if(parent!=null){
+                                parentID=parent.getParentId();
+                                subList.add(0, parent);
+                            }else{
+                                parentID=0; //If parent not find, assumbe it is root
+                            }
+                        }
+                   }
+                   if(subList!=null && subList.size()>0){
+                       if(result==null){
+                           result=new ArrayList<List<CategoryInfo>>();
+                       }
+                       result.add(subList);
+                   }
+               }
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            try {session.close();} catch (Exception ignore) {            }
+        }
+        return result;
+        
+    }
+    
     public List<HashtagInfo> getProdHashtag(ProductInfo prod)throws Exception{
         Session session = sessionFactory.openSession();
         SQLQuery query = null;
@@ -146,7 +198,7 @@ public class ProdDAO {
                 + " WHERE pc.product_id=:prod"
                 + " ORDER by hi.name ";
         try{
-            if(prod!=null){
+            if(prod!=null && prod.getId()!=null){
                 query=session.createSQLQuery(sql);
                 query.addEntity("hi", HashtagInfo.class);
                 query.setInteger("prod", prod.getId());
@@ -159,6 +211,23 @@ public class ProdDAO {
         }
         return result;
         
+    }
+    
+    public String getHashtagString(ProductInfo prod)throws Exception{
+        String result="";
+        List<HashtagInfo> tagList=null;
+        
+        try{
+            if(prod!=null){
+                tagList=this.getProdHashtag(prod);
+                for(int i=0;tagList!=null && i<tagList.size();i++ ){
+                    result+=(result!=null && !result.isEmpty()?", ":"")+tagList.get(i).getName();
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
     
     public List<SelectedBean> loadSelectedCat(List<CategoryInfo> catList, ProductInfo photo, CategoryInfo curFolder){
@@ -254,9 +323,9 @@ public class ProdDAO {
             search.setCurPage(0);
             search.setPageItems(max);
             if(type!=null && type.equalsIgnoreCase("personal")){
-                search.setResultList(this.queryProd(key,user,  size));
+                search.setResultList(this.queryProd(key,user,true, (user!=null && user.getIsAdmin()==1?true:false),  size));
             }else{
-                search.setResultList(this.queryProd(key,null,  size));
+                search.setResultList(this.queryProd(key,user,false, (user!=null && user.getIsAdmin()==1?true:false),   size));
             }
             search.generatePageList();
             
@@ -269,7 +338,7 @@ public class ProdDAO {
     
    
     
-    public List<ProductInfo> queryProd(String search,UserInfo user, int size) throws Exception{
+    public List<ProductInfo> queryProd(String search,UserInfo user,boolean isPersonal, boolean isAdmin,  int size) throws Exception{
         Session session = sessionFactory.openSession();
         SQLQuery query = null;
         List<ProductInfo> result = null;
@@ -296,7 +365,7 @@ public class ProdDAO {
                     if(subSql!=null && !subSql.isEmpty()){
                         sql += " and ("+ subSql+") ";
                     }
-                    sql += (user!=null? " and  p.create_user=:user ":" and p.prod_status>0 and p.is_share=1 ")
+                    sql += (user!=null && isPersonal? " and  p.create_user=:user ":" and p.prod_status>0  "+(isAdmin?"":" and  (p.is_share=1 || p.create_user=:user) ")+"   ")
                     + " order by p.modify_date desc ";
                     System.out.println("Search sql: "+sql);
                     
@@ -310,9 +379,11 @@ public class ProdDAO {
                 }
             }
             
-            if(user!=null){
+            if(user!=null && isPersonal){
                 query.setInteger("user", user.getId());
                 System.out.println("User: "+user.getId()+":"+user.getDisplayName());
+            }else if(!isAdmin){
+                query.setInteger("user", user.getId());
             }
             if(size>0){
                 query.setMaxResults(size);
@@ -338,6 +409,7 @@ public class ProdDAO {
         ProductInfo photo=null;
         UploadInfo up=null;
         List<CategoryInfo> catList=null;
+        List<HashtagInfo> tagList=null;
         
         String name=request.getParameter("photo-name");
         String desc=request.getParameter("desc");
@@ -346,6 +418,8 @@ public class ProdDAO {
         String statusVal=request.getParameter("status");
         String shareVal=request.getParameter("isShare");
         String [] catArray=request.getParameterValues("cat");
+        String folderUUID=request.getParameter("folder");
+        String hashtagVal=request.getParameter("hashtag");
         
         String productCat="";
         
@@ -407,7 +481,7 @@ public class ProdDAO {
                         }catch(Exception ingore){
                             ingore.printStackTrace();
                             result.setCode(-2021);
-                            result.setMsg("ERROR.STATUS.INVALID");
+                            result.setMsg("ERROR.SHARE.INVALID");
                         }
                         
                         try{
@@ -434,6 +508,23 @@ public class ProdDAO {
                         try{
                             String temp="";
                             CategoryInfo cat=null;
+                            
+                            if(folderUUID!=null){
+                                 query=session.getNamedQuery("CategoryInfo.findByUuid");
+                                 query.setString("uuid", folderUUID);
+                                 cat=(CategoryInfo)query.uniqueResult();
+                                 
+                                 if(cat!=null){
+                                       catList=new ArrayList<CategoryInfo>();
+                                        catList.add(cat);
+                                        productCat+="#"+cat.getName()+" ";
+                                    }else{
+                                        result.setCode(-20031);
+                                        result.setMsg("ERROR.PHOTO.UPLOAD.CAT");
+                                    }
+                                 photo.setProductCat(productCat);
+                            }
+                            /*
                             if(catArray!=null && catArray.length>0){
                                 catList=new ArrayList<CategoryInfo>();
                                 
@@ -453,10 +544,15 @@ public class ProdDAO {
                                     }
                                 }
                                 photo.setProductCat(productCat);
-                            }
+                            }*/
                         }catch(Exception ignore){
                             result.setCode(-2003);
                             result.setMsg("ERROR.PHOTO.UPLOAD.CAT");
+                        }
+                        
+                        try{
+                            tagList=this.strToHashtag(hashtagVal, user);
+                        }catch(Exception ignore){
                         }
                         
                         
@@ -492,6 +588,8 @@ public class ProdDAO {
                         squery.setInteger("cat", catList.get(i).getId());
                         squery.executeUpdate();
                     }
+                    
+                    this.saveHashtagAction(session, tagList, photo);
                     tx.commit();
                     this.generateSearchIndex(photo);
                     result.setCode(1);
@@ -595,6 +693,8 @@ public class ProdDAO {
                     }else if(photo.getCreateUser()!=null && photo.getCreateUser().getId()!=null && 
                             photo.getCreateUser().getId().intValue()==user.getId().intValue()){
                         return true;
+                    }else{
+                        //System.out.println(photo.getCreateUser().getId()+":"+user.getId());
                     }
                 }
             }
@@ -703,6 +803,99 @@ public class ProdDAO {
         return result;
     }
     
+    public List<HashtagInfo> strToHashtag(String tagStr, UserInfo user)throws Exception{
+        List<HashtagInfo> tagList=null;
+        String [] tagValList=null;
+        try{
+            if(tagStr!=null){
+                tagStr=tagStr.trim();
+                tagStr=tagStr.replace(";", ",");
+                //System.out.println("tag: |"+tagStr+"|");
+                tagValList=tagStr.split(",");
+                tagList=this.strToHashtag(tagValList, user);
+            }
+            
+        }catch(Exception ignore){
+        }
+        return tagList;
+    }
+    
+    public List<HashtagInfo> strToHashtag(String tagValList[], UserInfo user)throws Exception{
+        List<HashtagInfo> tagList=null;
+        
+        Session session = sessionFactory.openSession();
+        Query query = null;
+        SQLQuery squery=null;
+        SQLQuery squery2=null;
+        CommonHandler lib = new CommonHandler();
+        String sql="";
+        
+        List<HashtagInfo> repeatList=null;
+        String tagVal="";
+        HashtagInfo tag=null;
+        boolean isExist=false;
+        try{
+            if (tagValList != null && tagValList.length > 0) {
+                tagList = new ArrayList<HashtagInfo>();
+
+                sql = "SELECT {hi.*} FROM hashtag_info hi WHERE hi.uuid=:uuid ";
+                squery = session.createSQLQuery(sql);
+                squery.addEntity("hi", HashtagInfo.class);
+
+                sql = "SELECT {hi.*} FROM hashtag_info hi WHERE hi.name=:name ";
+                squery2 = session.createSQLQuery(sql);
+                squery2.addEntity("hi", HashtagInfo.class);
+                System.out.println("TagLen: "+tagValList.length);
+                for (int i = 0; i < tagValList.length; i++) {
+                    tagVal = tagValList[i];
+                    tagVal = (tagVal != null ? tagVal.trim() : "");
+                    if(tagVal!=null && !tagVal.isEmpty()){
+                        isExist = false;
+                        for (int j = 0; !isExist && tagList != null && j < tagList.size(); j++) {
+                            //System.out.println(tagList.get(j).getName()+":"+tagVal);
+                            if (tagList.get(j).getName() != null && tagList.get(j).getName().equalsIgnoreCase(tagVal)) {
+                                isExist = true;
+                                break;
+                            }
+
+                            if (tagList.get(j).getUuid() != null && tagList.get(j).getUuid().equalsIgnoreCase(tagVal)) {
+                                isExist = true;
+                                break;
+                            }
+                        }
+
+                        if (!isExist) {
+                            squery.setString("uuid", tagVal);
+                            tag = (HashtagInfo) squery.uniqueResult();
+
+                            if (tag == null) {
+                                squery2.setString("name", tagVal);
+                                repeatList = (List<HashtagInfo>) squery2.list();
+                                if (repeatList != null && repeatList.size() > 0) {
+                                    tag = repeatList.get(0);
+                                }
+                            }
+
+                            if (tag == null) {
+                                tag = new HashtagInfo();
+                                tag.setCreateDate(lib.getLocalTime());
+                                tag.setCreateUser(user);
+                                tag.setHitRate(0);
+                                tag.setModifyDate(lib.getLocalTime());
+                                tag.setModifyUser(user);
+                                tag.setName(tagVal);
+                                tag.setUuid(tagVal);
+                            }
+                            tagList.add(tag);
+                        }
+                    }
+                }
+            }
+        }catch(Exception ignore){
+        }
+        return tagList;
+    }
+    
     public ResultBean saveHashtag(HttpServletRequest request, String uuid, UserInfo user)throws Exception{
         ResultBean result=new ResultBean();
         Transaction tx = null;
@@ -732,62 +925,7 @@ public class ProdDAO {
                 
                 if(photo!=null){
                     if(this.checkAllowEdit(photo, user)){
-                        if(tagValList!=null && tagValList.length>0){
-                            tagList=new ArrayList<HashtagInfo>();
-                            
-                            sql="SELECT {hi.*} FROM hashtag_info hi WHERE hi.uuid=:uuid ";
-                            squery=session.createSQLQuery(sql);
-                            squery.addEntity("hi", HashtagInfo.class);
-                            
-                            sql="SELECT {hi.*} FROM hashtag_info hi WHERE hi.name=:name ";
-                            squery2=session.createSQLQuery(sql);
-                            squery2.addEntity("hi", HashtagInfo.class);
-                            
-                            
-                            for(int i=0; i<tagValList.length; i++){
-                                tagVal=tagValList[i];
-                                tagVal=(tagVal!=null?tagVal.trim():"");
-                                
-                                isExist=false;
-                                for(int j=0;!isExist && tagList!=null && j<tagList.size();j++ ){
-                                    //System.out.println(tagList.get(j).getName()+":"+tagVal);
-                                    if(tagList.get(j).getName()!=null && tagList.get(j).getName().equalsIgnoreCase(tagVal)){
-                                        isExist=true;
-                                        break;  
-                                    }
-                                    
-                                    if(tagList.get(j).getUuid()!=null && tagList.get(j).getUuid().equalsIgnoreCase(tagVal)){
-                                        isExist=true;
-                                        break;  
-                                    }
-                                }
-                                
-                                if(!isExist){
-                                    squery.setString("uuid", tagVal);
-                                    tag=(HashtagInfo)squery.uniqueResult();
-                                    
-                                    if(tag==null){
-                                        squery2.setString("name", tagVal);
-                                        repeatList=(List<HashtagInfo>)squery2.list();
-                                        if(repeatList!=null && repeatList.size()>0){
-                                            tag=repeatList.get(0);
-                                        }
-                                    }
-
-                                    if(tag==null){
-                                        tag=new HashtagInfo();
-                                        tag.setCreateDate(lib.getLocalTime());
-                                        tag.setCreateUser(user);
-                                        tag.setHitRate(0);
-                                        tag.setModifyDate(lib.getLocalTime());
-                                        tag.setModifyUser(user);
-                                        tag.setName(tagVal);
-                                        tag.setUuid(tagVal);
-                                    }
-                                    tagList.add(tag);
-                                }
-                            }
-                        }
+                        tagList=this.strToHashtag(tagValList, user);
                         result.setObj(tagList);
                     }else{
                         result.setCode(-1002);
@@ -800,32 +938,8 @@ public class ProdDAO {
                 
                 if(photo!=null && result.getCode()==0){
                     tx=session.beginTransaction();
-                    for(int i=0; tagList!=null && i<tagList.size();i++){
-                        tag=tagList.get(i);
-                        if(tag!=null && tag.getId()!=null  && tag.getId().intValue()>0){
-                            
-                        }else{
-                            tag.setUuid(lib.generateUUID());
-                            session.saveOrUpdate(tag);
-                        }
-                        tagList.set(i, tag);
-                    }
                     
-                    sql="DELETE FROM product_hashtag ph where ph.product_id=:prod ";
-                    squery=session.createSQLQuery(sql);
-                    squery.setInteger("prod", photo.getId());
-                    squery.executeUpdate();
-                    
-                    sql="INSERT INTO product_hashtag (`product_id`,`hash_id`) VALUES (:prod, :tag)  ";
-                    squery=session.createSQLQuery(sql);
-                    for(int i=0; tagList!=null && i<tagList.size();i++){
-                        tag=tagList.get(i);
-                        squery.setInteger("prod", photo.getId());
-                        squery.setInteger("tag", tag.getId());
-                        squery.executeUpdate();
-                    }
-                    
-                    
+                    this.saveHashtagAction(session, tagList, photo);
                     tx.commit();
                     this.generateSearchIndex(photo);
                     result.setCode(1);
@@ -847,6 +961,38 @@ public class ProdDAO {
             try {session.close();} catch (Exception ignore) {}
         }
         return result;
+    }
+    
+    public void saveHashtagAction(Session session,List<HashtagInfo> tagList , ProductInfo photo)throws Exception{
+        HashtagInfo tag=null;
+        String sql="";
+        SQLQuery squery=null;
+        CommonHandler lib=new CommonHandler();
+        for(int i=0; tagList!=null && i<tagList.size();i++){
+            tag=tagList.get(i);
+            if(tag!=null && tag.getId()!=null  && tag.getId().intValue()>0){
+
+            }else{
+                tag.setUuid(lib.generateUUID());
+                session.saveOrUpdate(tag);
+            }
+            tagList.set(i, tag);
+        }
+
+        sql="DELETE FROM product_hashtag ph where ph.product_id=:prod ";
+        squery=session.createSQLQuery(sql);
+        squery.setInteger("prod", photo.getId());
+        squery.executeUpdate();
+
+        sql="INSERT INTO product_hashtag (`product_id`,`hash_id`) VALUES (:prod, :tag)  ";
+        squery=session.createSQLQuery(sql);
+        for(int i=0; tagList!=null && i<tagList.size();i++){
+            tag=tagList.get(i);
+            squery.setInteger("prod", photo.getId());
+            squery.setInteger("tag", tag.getId());
+            squery.executeUpdate();
+        }
+                    
     }
     
     public ResultBean addHotKeyWord(SearchBean search)throws Exception{

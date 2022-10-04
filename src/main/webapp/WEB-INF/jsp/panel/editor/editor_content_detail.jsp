@@ -24,6 +24,18 @@
                 <logic:equal name="item" property="itemType" value="text">
                     <jsp:include page="item/text.jsp"/>
                 </logic:equal>
+                <logic:equal name="item" property="itemType" value="material">
+                    <jsp:include page="item/material.jsp"/>
+                </logic:equal>
+                <logic:equal name="item" property="itemType" value="role">
+                    <jsp:include page="item/role.jsp"/>
+                    <script>
+                        $(document).ready(function () {
+                            updRoleOption('${itemDetail.uuid}', ''+$("#${itemDetail.uuid}-upUUID").val());
+                            //alert("Update Action");
+                        });
+                    </script>
+                </logic:equal>
             </logic:iterate>
         </logic:notEmpty>
 </div>

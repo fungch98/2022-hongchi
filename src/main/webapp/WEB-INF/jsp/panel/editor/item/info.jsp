@@ -18,6 +18,8 @@
                 <div class="col-12">
                     <label for="photo-info-name"><bean:message key="label.editor.info.name"/></label>
                     <input type="text" id="photo-info-name" name="photo-name" value="${editor.name}" />
+                    
+                    <input type="hidden" id="photo-info-folder" name="photo-info-folder" value="${folder}" />
                 </div>
                 
                 <div class="col-12">

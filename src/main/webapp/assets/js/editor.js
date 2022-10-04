@@ -30,6 +30,7 @@ function editItemContent(uuid){
     //console.log("#item-"+uuid);
     $("#item-"+uuid).addClass("active");
     $("#item-"+uuid+"-list").addClass("active");
+    $("#item-"+uuid).focus();
     
     return false;
 }
@@ -111,7 +112,7 @@ function addItem(type, targetKey){
                         $(".editor-content-container.active").removeClass("active");
                         $(".editor-content-container").last().addClass("active");
                         
-                        if(type==="photo" || type==="text"){
+                        if(type==="photo" || type==="text" || type==="material" || type==="role"){
                             //console.log("#item-"+targetUUID+"-obj");
                             $( "#item-"+targetUUID+"-obj" ).resizable({
                                 containment: target, 
@@ -137,6 +138,8 @@ function addItem(type, targetKey){
                                         $("#"+targetUUID+"-rotate").val(degrees);
                                     }
                                });
+                               
+                               
                               changePos(targetUUID);
                               changeSize(targetUUID);
                               updateItemSeq();
@@ -145,6 +148,24 @@ function addItem(type, targetKey){
                         if(type==="text"){
                             jscolor.install();
                         }
+                        
+                        if(type==="role"){
+                            updRoleOption(targetUUID, ''+$("#"+targetUUID+"-upUUID").val());
+                            try{
+                            $( "#item-"+targetUUID+"-obj" ).contextMenu({
+                                    selector: 'img', 
+                                    callback: function(key, options) {
+                                        chageRoleEmotion(targetUUID, key);
+                                    },
+                                    items: contextMemuItem
+                                });
+                            }catch(e){
+                                 console.log(e);
+                            }
+                        }
+                        
+                        
+                        
                         
                         
                     }catch(e){
@@ -380,8 +401,9 @@ function uploadPhoto(){
     var url=""+$("#rootpath").val()+"panel/editor/"+$("#langCode").val()+"/item/upload/add.html";
     try {
         //openModal("I am Model");
+        var parentURL=$("#photo-info-folder").val();
         $.ajax({
-                url:url,
+                url:url+(parentURL!=''?"?folder="+parentURL:""),
                 type:"POST",
                 //contentType: "application/json; charset=utf-8",
                 //dataType: "json",
@@ -496,6 +518,7 @@ function setTextStyle(uuid,type, value){
             $("#item-"+uuid+"-obj").removeClass("times");
             $("#item-"+uuid+"-obj").removeClass("noto");
             $("#item-"+uuid+"-obj").removeClass("hk");
+            $("#item-"+uuid+"-obj").removeClass("SimSun");
             $("#item-"+uuid+"-obj").addClass(value);
         }else if(type==='size'){
             $("#item-"+uuid+"-obj").css("font-size",""+value+"pt");
@@ -562,9 +585,15 @@ function showItemDetail(target){
         if(target==='image'){
             $("#item-character-view").removeClass("active");
             $("#item-image-view").addClass("active");
-        }else{
+            $("#item-material-view").removeClass("active");
+        }else if(target==='character'){
             $("#item-character-view").addClass("active");
             $("#item-image-view").removeClass("active");
+            $("#item-material-view").removeClass("active");
+        }else{
+            $("#item-material-view").addClass("active");
+            $("#item-image-view").removeClass("active");
+            $("#item-character-view").removeClass("active");
         }
     }catch(e){
         console.log(e);
@@ -610,4 +639,52 @@ function backToRole(){
     } catch (e) {
         console.log(e);
     }
+}
+
+function chageRoleEmotion(uuid, key){
+    $("#"+uuid+"-role-emotion").val(key);
+    chageRole(uuid);
+}
+
+function chageRole(uuid){
+    var rootPath=$("#rootpath").val();
+    var roleRoot=$("#"+uuid+"-upSrc").val();
+    var roleEmotion=$("#"+uuid+"-role-emotion").val();
+    var roleAction=$("#"+uuid+"-role-action").val();
+    var roleKey=$("#"+uuid+"-upUUID").val();
+    try {
+        var keyList=roleKey.split('_');
+        if(keyList!== undefined && keyList.length>=0){  
+            var updRoleSrc=keyList[0]+"_"+roleAction+"_"+roleEmotion;
+            var url=$("#"+uuid+"-upSrc").val()+"_"+roleAction+"_"+roleEmotion+".png";
+            $("#"+uuid+"-imgSrc").val(url);
+            $("#"+uuid+"-imgURL").val(url);
+            $("#"+uuid+"-upUUID").val(updRoleSrc);
+            console.log(""+rootPath+url);
+            $("#item-"+uuid+"-obj-img-src").attr("src",rootPath+url);
+        }
+        
+        
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function updRoleOption(uuid, key){
+    try{
+        console.log(uuid+":"+key);
+        if(key!=='' && key!== undefined){
+            var keyList=key.split('_');  //[0] - Name [1] - action [2] - emotion
+            if(keyList!== undefined && keyList.length>0){  
+                $("#"+uuid+"-role-action").val(''+keyList[1]);
+            }
+            
+            if(keyList!== undefined && keyList.length>1){
+                $("#"+uuid+"-role-emotion").val(''+keyList[2]);
+            }
+        }
+    } catch (e) {
+        console.log(e);
+    }
+    
 }

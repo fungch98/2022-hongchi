@@ -58,9 +58,15 @@ public class PanelPhotoController {
                 catDAO=(CategoryDAO)common.getDAOObject(request, "catDAO");
                 prod=prodDAO.loadProd(uuid);
                 
+                if(prodDAO.checkAllowEdit(prod, user)){
+                    //System.out.println("Set Y");
+                    request.setAttribute("allowEdit", "Y");
+                }
+                
                 if(prod!=null && (prod.getIsShare()==1 || prodDAO.checkAllowEdit(prod, user)) ){
                     request.setAttribute("photo", prod);
                     request.setAttribute("catList", prodDAO.getProdCat(prod));
+                    request.setAttribute("folderList", prodDAO.getProdFolder(prod));
                     request.setAttribute("hashList", prodDAO.getProdHashtag(prod));
                 }
                 
@@ -118,6 +124,7 @@ public class PanelPhotoController {
                         prod.setModifyUser(user);
                         prod.setStatus(1);
                         prod.setUuid(uuid);
+                        prod.setIsShare(0);
                         prod.setProductCreateMethod(1);
                     }else{
                         prod=prodDAO.loadProd(uuid);
@@ -133,7 +140,7 @@ public class PanelPhotoController {
                         }
                     }
                     request.setAttribute("catList", prodDAO.loadSelectedCat(catDAO.loadCategoryList(0), prod, parent));
-                    
+                    request.setAttribute("hashtag",prodDAO.getHashtagString(prod));
                     
                 }
                 

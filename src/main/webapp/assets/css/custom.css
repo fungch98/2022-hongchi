@@ -520,10 +520,9 @@ ul.sortable li{
     /*overflow: hidden;*/
 }
 
-.editor-content-obj:hover{
+.editor-content-obj:hover, .editor-content-obj:active, .editor-content-obj:focus{
     border-width: 1px !important;
 }
-
 
 
 .editor-content-obj pre{
@@ -622,7 +621,7 @@ li.editor.nav.valid {
     opacity: 1;
 }
 
-#item-character-view{
+#item-character-view, #item-material-view{
     padding:1em;
 }
 
@@ -644,6 +643,10 @@ li.editor.nav.valid {
     overflow: hidden;
     display: block;
     margin-bottom: 1em;
+}
+
+.item-cover-container.role{
+    height: 300px;
 }
 
 .item-cover{
@@ -690,4 +693,9 @@ label.folder-label-0{
     color:#1c447c ;
     color:green !important;
     font-size: 14pt;
+}
+
+a.trim{
+    padding: 0;
+    margin: 0;
 }

@@ -37,6 +37,20 @@
         </div>
     </section>
 </div>
+                   <logic:notEmpty name="emotionList">
+                       <script>
+                           var contextMemuItem={
+                                    <logic:iterate id="emotion" name="emotionList">
+                                    "${emotion.str02}":{name:"${emotion.str01}"},
+                                    </logic:iterate>
+                            "sep1": "---------",
+                            "quit": {name: "Quit", icon: function(){
+                                return 'icon solid fa-edit';
+                            }}
+                        }             
+                       </script>
+                                              
+                   </logic:notEmpty>
 <input type="hidden" id="editor-del-confirm-msg" value="<bean:message key="msg.editor.del.confrim.msg" bundle="panel"/>"/>                
 <input type="hidden" id="editor-save-success-msg" value="<bean:message key="msg.editor.save.success" bundle="panel"/>"/>                
 <input type="hidden" id="editor-upload-emprty-photo" value="<bean:message key="ERROR.EDITOR.UPLOAD.EMPTY.UUID" bundle="error"/>"/>                
@@ -47,6 +61,9 @@
 <script src="${pageContext.request.contextPath}/assets/js/editor.js"></script>
 <script src="${pageContext.request.contextPath}/assets/plugin/dropzone/dropzone.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/assets/plugin/dropzone/upload.js" type="text/javascript"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/plugin/jquery-contextmenu/jquery.contextMenu.min.css">
+<script src="${pageContext.request.contextPath}/assets/plugin/jquery-contextmenu/jquery.contextMenu.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/plugin/jquery-contextmenu/jquery.ui.position.js"></script>
 <script>
     $(document).ready(function () {
         editorInit();

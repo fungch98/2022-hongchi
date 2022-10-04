@@ -13,18 +13,25 @@
                     <div class="config">
                         <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/new/edit.html" class="icon solid  fa-cloud-upload-alt"></a>
                     <logic:notEmpty name="photo" scope="request">
-                        <logic:equal value="1"  name="photo" property="productCreateMethod" scope="request">
-                            <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/${photo.uuid}/hashtag.html" class="icon solid fa-tags"></a>
-                            <logic:equal name="photo" property="productCreateMethod" value="1">
-                                <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/${photo.uuid}/edit.html" class="icon solid fa-edit"></a>
+                        
+                           
+                        <logic:notEmpty name="allowEdit">
+                            <logic:equal name="allowEdit" value="Y">
+                                <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/${photo.uuid}/hashtag.html" class="icon solid fa-tags"></a>
+                                <logic:equal name="photo" property="productCreateMethod" value="1">
+                                    <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/${photo.uuid}/edit.html" class="icon solid fa-edit"></a>
+                                </logic:equal>
+
+                                <logic:equal name="photo" property="productCreateMethod" value="3">
+                                    <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/${photo.uuid}/edit.html" class="icon solid fa-edit"></a>
+                                    <logic:notEmpty name="photo" property="editorUuid">
+                                        <a href="${pageContext.request.contextPath}/panel/editor/${langCode}/${photo.uuid}/${photo.editorUuid}/dashboard.html" class="icon solid fa-palette"></a>
+                                    </logic:notEmpty>
+                                </logic:equal>
                             </logic:equal>
-                            <logic:equal name="photo" property="productCreateMethod" value="3">
-                                <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/${photo.uuid}/edit.html" class="icon solid fa-edit"></a>
-                                <logic:notEmpty name="photo" property="editorUuid">
-                                    <a href="${pageContext.request.contextPath}/panel/editor/${langCode}/${photo.uuid}/${photo.editorUuid}/dashboard.html" class="icon solid fa-palette"></a>
-                                </logic:notEmpty>
-                            </logic:equal>
-                        </logic:equal>
+                        </logic:notEmpty>
+                            
+                        
                     </logic:notEmpty>
                         
                         <a href="${pageContext.request.contextPath}/panel/${langCode}/dashboard.html" class="icon solid fa-times"></a>
@@ -65,14 +72,24 @@
                             <pre>${photo.desc}</pre>
                             </logic:notEmpty>
                             
-                            <b><bean:message key="label.photo.category"/>:</b>
+                            <b><bean:message key="label.folder"/>:</b>
                             <div class="photo-category-container">
+                                <!--
                                 <logic:notEmpty name="catList">
                                     <logic:iterate id="cat" name="catList" scope="request">
                                         <a href="${pageContext.request.contextPath}/panel/${langCode}/search/query.html?key=${cat.name}">#${cat.name}</a>
                                     </logic:iterate>
                                 </logic:notEmpty>
-                                
+                                -->
+                                        <logic:notEmpty name="folderList" >
+                                            <logic:iterate id="subList" name="folderList" scope="request">
+                                                <p>
+                                                    <logic:notEmpty name="subList" >
+                                                        <logic:iterate id="folder"  name="subList"><a class="trim" href="${pageContext.request.contextPath}/panel/folder/${langCode}/${cat.url}/view.html?">/${folder.name}</a></logic:iterate>
+                                                    </logic:notEmpty>
+                                                </p>
+                                            </logic:iterate>
+                                        </logic:notEmpty>
                             </div>
                             
                             <div class="tag-container">
