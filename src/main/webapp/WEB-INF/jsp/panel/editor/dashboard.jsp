@@ -43,10 +43,7 @@
                                     <logic:iterate id="emotion" name="emotionList">
                                     "${emotion.str02}":{name:"${emotion.str01}"},
                                     </logic:iterate>
-                            "sep1": "---------",
-                            "quit": {name: "Quit", icon: function(){
-                                return 'icon solid fa-edit';
-                            }}
+                            "sep1": "---------"
                         }             
                        </script>
                                               
@@ -63,7 +60,7 @@
 <script src="${pageContext.request.contextPath}/assets/plugin/dropzone/upload.js" type="text/javascript"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/plugin/jquery-contextmenu/jquery.contextMenu.min.css">
 <script src="${pageContext.request.contextPath}/assets/plugin/jquery-contextmenu/jquery.contextMenu.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/plugin/jquery-contextmenu/jquery.ui.position.js"></script>
+<script src="${pageContext.request.contextPath}/assets/plugin/jquery-contextmenu/jquery.ui.position.min.js"></script>
 <script>
     $(document).ready(function () {
         editorInit();

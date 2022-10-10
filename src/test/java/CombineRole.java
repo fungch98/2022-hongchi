@@ -34,17 +34,27 @@ public class CombineRole {
         
         GeneratePhoto generator=new GeneratePhoto();
         try{
-            //nameList.add("loklok");
-            nameList.add("longlong");
-            actionList.add("stand");
-            actionList.add("sit");
+            //nameList.add("lokkid");
+           // nameList.add("longlong");
+          // nameList.add("sunkid");
+           nameList.add("marukid");
+           //nameList.add("longkid");
+            //actionList.add("stand");
+            //actionList.add("sit");
+            
+            //actionList.add("run");
+            actionList.add("creep");
+            //actionList.add("point");
+            //actionList.add("jump");
+            //actionList.add("situp");
+            //actionList.add("kick");
             if(folder!=null && folder.isDirectory() ){
                 
                 for(int i=0; nameList!=null && i<nameList.size();i++){
                     name=nameList.get(i);
                     roleDir=new File(folder.getAbsoluteFile()+"/"+name);
-                    //output=new File(folder.getAbsoluteFile()+"/"+name+"/output");
-                    output=new File(folder.getAbsoluteFile()+"/output");
+                    output=new File(folder.getAbsoluteFile()+"/"+name+"/output");
+                    //output=new File(folder.getAbsoluteFile()+"/output");
                     if(roleDir.exists() && roleDir.isDirectory()){
                         fileList=roleDir.listFiles();
                         for(int k=0;fileList!=null && k<fileList.length;k++){

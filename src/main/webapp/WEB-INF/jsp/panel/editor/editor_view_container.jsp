@@ -69,8 +69,8 @@
                                     },
                                     items: contextMemuItem
                                 });
-                                          
-                   });      </logic:equal>
+                                          </logic:equal>
+                   });      
                </script>
             </logic:notEqual>
         </logic:iterate>

@@ -790,9 +790,10 @@ public class EditorDAO {
                             photo=new File(path+item.getImgSrc());
                         }else{
                             photo=new File(item.getImgSrc());
+                            System.out.println("Img src: "+photo.getAbsolutePath());
                         }
                         
-                        //.out.println("File: "+photo);
+                         System.out.println("File: "+photo);
                         if(photo.exists()){
                             image=ImageIO.read(photo);
                             if(image!=null){

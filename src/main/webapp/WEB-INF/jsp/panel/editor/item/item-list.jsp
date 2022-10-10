@@ -12,8 +12,10 @@
                         <h4><i class="icon solid fa-arrows-alt-v"></i><bean:message key="label.editor.item.type.${itemDetail.itemType}"/><span id="item-list-${itemDetail.uuid}-name"><logic:notEmpty name="itemDetail" property="name"> - ${itemDetail.name}</logic:notEmpty></span></h4>
                         
                         <div class="config">
+                            
                             <a href="#" onclick="editItemContent('${itemDetail.uuid}');return false;"><i class="icon solid fa-edit"></i></a>
                         <logic:notEqual name="itemDetail" property="itemType" value="bg">
+                                <a href="#" onclick="showItem('${itemDetail.uuid}');return false;"><i id="item-${itemDetail.uuid}-list-eye" class="icon solid fa-eye"></i></a>
                                 <a href="#" onclick="deleteItem('${itemDetail.uuid}');return false;"><i class="icon solid fa-trash delete"></i></a>
                         </logic:notEqual>
                         

@@ -688,3 +688,20 @@ function updRoleOption(uuid, key){
     }
     
 }
+
+function showItem(uuid){
+    try{
+        var className=$("#item-"+uuid+"-list-eye").attr('class');
+        if(className==='icon solid fa-eye'){
+            $("#item-"+uuid+"-list-eye").removeClass("fa-eye");
+            $("#item-"+uuid+"-list-eye").addClass("fa-eye-slash");
+            $("#item-"+uuid+"-obj").css('display','none');
+        }else{
+            $("#item-"+uuid+"-list-eye").addClass("fa-eye");
+            $("#item-"+uuid+"-list-eye").removeClass("fa-eye-slash");
+            $("#item-"+uuid+"-obj").css('display','block');
+        }
+    }catch(e){
+        
+    }
+}

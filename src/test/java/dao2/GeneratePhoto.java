@@ -80,10 +80,115 @@ public class GeneratePhoto {
                          pos[0]=62; 
                          pos[1]=0;
                     }
+            }else if(role.equalsIgnoreCase("lokkid")){
+                if(action.equalsIgnoreCase("stand")){
+                         pos[0]=144; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("sit")){
+                        pos[0]=180; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("jump")){
+                        pos[0]=130; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("kick")){
+                        pos[0]=230; 
+                         pos[1]=3;
+                    }else if(action.equalsIgnoreCase("creep")){
+                        pos[0]=20; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("point")){
+                        pos[0]=150; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("run")){
+                        pos[0]=160; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("situp")){
+                        pos[0]=220; 
+                         pos[1]=0;
+                    }
+            }else if(role.equalsIgnoreCase("sunkid")){
+                if(action.equalsIgnoreCase("stand")){
+                         pos[0]=35; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("sit")){
+                        pos[0]=115; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("jump")){
+                        pos[0]=60; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("kick")){
+                        pos[0]=160; 
+                         pos[1]=3;
+                    }else if(action.equalsIgnoreCase("creep")){
+                        pos[0]=0; 
+                         pos[1]=4;
+                    }else if(action.equalsIgnoreCase("point")){
+                        pos[0]=95; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("run")){
+                        pos[0]=60; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("situp")){
+                        pos[0]=140; 
+                         pos[1]=2;
+                    }
+            }else if(role.equalsIgnoreCase("marukid")){
+                if(action.equalsIgnoreCase("stand")){
+                         pos[0]=50; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("sit")){
+                        pos[0]=150; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("jump")){
+                        pos[0]=100; 
+                         pos[1]=10;
+                    }else if(action.equalsIgnoreCase("kick")){
+                        pos[0]=195; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("creep")){
+                        pos[0]=18; 
+                         pos[1]=15;
+                    }else if(action.equalsIgnoreCase("point")){
+                        pos[0]=100; 
+                         pos[1]=10;
+                    }else if(action.equalsIgnoreCase("run")){
+                        pos[0]=100; 
+                         pos[1]=20;
+                    }else if(action.equalsIgnoreCase("situp")){
+                        pos[0]=154; 
+                         pos[1]=20;
+                    }
+            }else if(role.equalsIgnoreCase("longkid")){
+                if(action.equalsIgnoreCase("stand")){
+                         pos[0]=140; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("sit")){
+                        pos[0]=175; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("jump")){
+                        pos[0]=175; 
+                         pos[1]=30;
+                    }else if(action.equalsIgnoreCase("kick")){
+                        pos[0]=370; 
+                         pos[1]=40;
+                    }else if(action.equalsIgnoreCase("creep")){
+                        pos[0]=50; 
+                         pos[1]=40;
+                    }else if(action.equalsIgnoreCase("point")){
+                        pos[0]=200; 
+                         pos[1]=40;
+                    }else if(action.equalsIgnoreCase("run")){
+                        pos[0]=180; 
+                         pos[1]=25;
+                    }else if(action.equalsIgnoreCase("situp")){
+                        pos[0]=235; 
+                         pos[1]=20;
+                    }
             }else{
                 pos[0]=0; 
                 pos[1]=0;
             }
+            System.out.println("POS: "+pos[0]);
         }catch(Exception e){
             e.printStackTrace();
         }

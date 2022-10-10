@@ -95,7 +95,7 @@
                             <div class="tag-container">
                                 <logic:notEmpty name="hashList">
                                     <logic:iterate id="tag" name="hashList" scope="request">
-                                        <a href="#">#${tag.name}</a>
+                                        <a href="${pageContext.request.contextPath}/panel/${langCode}/search/query.html?key=${tag.name}">#${tag.name}</a>
                                     </logic:iterate>
                                 </logic:notEmpty>
                                 
