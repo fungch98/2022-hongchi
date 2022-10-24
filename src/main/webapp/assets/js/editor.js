@@ -190,12 +190,17 @@ function photoSearchTarget(target){
 }
 
 function photoSearch(key){
+    photoSearch(key, null);
+}
+
+function photoSearch(key, type){
     var url=""+$("#rootpath").val()+"panel/"+$("#langCode").val()+"/editor/search.html";
     var target="#search-photo-result-container";
     
     try{
         //console.log(url);
-        //console.log(key);
+        console.log(key);
+        console.log(type);
         $("#search-ajax-key").val(key);
         
         $.ajax({
@@ -203,7 +208,7 @@ function photoSearch(key){
                 type:"POST",
                 //contentType: "application/json; charset=utf-8",
                 //dataType: "json",
-                data: {"searchKey": ''+key},
+                data: {"searchKey": ''+key, "searchType":''+type},
                 //contentType: 'text/html; charset=UTF-8',
                 success:function(result){
                     
@@ -642,8 +647,22 @@ function backToRole(){
 }
 
 function chageRoleEmotion(uuid, key){
-    $("#"+uuid+"-role-emotion").val(key);
+    try{
+        var keyVal=key.split("_");
+        if(keyVal!==undefined && keyVal.length>=0){
+            console.log(keyVal[0]+":"+keyVal[1]);
+            if(keyVal[0]==='ACTION'){
+                $("#"+uuid+"-role-action").val(keyVal[1]);
+            }else{
+                $("#"+uuid+"-role-emotion").val(keyVal[1]);
+            }
+        }
+        
     chageRole(uuid);
+    }catch(e){
+        console.log(e);
+    }
+    
 }
 
 function chageRole(uuid){

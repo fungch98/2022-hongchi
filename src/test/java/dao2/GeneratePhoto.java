@@ -67,17 +67,37 @@ public class GeneratePhoto {
     public int[] getPosition(String role, String action){
         int [] pos={0,0};
         try{
-            if(role.equalsIgnoreCase("loklok")){
+            if(role.equalsIgnoreCase("lok")){
                     pos[0]=0; 
                     pos[1]=0;
                     
-                    if(action.equalsIgnoreCase("sit")){
-                         pos[0]=75; 
-                         pos[1]=5;
+                    if(action.equalsIgnoreCase("kick")){
+                         pos[0]=620; 
+                         pos[1]=0;
                     }
-            }else if(role.equalsIgnoreCase("longlong")){
-                if(action.equalsIgnoreCase("sit")){
-                         pos[0]=62; 
+            }else if(role.equalsIgnoreCase("long")){
+                if(action.equalsIgnoreCase("kick")){
+                         pos[0]=590; 
+                         pos[1]=0;
+                    }
+            }else if(role.equalsIgnoreCase("maru")){
+                if(action.equalsIgnoreCase("kick")){
+                         pos[0]=570; 
+                         pos[1]=0;
+                    }
+            }else if(role.equalsIgnoreCase("sun")){
+                pos[0]=118; 
+                if(action.equalsIgnoreCase("kick")){
+                         pos[0]=950; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("stand")){
+                         pos[0]=0; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("situp")){
+                         pos[0]=0; 
+                         pos[1]=0;
+                    }else if(action.equalsIgnoreCase("creep")){
+                         pos[0]=0; 
                          pos[1]=0;
                     }
             }else if(role.equalsIgnoreCase("lokkid")){
@@ -188,7 +208,7 @@ public class GeneratePhoto {
                 pos[0]=0; 
                 pos[1]=0;
             }
-            System.out.println("POS: "+pos[0]);
+            System.out.println("POS: "+pos[0]+"-"+pos[1]);
         }catch(Exception e){
             e.printStackTrace();
         }

@@ -34,20 +34,24 @@ public class CombineRole {
         
         GeneratePhoto generator=new GeneratePhoto();
         try{
-            //nameList.add("lokkid");
+           nameList.add("lok");
+           nameList.add("long");
+           nameList.add("maru");
+           nameList.add("sun");
            // nameList.add("longlong");
-          // nameList.add("sunkid");
-           nameList.add("marukid");
+          //nameList.add("sunkid");
+           //nameList.add("marukid");
            //nameList.add("longkid");
-            //actionList.add("stand");
-            //actionList.add("sit");
+           /* actionList.add("stand");
+            actionList.add("sit");
             
-            //actionList.add("run");
+            actionList.add("run");
             actionList.add("creep");
-            //actionList.add("point");
-            //actionList.add("jump");
-            //actionList.add("situp");
+            actionList.add("point");
+            actionList.add("jump");
+            */
             //actionList.add("kick");
+            actionList.add("situp");
             if(folder!=null && folder.isDirectory() ){
                 
                 for(int i=0; nameList!=null && i<nameList.size();i++){

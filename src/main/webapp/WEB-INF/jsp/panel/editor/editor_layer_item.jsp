@@ -13,7 +13,7 @@
             <logic:notEmpty name="charList" scope="request">
                 <logic:iterate id="charItem" name="charList" scope="request">
                     
-                    <div class='col-4 col-6-large col-6-medium col-6-small'>
+                    <div class='col-3  col-6-medium col-6-small'>
                         <a href="#" onclick="addItem('role','${charItem.id}');return false;" class="align-center">
                         <div class="item-cover-container role">
                             <div class='item-cover ' style='background-image: url("${pageContext.request.contextPath}/images/role/${charItem.str02}");'>
@@ -51,6 +51,7 @@
         <a href="#" onclick="accordionTag();return false;" class="alt4 accordion" ><i class="icon solid fa-tags"></i> <span class="open"><bean:message key="label.show.all" bundle="ae21studio"/></span><span class="close"><bean:message key="label.show.some" bundle="ae21studio"/></span></a>
         <div id="accordion-action-panel" class="accordion-panel alt">
             <div class="tag-container">
+                <a href="#" onclick="photoSearch('','personal');return false;" class="alt3">#個人圖庫</a>
                 <logic:notEmpty name="catList" >
                     <logic:iterate id="cat" name="catList">
                         <a href="#" onclick="photoSearch('${cat.name}');return false;" class="alt3">#${cat.name}</a>

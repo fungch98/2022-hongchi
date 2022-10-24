@@ -322,11 +322,13 @@ public class ProdDAO {
             search.setKey(key);
             search.setCurPage(0);
             search.setPageItems(max);
-            if(type!=null && type.equalsIgnoreCase("personal")){
+            //System.out.println(type+":"+type.equalsIgnoreCase("personal"));
+            if(type!=null && (type.equalsIgnoreCase("personal") || type.equalsIgnoreCase("PERSONAL_FOLDER"))){
                 search.setResultList(this.queryProd(key,user,true, (user!=null && user.getIsAdmin()==1?true:false),  size));
             }else{
                 search.setResultList(this.queryProd(key,user,false, (user!=null && user.getIsAdmin()==1?true:false),   size));
             }
+            System.out.println("size: "+search.getResultList().size());
             search.generatePageList();
             
             this.addHotKeyWord(search);
@@ -351,8 +353,10 @@ public class ProdDAO {
             //key=((search!=null && !search.isEmpty())?"%"+search.trim()+"%":"%");
             //key=key.replace(" ", "%");
             key=((search!=null && !search.isEmpty())?search.trim():"");
-            keyList=key.split(" ");
-            System.out.println("Key: "+key);
+            if(key!=null && !key.isEmpty()){
+                keyList=key.split(" ");
+            }
+            //System.out.println("Key: "+key);
             sql="Select {p.*} from product_info p where p.prod_status>=0 ";
                     //+ " and search_key like :key "
                     
@@ -367,7 +371,7 @@ public class ProdDAO {
                     }
                     sql += (user!=null && isPersonal? " and  p.create_user=:user ":" and p.prod_status>0  "+(isAdmin?"":" and  (p.is_share=1 || p.create_user=:user) ")+"   ")
                     + " order by p.modify_date desc ";
-                    System.out.println("Search sql: "+sql);
+                    System.out.println("Search sql("+user.getDisplayName()+":"+isPersonal+":"+user.getId()+"): "+sql);
                     
             query =session.createSQLQuery(sql);
             query.addEntity("p", ProductInfo.class);
@@ -376,14 +380,16 @@ public class ProdDAO {
                     key="%"+keyList[i].trim()+"%";
                     key=key.replace("+", "%");
                     query.setString("key"+i, key);
+                    //System.out.println(key);
                 }
             }
             
             if(user!=null && isPersonal){
                 query.setInteger("user", user.getId());
-                System.out.println("User: "+user.getId()+":"+user.getDisplayName());
-            }else if(!isAdmin){
+                //System.out.println("User: "+user.getId()+":"+user.getDisplayName());
+            }else if(!isAdmin && user!=null){
                 query.setInteger("user", user.getId());
+                //System.out.println("User"+user.getId());
             }
             if(size>0){
                 query.setMaxResults(size);

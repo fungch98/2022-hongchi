@@ -65,11 +65,18 @@
                                     <input name="display"  id="display" placeholder="<bean:message key="label.user.display" bundle="ae21studio"/>" type="text" required="" value="${editUser.displayName}" maxlength="100"  />
                                 </div> 
                                 <logic:equal name="UserAuthorizedLogin" property="isAdmin" value="1">
-                                <div class="col-12">
+                                <div class="col-6 col-12-small">
                                     <label for="isAdmin"><bean:message key="label.user.isAdmin" bundle="ae21studio"/></label>
                                     <select id="isAdmin" name="isAdmin" required="">
                                         <option value="1" <logic:equal name="editUser" property="isAdmin" value="1">Selected="selected"</logic:equal>><bean:message key="label.user.isAdmin.1" bundle="ae21studio"/></option>
                                         <option value="0" <logic:equal name="editUser" property="isAdmin" value="0">Selected="selected"</logic:equal>><bean:message key="label.user.isAdmin.0" bundle="ae21studio"/></option>
+                                    </select>
+                                </div>
+                                <div class="col-6 col-12-small">
+                                    <label for="userStatus"><bean:message key="label.status" bundle="ae21studio"/></label>
+                                    <select id="userStatus" name="userStatus" required="">
+                                        <option value="1" <logic:equal name="editUser" property="userStatus" value="1">Selected="selected"</logic:equal>><bean:message key="label.status.user.1" bundle="ae21studio"/></option>
+                                        <option value="0" <logic:equal name="editUser" property="userStatus" value="0">Selected="selected"</logic:equal>><bean:message key="label.status.user.0" bundle="ae21studio"/></option>
                                     </select>
                                 </div>
                                 </logic:equal>

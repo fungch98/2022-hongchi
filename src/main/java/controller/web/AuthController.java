@@ -91,7 +91,8 @@ public class AuthController {
                 this.frameHandler.login(request, userAuth);
                 user = (UserInfo) userAuth.getLoginedUser();
                 //System.out.println("User: "+user.getDisplayName());
-                return "redirect:/panel/"+langCode+"/dashboard.html";
+                //return "redirect:/panel/"+langCode+"/dashboard.html";
+                return "redirect:/panel/editor/"+langCode+"/new/new/dashboard.html";
             } else {
                 this.frameHandler.logout(request);
                 //request.setAttribute("loginMsg", userAuth);
@@ -248,7 +249,8 @@ public class AuthController {
                         }
                     }
                     
-                    return "redirect:/panel/"+langCode+"/dashboard.html";
+                    //return "redirect:/panel/"+langCode+"/dashboard.html";
+                    return "redirect:/panel/editor/"+langCode+"/new/new/dashboard.html";
                     /*if(userAuth.getLoginedUser().getIsAdmin()==1){
                         returnUrl = "redirect:/user/info.html";
                     }*/

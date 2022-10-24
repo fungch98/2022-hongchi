@@ -26,6 +26,7 @@
                             <th><bean:message key="label.user.username" bundle="ae21studio" /></th>
                             <th><bean:message key="label.user.google" bundle="ae21studio" /></th>
                             <th><bean:message key="label.user.display" bundle="ae21studio" /></th>
+                            <th><bean:message key="label.status" bundle="ae21studio" /></th>
                             <th><bean:message key="label.user.loginDate" bundle="ae21studio" /></th>
                             <th></th>
                         </tr>
@@ -43,6 +44,9 @@
                                     </td>
                                      <td>
                                         ${user.displayName}
+                                    </td>
+                                    <td>
+                                        <bean:message key="label.status.user.${user.userStatus}" bundle="ae21studio" />
                                     </td>
                                      <td>
                                         <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${user.loginDate}"/>
@@ -68,10 +72,10 @@
             searching: true,
             "bLengthChange": false,
             "order": [],
-            "columns": [{"width": "25%"},{"width": "25%"},null,null,{"width":"4em"}],
+            "columns": [{"width": "20%"},{"width": "20%"},{"width": "20%"},null,null,{"width":"4em"}],
             "columnDefs": [
-                {"className": "dt-right", "targets": [4]},
-                {"className": "dt-center", "targets": [2,3]}
+                {"className": "dt-right", "targets": [5]},
+                {"className": "dt-center", "targets": [3,4]}
             ],
             language: {
                 "info": "<bean:message key="dataTable.info"  bundle="ae21studio"/>",

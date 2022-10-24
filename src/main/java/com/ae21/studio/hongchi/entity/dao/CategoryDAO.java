@@ -52,6 +52,30 @@ public class CategoryDAO {
         return result;
     }
     
+    public List<CategoryInfo> loadRootCategoryList(int size) throws Exception{
+        Session session = sessionFactory.openSession();
+        SQLQuery query = null;
+        List<CategoryInfo> result=null;
+        String sql="";
+        try {
+            sql="SELECT {c.*} FROM category_info c WHERE parent_id=0 ORDER BY seq, name";
+            query = session.createSQLQuery(sql);
+            query.addEntity("c", CategoryInfo.class);
+            if(size>0){
+                query.setMaxResults(size);
+            }
+            result = (List<CategoryInfo>) query.list();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            try {
+                session.close();
+            } catch (Exception ignore) {
+            }
+        }
+        return result;
+    }
+    
     public CategoryInfo loadCatURL(String url) throws Exception{
         Session session = sessionFactory.openSession();
         Query query = null;

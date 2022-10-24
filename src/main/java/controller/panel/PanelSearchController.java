@@ -265,16 +265,21 @@ public class PanelSearchController {
         ProdDAO prodDAO=null;
         //String search=request.getParameter("search");
         String key=request.getParameter("searchKey");
+        String type=request.getParameter("searchType");
         
         SearchBean search=null;
         int curPage=0;
         List<ProductInfo> prodList=null;
+        UserInfo user=null;
         try{ 
             this.frameHandler.loadTesting(request, 0);
             if(this.frameHandler.isLogin(request)){
+                user=this.frameHandler.getLoginUser(request);
                 prodDAO=(ProdDAO)common.getDAOObject(request, "prodDAO");
                 System.out.println("Key: "+key+":"+common.getLocalTime());
-                search=prodDAO.searchProduct(key,null, 0,24, null);
+                
+                key=(key!=null?key.trim():"");
+                search=prodDAO.searchProduct(key,type, 0,24, user);
                 
                 if(search!=null){
                     request.getSession().setAttribute("SEARCH_EDITOR_RESULT", search);

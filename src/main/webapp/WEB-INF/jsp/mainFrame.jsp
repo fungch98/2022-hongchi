@@ -36,7 +36,7 @@
         <link href="${pageContext.request.contextPath}/assets/plugin/dropzone/upload.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/plugin/datatables/datatables.min.css"/>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-        
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/plugin/jquery-contextmenu/jquery.contextMenu.min.css">
          <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common.css" />

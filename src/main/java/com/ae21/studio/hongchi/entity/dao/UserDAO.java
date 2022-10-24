@@ -220,15 +220,18 @@ public class UserDAO {
                
                 //user.setIsAWS(0);
                 user.setLoginDate(new Date());
-
-                //System.out.println("User Id:"+user.getId());
-                //user.setIdRef(lib.getPasswordHash(""+user.getId()));
-                session.saveOrUpdate(user);
-                //System.out.println("UserId: "+user.getId()+":"+user.getFbCoverImage());
-                auth.setLogined(true);
-                auth.setLoginedUser(user);
-                auth.setResultCode(0);
-                tx.commit();
+                if(user.getUserStatus()==1){
+                    //System.out.println("User Id:"+user.getId());
+                    //user.setIdRef(lib.getPasswordHash(""+user.getId()));
+                    session.saveOrUpdate(user);
+                    //System.out.println("UserId: "+user.getId()+":"+user.getFbCoverImage());
+                    auth.setLogined(true);
+                    auth.setLoginedUser(user);
+                    auth.setResultCode(0);
+                    tx.commit();
+                }else{
+                    auth.setResultCode(1);//Can't get Facebook ID
+                }
             } else {
                 auth.setResultCode(1);//Can't get Facebook ID
             }
@@ -396,6 +399,8 @@ public class UserDAO {
         String username=request.getParameter("username");
         String display=request.getParameter("display");
         String isAdmin=request.getParameter("isAdmin");
+        String userStatus=request.getParameter("userStatus");
+        int status=0;
         
         try{
             result.setCode(0);
@@ -417,6 +422,20 @@ public class UserDAO {
                        }catch(Exception ignore){
                            result.setCode(-2001);
                            result.setMsg("ERROR.USER.ISADMIN.INVALID");
+                       }
+                       
+                       try{
+                           status=Integer.parseInt(userStatus);
+                           if(status!=1){
+                               editUser.setUserStatus(status);
+                           }else{
+                               editUser.setUserStatus(0);
+                           }
+                           
+                       }catch(Exception ignore){
+                           editUser.setUserStatus(0);
+                           result.setCode(-2011);
+                           result.setMsg("ERROR.STATUS.INVALID");
                        }
                    }
                    

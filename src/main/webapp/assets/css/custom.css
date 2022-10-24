@@ -699,3 +699,18 @@ a.trim{
     padding: 0;
     margin: 0;
 }
+
+.context-menu-item{
+    font-size: 12pt;
+    width: 30% !important;
+    padding: 0.2em 1em!important;
+    
+}
+
+.context-menu-list{
+   /* z-index:99999 !important;*/
+    display:flex ;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 18em !important;
+}

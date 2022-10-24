@@ -41,9 +41,15 @@
                        <script>
                            var contextMemuItem={
                                     <logic:iterate id="emotion" name="emotionList">
-                                    "${emotion.str02}":{name:"${emotion.str01}"},
+                                    "EMOTION_${emotion.str02}":{name:"${emotion.str01}"},
                                     </logic:iterate>
-                            "sep1": "---------"
+                           <logic:notEmpty name="actionList">
+                                "sep1": "---------",  "sep2": "---------",
+                           <logic:iterate id="action" name="actionList">
+                                    "ACTION_${action.str02}":{name:"${action.str01}"},
+                                    </logic:iterate>
+                           </logic:notEmpty>
+                            "sep3": "---------",  "sep4": "---------"
                         }             
                        </script>
                                               
@@ -58,7 +64,7 @@
 <script src="${pageContext.request.contextPath}/assets/js/editor.js"></script>
 <script src="${pageContext.request.contextPath}/assets/plugin/dropzone/dropzone.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/assets/plugin/dropzone/upload.js" type="text/javascript"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/plugin/jquery-contextmenu/jquery.contextMenu.min.css">
+
 <script src="${pageContext.request.contextPath}/assets/plugin/jquery-contextmenu/jquery.contextMenu.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/plugin/jquery-contextmenu/jquery.ui.position.min.js"></script>
 <script>

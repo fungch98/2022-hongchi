@@ -11,10 +11,11 @@
             <header class="config-header">
                 <h2><bean:message key="label.photo.title" /><logic:notEmpty name="photo" scope="request"> - ${photo.name}</logic:notEmpty></h2>
                     <div class="config">
+                        <a href="${pageContext.request.contextPath}/panel/editor/${langCode}/new/new/dashboard.html?copy=${photo.uuid}" class="icon solid fa-paint-brush"></a>
                         <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/new/edit.html" class="icon solid  fa-cloud-upload-alt"></a>
                     <logic:notEmpty name="photo" scope="request">
                         
-                           
+                         
                         <logic:notEmpty name="allowEdit">
                             <logic:equal name="allowEdit" value="Y">
                                 <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/${photo.uuid}/hashtag.html" class="icon solid fa-tags"></a>

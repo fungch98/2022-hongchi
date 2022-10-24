@@ -6,6 +6,7 @@ import com.ae21.bean.SystemConfigBean;
 import com.ae21.handler.CommonHandler;
 import com.ae21.studio.hongchi.entity.bean.CategoryInfo;
 import com.ae21.studio.hongchi.entity.bean.EditorInfo;
+import com.ae21.studio.hongchi.entity.bean.EditorItem;
 import com.ae21.studio.hongchi.entity.bean.ProductInfo;
 import com.ae21.studio.hongchi.entity.bean.UserInfo;
 import com.ae21.studio.hongchi.entity.dao.CategoryDAO;
@@ -48,7 +49,10 @@ public class PanelEditorController {
         CategoryDAO catDAO=null;
         CommonDAO comDAO=null;
         String parentURL=request.getParameter("folder");
+        String copy=request.getParameter("copy");
         CategoryInfo folder=null;
+        ProductInfo copyImage=null;
+        EditorItem copyItem=null;
         try{ 
             
             request.setAttribute("pageLink", prod+"/"+uuid+"/dashboard.html");
@@ -71,16 +75,25 @@ public class PanelEditorController {
                 comDAO=(CommonDAO)common.getDAOObject(request, "commDAO");
                 
                 photo=editorDAO.loadEditorProduct(prod, user);
+                copyImage=prodDAO.loadProd(copy);
+                //System.out.println("Copy: "+copy+":"+(copyImage!=null?copyImage.getId():"NULL"));
                 editor=editorDAO.loadEditor(uuid, photo, user, false);
                 
                 if(editor!=null){
                     request.setAttribute("photo", photo );
                     request.setAttribute("editor", editor );
+                    
+                    if(copyImage!=null){
+                        copyItem=editorDAO.addItem("photo", copyImage.getUuid());
+                        if(copyItem!=null && editor.getEditorItemList()!=null){
+                            editor.getEditorItemList().add(copyItem);
+                        }
+                    }
                     if(editor.getEditorItemList()!=null){
                         request.setAttribute("itemList",editorDAO.loadEditorItem(editor) );
                     }
                     request.setAttribute("userPhotoList", prodDAO.loadUserProd(user, 24));
-                    request.setAttribute("catList", catDAO.loadCategoryList(0));
+                    request.setAttribute("catList", catDAO.loadRootCategoryList(0));
                     request.setAttribute("charList", comDAO.getParaList("EDITOR", "CHAR", 0));
                     request.setAttribute("objList", comDAO.getParaList("EDITOR", "OBJ", 0));
                     request.setAttribute("emotionList", comDAO.getParaList("ROLE", "EMOTION", 0));
