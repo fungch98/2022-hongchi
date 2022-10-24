@@ -90,7 +90,7 @@ public class PanelEditorController {
                         }
                     }
                     if(editor.getEditorItemList()!=null){
-                        request.setAttribute("itemList",editorDAO.loadEditorItem(editor) );
+                        request.setAttribute("itemList",editorDAO.loadEditorItem(editor, true) );
                     }
                     request.setAttribute("userPhotoList", prodDAO.loadUserProd(user, 24));
                     request.setAttribute("catList", catDAO.loadRootCategoryList(0));

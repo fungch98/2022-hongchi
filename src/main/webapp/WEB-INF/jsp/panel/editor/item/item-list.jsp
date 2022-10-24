@@ -8,8 +8,9 @@
                 <div class="editor-item-content-container">
                    
                     <header>
-                         
-                        <h4><i class="icon solid fa-arrows-alt-v"></i><bean:message key="label.editor.item.type.${itemDetail.itemType}"/><span id="item-list-${itemDetail.uuid}-name"><logic:notEmpty name="itemDetail" property="name"> - ${itemDetail.name}</logic:notEmpty></span></h4>
+                          
+                          
+                        <h4><logic:notEqual name="itemDetail" property="itemType" value="bg"><i class="icon solid fa-arrows-alt-v"></i></logic:notEqual><bean:message key="label.editor.item.type.${itemDetail.itemType}"/><span id="item-list-${itemDetail.uuid}-name"><logic:notEmpty name="itemDetail" property="name"> - ${itemDetail.name}</logic:notEmpty></span></h4>
                         
                         <div class="config">
                             

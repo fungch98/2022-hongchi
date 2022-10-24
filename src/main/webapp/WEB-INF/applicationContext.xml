@@ -56,7 +56,7 @@
         <property name="host" value="https://localhost:8443/hongchi"/>
         <property name="key1" value="UA-47495893-4"/>
         <property name="key2" value=""/>
-        <property name="key3" value="UAT"/>
+        <property name="key3" value="SIT"/>
 
     </bean> 
       

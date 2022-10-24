@@ -70,13 +70,7 @@
                     </select>
                 </div>       
                 <input type="hidden" id="${itemDetail.uuid}-textAlign" name="textAlign" value="${itemDetail.textAlign}"  />
-                <input type="hidden" name="bg-color" value="${itemDetail.bgColor}${itemDetail.opacityVal}">
-                <!--
-                <div class="col-6" >
-                    <label for="${itemDetail.uuid}-bg-color"><bean:message key="label.editor.text.bg"/></label>
-                    <input type="text"  id="${itemDetail.uuid}-bg-color" name="bg-color" value="${itemDetail.bgColor}${itemDetail.opacityVal}" data-jscolor="{}" onchange="setTextStyle('${itemDetail.uuid}','bg',this.value);">
-                </div>
-                -->
+               
                 <div class="col-4 col-6-medium col-4-small" >
                     <label for="${itemDetail.uuid}-color"><bean:message key="label.editor.text.color"/></label>
                     <input type="text"  id="${itemDetail.uuid}-color" name="color" value="${itemDetail.color}" data-jscolor="{}" onchange="setTextStyle('${itemDetail.uuid}','color',this.value);">

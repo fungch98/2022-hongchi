@@ -92,14 +92,14 @@ public class EditorDAO {
         return result;
     }
     
-    public List<EditorItem> loadEditorItem(EditorInfo editor)throws Exception{
+    public List<EditorItem> loadEditorItem(EditorInfo editor, boolean isDisplay)throws Exception{
         List<EditorItem> result=null;
         Session session = sessionFactory.openSession();
         SQLQuery query = null;
         try{
             if(editor!=null ){
                 if(editor.getId()!=null){
-                    query=session.createSQLQuery("Select {i.*} from editor_item i where i.editor_id=:id ORDER by i.z_index");
+                    query=session.createSQLQuery("Select {i.*} from editor_item i where i.editor_id=:id ORDER by i.z_index "+(isDisplay?" desc ":""));
                     query.addEntity("i", EditorItem.class);
                     query.setInteger("id", editor.getId());
                     result=(List<EditorItem>)query.list();
@@ -457,7 +457,7 @@ public class EditorDAO {
                             colorCode=(bgColor!=null && bgColor.length>=i?bgColor[i]:"");
                             item.setBgColor("");
                             item.setOpacity((double)0);
-                            //System.out.println("Color: "+colorCode);
+                            //System.out.println("Color("+itemType[i]+"): "+colorCode);
                             if(colorCode!=null && colorCode.length()>=7){
                                 item.setBgColor(colorCode.substring(0,7));
                             }
@@ -658,7 +658,7 @@ public class EditorDAO {
             result.setMsg("ERROR.NULL");
             //System.out.println("Start to Generate Photo"+editor.getId());
             if(editor!=null && editor.getId()!=null && user!=null && config!=null){
-                itemList=this.loadEditorItem(editor);
+                itemList=this.loadEditorItem(editor, false);
                 product  = new BufferedImage(600*scaleAll, 450*scaleAll, BufferedImage.TYPE_INT_ARGB);
                 //background= new BufferedImage(1200, 900, BufferedImage.TYPE_INT_RGB);
                 g=product.createGraphics();

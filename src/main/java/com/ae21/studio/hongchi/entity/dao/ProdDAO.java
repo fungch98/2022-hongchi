@@ -8,6 +8,7 @@ import com.ae21.bean.ResultBean;
 import com.ae21.bean.form.SelectedBean;
 import com.ae21.handler.CommonHandler;
 import com.ae21.studio.hongchi.entity.bean.CategoryInfo;
+import com.ae21.studio.hongchi.entity.bean.EditorInfo;
 import com.ae21.studio.hongchi.entity.bean.HashtagInfo;
 import com.ae21.studio.hongchi.entity.bean.ProductInfo;
 import com.ae21.studio.hongchi.entity.bean.UploadInfo;
@@ -428,6 +429,7 @@ public class ProdDAO {
         String hashtagVal=request.getParameter("hashtag");
         
         String productCat="";
+        EditorInfo editor=null;
         
         try{
             result.setCode(0);
@@ -464,7 +466,7 @@ public class ProdDAO {
                         photo.setName(name);
                         photo.setDesc(desc);
                         
-                        
+                       
                         
                         photo.setProductRef(0);
                         photo.setProductUUID(photoUUID);
@@ -579,6 +581,19 @@ public class ProdDAO {
                         photo.setUuid(lib.generateUUID());
                     }
                     session.saveOrUpdate(photo);
+                     if(photo.getEditorUuid()!=null){
+                        try{
+                            sql="update editor_info set name=:name, editor_desc=:desc where uuid=:uuid ";
+                            squery=session.createSQLQuery(sql);
+                            squery.setString("name", photo.getName());
+                            squery.setString("desc", photo.getDesc());
+                            squery.setString("uuid", photo.getEditorUuid());
+                             squery.executeUpdate();
+                             //System.out.println("update editor_info set name=:name, editor_desc=:desc where uuid='"+photo.getEditorUuid()+"' ");
+                        }catch(Exception ingore){
+                            ingore.printStackTrace();
+                        }
+                    }
                     
                     sql="DELETE FROM product_category WHERE product_id=:prod ";
                     squery=session.createSQLQuery(sql);

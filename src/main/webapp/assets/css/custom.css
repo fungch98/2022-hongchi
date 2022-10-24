@@ -714,3 +714,7 @@ a.trim{
     flex-wrap: wrap;
     max-width: 18em !important;
 }
+
+#editor_layer_container header.title{
+    padding:1em 1em 0em 1em;
+}

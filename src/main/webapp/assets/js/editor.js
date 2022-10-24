@@ -68,11 +68,11 @@ function updateItemSeq(){
     try{
         var seqList=document.getElementsByName("item-uuid");
         for(var i=0; i<seqList.length; i++){
-            //console.log(seqList[i].value);
+            console.log(seqList[i].value+":"+(seqList.length-i));
             itemSeqUUID=seqList[i].value;
-            $("#"+itemSeqUUID+"-seq").val(i);
-            $("#"+itemSeqUUID+"-zIndex").val(i);
-            $("#item-"+itemSeqUUID+"-obj").css("z-index",""+i);
+            $("#"+itemSeqUUID+"-seq").val((seqList.length-i));
+            $("#"+itemSeqUUID+"-zIndex").val((seqList.length-i));
+            $("#item-"+itemSeqUUID+"-obj").css("z-index",""+(seqList.length-i));
         }
     }catch(e){
         console.log(e);
@@ -103,7 +103,7 @@ function addItem(type, targetKey){
                             $(target).append(html[1]);
                         }
                         if(html.length>=3){
-                            $(listTarget).append(html[2]);
+                            $(listTarget).prepend(html[2]);
                         }
                         if(html.length>=4){
                             targetUUID=html[3].trim();
