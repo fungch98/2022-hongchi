@@ -68,7 +68,7 @@ function updateItemSeq(){
     try{
         var seqList=document.getElementsByName("item-uuid");
         for(var i=0; i<seqList.length; i++){
-            console.log(seqList[i].value+":"+(seqList.length-i));
+            //console.log(seqList[i].value+":"+(seqList.length-i));
             itemSeqUUID=seqList[i].value;
             $("#"+itemSeqUUID+"-seq").val((seqList.length-i));
             $("#"+itemSeqUUID+"-zIndex").val((seqList.length-i));
@@ -199,8 +199,8 @@ function photoSearch(key, type){
     
     try{
         //console.log(url);
-        console.log(key);
-        console.log(type);
+        //console.log(key);
+        //console.log(type);
         $("#search-ajax-key").val(key);
         
         $.ajax({
@@ -317,6 +317,10 @@ function changeName(uuid,value){
 }
 
 function editorSave(){
+    editorSave("N");
+}
+
+function editorSave(isClose){
     var form = $("#editor_content_form");
     var url = form.attr('action');
     var rootPath="";
@@ -341,7 +345,13 @@ function editorSave(){
                             $("#download-editor-btn").attr("href",""+$("#rootpath").val()+"panel/upload/editor/"+result.uuid+"/download.html");
                             $("#editor_content_form").attr("action",""+$("#rootpath").val()+"panel/editor/"+$("#langCode").val()+"/"+result.uuid+"/save.html");
                             var successMsg=$("#editor-save-success-msg").val();
-                            showSnack(successMsg);
+                            //console.log("isClose: "+isClose);
+                            if(isClose==="Y"){
+                                window.location=""+$("#rootpath").val()+"panel/photo/"+$("#langCode").val()+"/"+result.photoUUID+"/view.html";
+                            }else{
+                                showSnack(successMsg);
+                            }
+                            
                             
                         }else{
                             showErrorSnack(result.msg);
@@ -591,26 +601,92 @@ function showItemDetail(target){
             $("#item-character-view").removeClass("active");
             $("#item-image-view").addClass("active");
             $("#item-material-view").removeClass("active");
+            $("#item-folder-view").removeClass("active");
         }else if(target==='character'){
             $("#item-character-view").addClass("active");
             $("#item-image-view").removeClass("active");
             $("#item-material-view").removeClass("active");
+            $("#item-folder-view").removeClass("active");
+        }else if(target==='folder'){
+            $("#item-character-view").removeClass("active");
+            $("#item-image-view").removeClass("active");
+            $("#item-material-view").removeClass("active");
+            $("#item-folder-view").addClass("active");
         }else{
             $("#item-material-view").addClass("active");
             $("#item-image-view").removeClass("active");
             $("#item-character-view").removeClass("active");
+            $("#item-folder-view").removeClass("active");
         }
     }catch(e){
         console.log(e);
     }
 }
 
+function selectFolder(key){
+    var url=""+$("#rootpath").val()+"panel/"+$("#langCode").val()+"/editor/folder/search.html";
+    var target="#folder-main-container";
+    
+    try{
+        //console.log(url);
+        //console.log(key);
+        $.ajax({
+                url:url,
+                //contentType: "application/json; charset=utf-8",
+                type:"POST",
+                data:{"uuid":key},
+                success:function(result){
+                    
+                    $(target).html(result);
+                   
+                },
+                error:function(xhr, error){
+                    console.log("Load Next return false: ");
+                    console.debug(xhr); console.debug(error);
+                    showErrorSnack("Can not load image");
+                }
+            });
+    }catch(e){
+        console.log(e);
+    }
+    return false;
+}
+
+function folderSearchPage(page){
+    var url=""+$("#rootpath").val()+"panel/"+$("#langCode").val()+"/editor/folder/page/"+page+"/next.html";
+    
+    
+    var target="#folder-image-container";
+    try{
+        $.ajax({
+                url:url,
+                type:"POST",
+                //dataType: "json",
+                //contentType: 'text/html; charset=UTF-8',
+                success:function(result){
+                    //$(target).append(result);
+                    //console.log(result);
+                    $(target).html(result);
+                },
+                error:function(xhr, error){
+                    console.log("Load Next return false: ");
+                    console.debug(xhr); console.debug(error);
+                    showErrorSnack("Save Fail");
+                }
+            });
+    }catch(e){
+        console.log(e);
+    }
+    return false;
+}
+
+
 function photoRoleDetail(key){
     var url=""+$("#rootpath").val()+"panel/editor/"+$("#langCode").val()+"/role/"+key+"/detail/search.html";
     var target="#character-emontion-container-result";
     
     try{
-        console.log(url);
+        //console.log(url);
         
         $.ajax({
                 url:url,
@@ -650,7 +726,7 @@ function chageRoleEmotion(uuid, key){
     try{
         var keyVal=key.split("_");
         if(keyVal!==undefined && keyVal.length>=0){
-            console.log(keyVal[0]+":"+keyVal[1]);
+            //console.log(keyVal[0]+":"+keyVal[1]);
             if(keyVal[0]==='ACTION'){
                 $("#"+uuid+"-role-action").val(keyVal[1]);
             }else{
@@ -679,7 +755,7 @@ function chageRole(uuid){
             $("#"+uuid+"-imgSrc").val(url);
             $("#"+uuid+"-imgURL").val(url);
             $("#"+uuid+"-upUUID").val(updRoleSrc);
-            console.log(""+rootPath+url);
+            //console.log(""+rootPath+url);
             $("#item-"+uuid+"-obj-img-src").attr("src",rootPath+url);
         }
         
@@ -691,7 +767,7 @@ function chageRole(uuid){
 
 function updRoleOption(uuid, key){
     try{
-        console.log(uuid+":"+key);
+        //console.log(uuid+":"+key);
         if(key!=='' && key!== undefined){
             var keyList=key.split('_');  //[0] - Name [1] - action [2] - emotion
             if(keyList!== undefined && keyList.length>0){  

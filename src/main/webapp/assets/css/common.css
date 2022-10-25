@@ -671,21 +671,26 @@ header.config-header div.config{
     font-weight: bold;
 }
 
-header.config-header + div.footer{
+header.config-header + div.footer, div.footer.path{
     display:block;
     margin-top: -1.5em;
     margin-bottom: 1em;
     font-size: 12pt;
 }
 
-header.config-header + div.footer span{
+header.config-header + div.footer span,
+div.footer.path span{
     margin-right: 1em;
 }
 
-header.config-header + div.footer a{
+header.config-header + div.footer a, 
+div.footer.path a
+{
     text-decoration: none;
     border-bottom-width: 0;
 }
+
+
 
 
 

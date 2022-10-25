@@ -145,7 +145,7 @@ public class CategoryDAO {
                 temp=squery.list();
                 
                 if(temp!=null && temp.size()>0){
-                    System.out.println("Check Empty "+result+temp);
+                    //System.out.println("Check Empty "+result+temp);
                     return false;
                 }else{
                     result=true;
@@ -466,7 +466,7 @@ public class CategoryDAO {
                 
                 if(category!=null  && category.getUuid()!=null && !category.getUuid().equalsIgnoreCase("new")){
                    
-                        System.out.println("Del: "+category.getName());
+                        //System.out.println("Del: "+category.getName());
                         result.setObj(category);
                         try{
                             if(parentURL!=null && parentURL.equalsIgnoreCase("root")){
@@ -577,14 +577,14 @@ public class CategoryDAO {
         try{
             if(current!=null){
                 result=new FamilyBean(current);
-                System.out.println(current.getName()+":"+current.getParentId());
+                //System.out.println(current.getName()+":"+current.getParentId());
                 if(result.getCurrent()!=null && result.getCurrent().getParentId()!=0){  //parent Id is zero, it is the root folder
                     query=session.getNamedQuery("CategoryInfo.findById");
                     query.setInteger("id", current.getParentId());
                     temp=(CategoryInfo)query.uniqueResult();
 
                     if(temp!=null){
-                        System.out.println("Exist: "+temp.getId());
+                        //System.out.println("Exist: "+temp.getId());
                         result.setParent(temp);
                         
                         path=new ArrayList<CategoryInfo>();
@@ -606,7 +606,7 @@ public class CategoryDAO {
                         temp.setUrl("root");
                         temp.setUuid("root");
                         result.setParent(temp);
-                         System.out.println("Not Exist: "+temp.getUrl());
+                         //System.out.println("Not Exist: "+temp.getUrl());
                     }
                     
                     

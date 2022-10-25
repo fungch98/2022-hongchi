@@ -92,3 +92,27 @@
             </div>
         </section>
     </div>
+    <div id="item-folder-view" class="item-detail-container">
+         <section>
+            <header class="config-header">
+                <h3><bean:message key="label.folder"/></h3>
+            </header>
+             <div id='folder-main-container'>
+                 <div class='row gtr-25'>
+                 <logic:notEmpty name="catList" >
+                    <logic:iterate id="folder" name="catList">
+                        <div class="col-3 col-4-medium col-6-small">
+                            <a href="#" onclick="selectFolder('${folder.url}');return false;" class="alt3 filter-item cover-img-container">
+                                <div class="image fit">
+                                    <img src="${pageContext.request.contextPath}/images/icon/folder.png"/>
+                                </div>
+                                <span class="folder-title">${folder.name}</span>
+                            </a>
+                        </div>
+                        
+                    </logic:iterate>
+                </logic:notEmpty>
+                 </div>
+             </div>
+         </section>
+    </div>

@@ -329,7 +329,7 @@ public class ProdDAO {
             }else{
                 search.setResultList(this.queryProd(key,user,false, (user!=null && user.getIsAdmin()==1?true:false),   size));
             }
-            System.out.println("size: "+search.getResultList().size());
+            //System.out.println("size: "+search.getResultList().size());
             search.generatePageList();
             
             this.addHotKeyWord(search);
@@ -372,7 +372,7 @@ public class ProdDAO {
                     }
                     sql += (user!=null && isPersonal? " and  p.create_user=:user ":" and p.prod_status>0  "+(isAdmin?"":" and  (p.is_share=1 || p.create_user=:user) ")+"   ")
                     + " order by p.modify_date desc ";
-                    System.out.println("Search sql("+user.getDisplayName()+":"+isPersonal+":"+user.getId()+"): "+sql);
+                    //System.out.println("Search sql("+user.getDisplayName()+":"+isPersonal+":"+user.getId()+"): "+sql);
                     
             query =session.createSQLQuery(sql);
             query.addEntity("p", ProductInfo.class);
@@ -782,7 +782,7 @@ public class ProdDAO {
                     catIndex="#"+cat.getName()+" "+catIndex;
                     parentID=cat.getParentId();
                     while(parentID!=0){
-                        System.out.println("ParentID: "+parentID);
+                        //System.out.println("ParentID: "+parentID);
                         squery2.setInteger("id", parentID);
                         parent=(CategoryInfo)squery2.uniqueResult();
                         
@@ -866,7 +866,7 @@ public class ProdDAO {
                 sql = "SELECT {hi.*} FROM hashtag_info hi WHERE hi.name=:name ";
                 squery2 = session.createSQLQuery(sql);
                 squery2.addEntity("hi", HashtagInfo.class);
-                System.out.println("TagLen: "+tagValList.length);
+                //System.out.println("TagLen: "+tagValList.length);
                 for (int i = 0; i < tagValList.length; i++) {
                     tagVal = tagValList[i];
                     tagVal = (tagVal != null ? tagVal.trim() : "");
