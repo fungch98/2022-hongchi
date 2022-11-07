@@ -10,10 +10,12 @@
 
             
             <header class="config-header">
-                <h2><bean:message key="label.search.folder" /></h2>
+                <h2><bean:message key="label.search.tag" /></h2>
                     <div class="config">
+                        <!--
                         <a href="${pageContext.request.contextPath}/panel/editor/${langCode}/new/new/dashboard.html" class="icon solid fa-plus-circle"></a>
                         <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/new/edit.html" class="icon solid  fa-cloud-upload-alt"></a>
+                        -->
                 </div>
             </header>
                 

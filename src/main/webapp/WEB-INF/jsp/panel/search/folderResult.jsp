@@ -31,9 +31,10 @@
                         </logic:equal>
                     <logic:notEqual name="uuid" value="root">
                         
-                    
+                        <!--
                         <a href="${pageContext.request.contextPath}/panel/editor/${langCode}/new/new/dashboard.html?folder=${family.current.url}" class="icon solid fa-plus-circle"></a>
                         <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/new/edit.html?folder=${family.current.url}" class="icon solid  fa-cloud-upload-alt"></a>
+                        -->
                         </logic:notEqual>
                 </div>
             </header>

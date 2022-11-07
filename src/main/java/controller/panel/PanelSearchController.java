@@ -98,6 +98,7 @@ public class PanelSearchController {
                 }else{
                     search=prodDAO.searchProduct(key, 0);
                     request.getSession().setAttribute("SEARCH_RESULT", search);
+                    request.getSession().removeAttribute("SEARCH_EDITOR_FOLDER_RESULT");
                 }
                 
                 if(search!=null){
@@ -173,6 +174,7 @@ public class PanelSearchController {
                 }else{
                     search=prodDAO.searchProduct(key, 0);
                     request.getSession().setAttribute("SEARCH_RESULT", search);
+                    request.getSession().removeAttribute("SEARCH_EDITOR_FOLDER_RESULT");
                 }
                 
                 if(search!=null){
@@ -301,6 +303,7 @@ public class PanelSearchController {
                     search=catDAO.searchProduct(family, 0, 24, user);
                     if(search!=null){
                         //System.out.println("Folder: "+family.getCurrent().getName()+":"+search.getPageList().size());
+                        request.getSession().removeAttribute("SEARCH_EDITOR_RESULT");
                         request.getSession().setAttribute("SEARCH_EDITOR_FOLDER_RESULT", search);
                         request.getSession().setAttribute("SEARCH_EDITOR_FOLDER_FAMILY", family);
 

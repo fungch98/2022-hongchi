@@ -12,13 +12,17 @@
                 <h2><bean:message key="label.photo.title" /><logic:notEmpty name="photo" scope="request"> - ${photo.name}</logic:notEmpty></h2>
                     <div class="config">
                         <a href="${pageContext.request.contextPath}/panel/editor/${langCode}/new/new/dashboard.html?copy=${photo.uuid}" class="icon solid fa-paint-brush"></a>
+                    <!--
                         <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/new/edit.html" class="icon solid  fa-cloud-upload-alt"></a>
+                    -->
                     <logic:notEmpty name="photo" scope="request">
                         
                          
                         <logic:notEmpty name="allowEdit">
                             <logic:equal name="allowEdit" value="Y">
+                                <!--
                                 <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/${photo.uuid}/hashtag.html" class="icon solid fa-tags"></a>
+                                -->
                                 <logic:equal name="photo" property="productCreateMethod" value="1">
                                     <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/${photo.uuid}/edit.html" class="icon solid fa-edit"></a>
                                 </logic:equal>
@@ -34,8 +38,9 @@
                             
                         
                     </logic:notEmpty>
-                        
+                        <!--
                         <a href="${pageContext.request.contextPath}/panel/${langCode}/dashboard.html" class="icon solid fa-times"></a>
+                        -->
                     </div>
                 
             </header>

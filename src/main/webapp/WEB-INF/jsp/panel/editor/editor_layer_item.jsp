@@ -42,7 +42,7 @@
         
     </section>
 </div>
-<div id="item-image-view" class="item-detail-container active">
+<div id="item-image-view" class="item-detail-container">
     <div class="item-list-container">
         <div class="search_row alt">
             <input name="key"  id="search-ajax-key" placeholder="<bean:message key="label.search.photo" />" type="text"  value="" maxlength="250" onchange="photoSearch(this.value);"  />
@@ -92,11 +92,16 @@
             </div>
         </section>
     </div>
-    <div id="item-folder-view" class="item-detail-container">
+    <div id="item-folder-view" class="item-detail-container active">
          <section>
             <header class="config-header">
                 <h3><bean:message key="label.folder"/></h3>
             </header>
+            <div class="search_row alt">
+            <input name="key"  id="search-ajax-key" placeholder="<bean:message key="label.search.photo" />" type="text"  value="" maxlength="250" onchange="photoSearch(this.value);"  />
+            <button class="primary "  onclick="photoSearchTarget('search-ajax-key');"><i class="icon solid fa-search"></i></button>
+        </div>
+            <br>
              <div id='folder-main-container'>
                  <div class='row gtr-25'>
                  <logic:notEmpty name="catList" >

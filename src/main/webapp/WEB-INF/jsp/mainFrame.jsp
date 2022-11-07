@@ -63,7 +63,7 @@
                 <!-- Nav -->
                 <nav id="nav">
                     <ul>
-                        <li><a href="${pageContext.request.contextPath}/panel/${langCode}/dashboard.html">主頁</a></li>
+                        <li><a href="${pageContext.request.contextPath}/panel/editor/${langCode}/new/new/dashboard.html"><bean:message key="menu.photo.create"/></a></li>
                         
                         <logic:notEmpty name="isEditor">
                             <logic:equal name="isEditor" value="Y">

@@ -213,6 +213,7 @@ function photoSearch(key, type){
                 success:function(result){
                     
                     $(target).html(result);
+                    showItemDetail('image');
                 },
                 error:function(xhr, error){
                     console.log("Load Next return false: ");
@@ -608,6 +609,7 @@ function showItemDetail(target){
             $("#item-material-view").removeClass("active");
             $("#item-folder-view").removeClass("active");
         }else if(target==='folder'){
+            selectFolder('root');
             $("#item-character-view").removeClass("active");
             $("#item-image-view").removeClass("active");
             $("#item-material-view").removeClass("active");

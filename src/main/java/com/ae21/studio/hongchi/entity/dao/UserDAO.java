@@ -426,13 +426,15 @@ public class UserDAO {
                        
                        try{
                            status=Integer.parseInt(userStatus);
-                           if(status!=1){
+                           
+                           if(status==1){
                                editUser.setUserStatus(status);
                            }else{
                                editUser.setUserStatus(0);
                            }
                            
                        }catch(Exception ignore){
+                           ignore.printStackTrace();
                            editUser.setUserStatus(0);
                            result.setCode(-2011);
                            result.setMsg("ERROR.STATUS.INVALID");
@@ -485,6 +487,7 @@ public class UserDAO {
             result.setObj(editUser);
             if(result.getCode()==0){
                 tx=session.beginTransaction();
+               
                 session.saveOrUpdate(editUser);
                 tx.commit();
                 
