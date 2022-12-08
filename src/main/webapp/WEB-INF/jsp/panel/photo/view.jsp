@@ -9,7 +9,7 @@
         <div class="inner">
 
             <header class="config-header">
-                <h2><bean:message key="label.photo.title" /><logic:notEmpty name="photo" scope="request"> - ${photo.name}</logic:notEmpty></h2>
+                <h2><bean:message key="label.photo.title" /><logic:notEmpty name="photo" scope="request"> - ${photo.name} </logic:notEmpty></h2>
                     <div class="config">
                         <a href="${pageContext.request.contextPath}/panel/editor/${langCode}/new/new/dashboard.html?copy=${photo.uuid}" class="icon solid fa-paint-brush"></a>
                     <!--
@@ -48,7 +48,7 @@
                     <div class="footer">
                         <span><b><bean:message key="label.photo.modify"/>:</b> ${photo.modifyUser.displayName} (<fmt:formatDate pattern = "yyyy-MM-dd HH:mm"  value = "${photo.modifyDate}" />)</span>
                         <span><b><bean:message key="label.photo.create"/>:</b> ${photo.createUser.displayName} (<fmt:formatDate pattern = "yyyy-MM-dd HH:mm"  value = "${photo.createDate}" />)</span>
-                        
+                        <span><b> (<bean:message key="label.isShare.${photo.isShare}" bundle="ae21studio" />)</b></span>
                         
                         
                     </div>

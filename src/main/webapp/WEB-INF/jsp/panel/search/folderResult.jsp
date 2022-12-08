@@ -31,8 +31,12 @@
                         </logic:equal>
                     <logic:notEqual name="uuid" value="root">
                         
+                        <logic:notEmpty name="UserAuthorizedLogin" >
+                            <logic:equal name="UserAuthorizedLogin"  property="isAdmin" value="1">
+                                <a href="${pageContext.request.contextPath}/panel/editor/${langCode}/new/new/dashboard.html?folder=${family.current.url}" class="icon solid fa-plus-circle"></a>
+                            </logic:equal>
+                        </logic:notEmpty>
                         <!--
-                        <a href="${pageContext.request.contextPath}/panel/editor/${langCode}/new/new/dashboard.html?folder=${family.current.url}" class="icon solid fa-plus-circle"></a>
                         <a href="${pageContext.request.contextPath}/panel/photo/${langCode}/new/edit.html?folder=${family.current.url}" class="icon solid  fa-cloud-upload-alt"></a>
                         -->
                         </logic:notEqual>

@@ -98,11 +98,14 @@ public class PanelEditorController {
                     request.setAttribute("objList", comDAO.getParaList("EDITOR", "OBJ", 0));
                     request.setAttribute("emotionList", comDAO.getParaList("ROLE", "EMOTION", 0));
                    request.setAttribute("actionList", comDAO.getParaList("ROLE", "ACTION", 0));
-                    
+                   
                     if(parentURL!=null && !parentURL.isEmpty()){
-                        //folder=catDAO.loadCatURL(parentURL);
+                        folder=catDAO.loadCatURL(parentURL);
                         request.setAttribute("folder", parentURL);
                     }
+                    
+                    request.setAttribute("folderlist", prodDAO.loadSelectedCat(catDAO.loadCategoryList(0), photo, folder));
+                    request.setAttribute("hashtag",prodDAO.getHashtagString(photo));
                 }
                 
             }else{
@@ -294,7 +297,7 @@ public class PanelEditorController {
                /* String [] nameList=request.getParameterValues("name");
                 System.out.println("Save Action: "+(nameList!=null?nameList.length:"NA"));*/
                //System.out.println(uuid);
-               result=editorDAO.save(request, uuid, user);
+               result=editorDAO.save(request, uuid, user, prodDAO);
                 request.setAttribute("result", result);
                 if(result!=null && result.getCode()==1){
                     editor=(EditorInfo)result.getObj();

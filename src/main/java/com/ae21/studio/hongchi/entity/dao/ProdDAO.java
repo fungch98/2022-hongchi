@@ -29,6 +29,7 @@ import org.hibernate.Transaction;
  * @author Alex
  */
 public class ProdDAO {
+
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
 
@@ -430,6 +431,7 @@ public class ProdDAO {
         
         String productCat="";
         EditorInfo editor=null;
+        CategoryInfo cat=null;
         
         try{
             result.setCode(0);
@@ -472,25 +474,99 @@ public class ProdDAO {
                         photo.setProductUUID(photoUUID);
                         
                         result.setObj(photo);
-                        try{
-                            //System.out.println("Status: "+statusVal);
-                            int status=Integer.parseInt(statusVal);
-                            photo.setStatus(status);
-                            result.setObj(photo);
-                        }catch(Exception ingore){
-                            result.setCode(-2001);
-                            result.setMsg("ERROR.STATUS.INVALID");
+                       
+                        
+                        if(user!=null && user.getIsAdmin()==1){
+                             try{
+                                //System.out.println("Status: "+statusVal);
+                                int status=Integer.parseInt(statusVal);
+                                photo.setStatus(status);
+                                result.setObj(photo);
+                            }catch(Exception ingore){
+                                result.setCode(-2001);
+                                result.setMsg("ERROR.STATUS.INVALID");
+                            }
+                            
+                            try{
+                                int isShare=Integer.parseInt(shareVal);
+                                photo.setIsShare(isShare);
+                                result.setObj(photo);
+                            }catch(Exception ingore){
+                                ingore.printStackTrace();
+                                result.setCode(-2021);
+                                result.setMsg("ERROR.SHARE.INVALID");
+                            }
+
+                            try{
+                                String temp="";
+                                
+
+                                if(folderUUID!=null){
+                                     query=session.getNamedQuery("CategoryInfo.findByUuid");
+                                     query.setString("uuid", folderUUID);
+                                     cat=(CategoryInfo)query.uniqueResult();
+
+                                     
+                                     
+                                }
+                                /*
+                                if(catArray!=null && catArray.length>0){
+                                    catList=new ArrayList<CategoryInfo>();
+
+                                    query=session.getNamedQuery("CategoryInfo.findByUuid");
+
+                                    for(int i=0; catArray!=null && i<catArray.length;i++ ){
+                                        temp=catArray[i];
+                                        query.setString("uuid", temp);
+                                        cat=(CategoryInfo)query.uniqueResult();
+
+                                        if(cat!=null){
+                                            catList.add(cat);
+                                            productCat+="#"+cat.getName()+" ";
+                                        }else{
+                                            result.setCode(-20031);
+                                            result.setMsg("ERROR.PHOTO.UPLOAD.CAT");
+                                        }
+                                    }
+                                    photo.setProductCat(productCat);
+                                }*/
+                            }catch(Exception ignore){
+                                result.setCode(-2003);
+                                result.setMsg("ERROR.PHOTO.UPLOAD.CAT");
+                            }
+                        }else{
+                            try{
+                                if(photo!=null && photo.getId()!=null){
+                                    sql="SELECT {c.*} FROM product_category pc LEFT JOIN category_info c ON c.id=pc.category_id WHERE pc.product_id=:prod LIMIT 1";
+                                    squery=session.createSQLQuery(sql);
+                                    squery.addEntity("c", CategoryInfo.class);
+                                    squery.setInteger("prod", photo.getId());
+                                    cat=(CategoryInfo)squery.uniqueResult();
+                                }
+                                
+                                if(cat==null){                                
+                                    sql="SELECT {c.*} FROM category_info c LEFT JOIN para_info p ON p.value=c.id WHERE p.code='FOLDER' AND p.subcode='PERSONAL' AND p.para_status=1 ";
+                                    squery=session.createSQLQuery(sql);
+                                    squery.addEntity("c", CategoryInfo.class);
+                                    cat=(CategoryInfo)squery.uniqueResult();
+                                }
+                                
+                               //System.out.println("Prod: "+photo.getId()+(cat!=null?"exist":"null"));
+                            }catch(Exception ignore){
+                                result.setCode(-2114);
+                                    result.setMsg("ERROR.PHOTO.UPLOAD.CAT");
+                            }
                         }
                         
-                        try{
-                            int isShare=Integer.parseInt(shareVal);
-                            photo.setIsShare(isShare);
-                            result.setObj(photo);
-                        }catch(Exception ingore){
-                            ingore.printStackTrace();
-                            result.setCode(-2021);
-                            result.setMsg("ERROR.SHARE.INVALID");
-                        }
+                        if(cat!=null){
+                            catList=new ArrayList<CategoryInfo>();
+                             catList.add(cat);
+                             productCat+="#"+cat.getName()+" ";
+                             photo.setProductCat(productCat);
+                         }else{
+                             result.setCode(-20031);
+                             result.setMsg("ERROR.PHOTO.UPLOAD.CAT");
+                         }
                         
                         try{
                             sql="SELECT {up.*} FROM upload_info up WHERE UUID=:uuid ";
@@ -513,53 +589,11 @@ public class ProdDAO {
                             result.setMsg("ERROR.PHOTO.UPLOAD.UUID");
                         }
                         
-                        try{
-                            String temp="";
-                            CategoryInfo cat=null;
-                            
-                            if(folderUUID!=null){
-                                 query=session.getNamedQuery("CategoryInfo.findByUuid");
-                                 query.setString("uuid", folderUUID);
-                                 cat=(CategoryInfo)query.uniqueResult();
-                                 
-                                 if(cat!=null){
-                                       catList=new ArrayList<CategoryInfo>();
-                                        catList.add(cat);
-                                        productCat+="#"+cat.getName()+" ";
-                                    }else{
-                                        result.setCode(-20031);
-                                        result.setMsg("ERROR.PHOTO.UPLOAD.CAT");
-                                    }
-                                 photo.setProductCat(productCat);
-                            }
-                            /*
-                            if(catArray!=null && catArray.length>0){
-                                catList=new ArrayList<CategoryInfo>();
-                                
-                                query=session.getNamedQuery("CategoryInfo.findByUuid");
-                                
-                                for(int i=0; catArray!=null && i<catArray.length;i++ ){
-                                    temp=catArray[i];
-                                    query.setString("uuid", temp);
-                                    cat=(CategoryInfo)query.uniqueResult();
-                                    
-                                    if(cat!=null){
-                                        catList.add(cat);
-                                        productCat+="#"+cat.getName()+" ";
-                                    }else{
-                                        result.setCode(-20031);
-                                        result.setMsg("ERROR.PHOTO.UPLOAD.CAT");
-                                    }
-                                }
-                                photo.setProductCat(productCat);
-                            }*/
-                        }catch(Exception ignore){
-                            result.setCode(-2003);
-                            result.setMsg("ERROR.PHOTO.UPLOAD.CAT");
-                        }
+                        
+                        
                         
                         try{
-                            tagList=this.strToHashtag(hashtagVal, user);
+                            tagList=this.strToHashtag(hashtagVal, user, session);
                         }catch(Exception ignore){
                         }
                         
@@ -824,7 +858,7 @@ public class ProdDAO {
         return result;
     }
     
-    public List<HashtagInfo> strToHashtag(String tagStr, UserInfo user)throws Exception{
+    public List<HashtagInfo> strToHashtag(String tagStr, UserInfo user, Session session)throws Exception{
         List<HashtagInfo> tagList=null;
         String [] tagValList=null;
         try{
@@ -833,7 +867,7 @@ public class ProdDAO {
                 tagStr=tagStr.replace(";", ",");
                 //System.out.println("tag: |"+tagStr+"|");
                 tagValList=tagStr.split(",");
-                tagList=this.strToHashtag(tagValList, user);
+                tagList=this.strToHashtag(tagValList, user, session);
             }
             
         }catch(Exception ignore){
@@ -841,10 +875,10 @@ public class ProdDAO {
         return tagList;
     }
     
-    public List<HashtagInfo> strToHashtag(String tagValList[], UserInfo user)throws Exception{
+    public List<HashtagInfo> strToHashtag(String tagValList[], UserInfo user, Session session)throws Exception{
         List<HashtagInfo> tagList=null;
         
-        Session session = sessionFactory.openSession();
+       
         Query query = null;
         SQLQuery squery=null;
         SQLQuery squery2=null;
@@ -946,7 +980,7 @@ public class ProdDAO {
                 
                 if(photo!=null){
                     if(this.checkAllowEdit(photo, user)){
-                        tagList=this.strToHashtag(tagValList, user);
+                        tagList=this.strToHashtag(tagValList, user, session);
                         result.setObj(tagList);
                     }else{
                         result.setCode(-1002);

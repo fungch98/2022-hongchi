@@ -26,8 +26,9 @@
 -->
 <ul class="editor-menu-action">
     <li><a href="#" onclick="showItemDetail('folder');return false;"><img src="${pageContext.request.contextPath}/images/icon/folder2.png"/><p>資料夾</p></a></li>
+    <!--
     <li><a href="#" onclick="showItemDetail('image');return false;"><img src="${pageContext.request.contextPath}/images/icon/action_image.png"/><p>圖片</p></a></li>
-    
+    -->
     <li><a href="#"  onclick="addItem('text','');return false;"><img src="${pageContext.request.contextPath}/images/icon/action_text.png"/><p>文字</p></a></li>
     
     <li><a href="#" onclick="showItemDetail('character');return false;"><img src="${pageContext.request.contextPath}/images/icon/action_bg.png"/><p>校本角色</p></a></li>

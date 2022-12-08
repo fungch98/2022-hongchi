@@ -115,7 +115,8 @@
                          -->
                          <logic:notEmpty name="UserAuthorizedLogin" >
                         <li>
-                            <a href="#" class="dropdown">${UserAuthorizedLogin.displayName}</a>
+                            <a href="${pageContext.request.contextPath}/panel/user/${langCode}/index.html" class="dropdown">${UserAuthorizedLogin.displayName}</a>
+                            <!--
                             <ul>
                                 <li><a href="${pageContext.request.contextPath}/panel/user/${langCode}/index.html"><bean:message key="title.panel.user" /></a></li>
                                <logic:notEmpty name="UserAuthorizedLogin" >
@@ -126,6 +127,7 @@
                                     </li>
                                 </logic:notEmpty>
                             </ul>
+                            -->
                         </li>
                          <li>
                                            <a href="${pageContext.request.contextPath}/auth/${langCode}/logout.html">

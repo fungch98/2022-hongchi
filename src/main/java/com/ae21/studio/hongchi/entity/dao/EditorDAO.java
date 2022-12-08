@@ -12,6 +12,7 @@ import com.ae21.handler.ImageHandler;
 import com.ae21.studio.hongchi.entity.bean.CategoryInfo;
 import com.ae21.studio.hongchi.entity.bean.EditorInfo;
 import com.ae21.studio.hongchi.entity.bean.EditorItem;
+import com.ae21.studio.hongchi.entity.bean.HashtagInfo;
 import com.ae21.studio.hongchi.entity.bean.ParaInfo;
 import com.ae21.studio.hongchi.entity.bean.ProductInfo;
 import com.ae21.studio.hongchi.entity.bean.UserInfo;
@@ -346,7 +347,7 @@ public class EditorDAO {
         return result;
     }
     
-    public ResultBean save(HttpServletRequest request,String uuid,  UserInfo user)throws Exception{
+    public ResultBean save(HttpServletRequest request,String uuid,  UserInfo user, ProdDAO prodDAO)throws Exception{
         Transaction tx = null;
         Session session = sessionFactory.openSession();
         Query query = null;
@@ -385,13 +386,20 @@ public class EditorDAO {
         
         String folderURL=request.getParameter("photo-info-folder");
         
+        String isShareVal=request.getParameter("isShare");
+        String hashtagVal=request.getParameter("hashtag");
+        String folderVal=request.getParameter("folder");
+        
         EditorInfo editor=null;
         EditorItem item=null;
         ProductInfo photo=null;
         CategoryInfo folder=null;
         boolean needAddFolder=false;
         
+        
         List<EditorItem> itemList=new ArrayList<EditorItem>();
+         List<HashtagInfo> tagList=null;
+          List<CategoryInfo> catList=null;
         
         String colorCode="";
         try{
@@ -526,6 +534,88 @@ public class EditorDAO {
                             result.setMsg("ERROR.EDITOR.SAVE.DIFF");
                         }
                         
+                        //If admin, they can select the folder and allow share to public 
+                        //If normal user, they can save at personal folder and private only
+                        
+                        if(user!=null && user.getIsAdmin()==1){ 
+                            try{
+                                int isShare=Integer.parseInt(isShareVal);
+                                photo.setIsShare(isShare);
+
+                            }catch(Exception ingore){
+                                ingore.printStackTrace();
+                                result.setCode(-2103);
+                                result.setMsg("ERROR.SHARE.INVALID");
+                            }
+                            
+                            try{
+                                    if(folderVal!=null){
+                                         query=session.getNamedQuery("CategoryInfo.findByUuid");
+                                         query.setString("uuid", folderVal);
+                                         folder=(CategoryInfo)query.uniqueResult();
+
+                                         
+                                    }
+
+                                }catch(Exception ignore){
+                                    result.setCode(-2103);
+                                    result.setMsg("ERROR.PHOTO.UPLOAD.CAT");
+                                }
+                        }else{
+                            try{
+                                if(photo!=null && photo.getId()!=null){
+                                    sql="SELECT {c.*} FROM product_category pc LEFT JOIN category_info c ON c.id=pc.category_id WHERE pc.product_id=:prod LIMIT 1";
+                                    squery=session.createSQLQuery(sql);
+                                    squery.addEntity("c", CategoryInfo.class);
+                                    squery.setInteger("prod", photo.getId());
+                                    folder=(CategoryInfo)squery.uniqueResult();
+                                }
+                                
+                                if(folder==null){                                
+                                    sql="SELECT {c.*} FROM category_info c LEFT JOIN para_info p ON p.value=c.id WHERE p.code='FOLDER' AND p.subcode='PERSONAL' AND p.para_status=1 ";
+                                    squery=session.createSQLQuery(sql);
+                                    squery.addEntity("c", CategoryInfo.class);
+                                    folder=(CategoryInfo)squery.uniqueResult();
+                                }
+                                
+                               System.out.println("Folder ("+photo.getId()+"): "+(folder!=null?folder.getName():"NULL"));
+                            }catch(Exception ignore){
+                                result.setCode(-2114);
+                                    result.setMsg("ERROR.PHOTO.UPLOAD.CAT");
+                            }
+                        }
+                        
+                         try{
+                             if(prodDAO!=null){
+                                tagList=prodDAO.strToHashtag(hashtagVal, user, session);
+
+                             }else{
+                                  result.setCode(-1101);
+                                 result.setMsg("ERROR.EDITOR.SAVE.DIFF");
+                             }
+                        }catch(Exception ignore){
+                            result.setCode(-1101);
+                            result.setMsg("ERROR.EDITOR.SAVE.DIFF");
+                        }
+                         
+                         
+                         if(folder!=null){
+                             String folderProductCat="";
+                             catList=new ArrayList<CategoryInfo>();
+                             catList.add(folder);
+                             folderProductCat+="#"+folder.getName()+" ";
+                              photo.setProductCat(folderProductCat);
+
+                         }else{
+                             result.setCode(-20031);
+                             result.setMsg("ERROR.PHOTO.UPLOAD.CAT");
+                         }
+                                        
+                          
+                          
+                          
+                        
+                        /*
                         if(folderURL!=null && !folderURL.isEmpty()){
                             sql="Select {c.*} from category_info c where c.url=:url ";
                             squery=session.createSQLQuery(sql);
@@ -541,6 +631,7 @@ public class EditorDAO {
                                 needAddFolder=false;
                             }
                         }
+                        */
                 }
                 
                 if(result.getCode()==0){
@@ -554,6 +645,8 @@ public class EditorDAO {
                     tx=session.beginTransaction();
                     session.saveOrUpdate(photo);
                     editor.setProdId(photo);
+                    
+                    /*
                     if(folder!=null && folder.getId()!=null){
                         sql="DELETE from product_category where product_id=:prod and category_id=:cat ";
                         squery=session.createSQLQuery(sql);
@@ -567,6 +660,7 @@ public class EditorDAO {
                         squery.setInteger("cat", folder.getId());
                         squery.executeUpdate();
                     }
+                    */
                     session.saveOrUpdate(editor);
                     
                     sql="Delete from editor_item where editor_id=:id ";
@@ -579,6 +673,27 @@ public class EditorDAO {
                         item.setEditorId(editor);
                         session.saveOrUpdate(item);
                     }
+                    
+                    if(prodDAO!=null){
+                        prodDAO.saveHashtagAction(session, tagList, photo);
+                    }
+                    
+                      
+                        sql="DELETE FROM product_category WHERE product_id=:prod ";
+                        squery=session.createSQLQuery(sql);
+                        squery.setInteger("prod", photo.getId());
+                        squery.executeUpdate();
+
+                        sql="INSERT INTO product_category(`product_id`,`category_id`) VALUES (:prod,:cat)";
+                        squery=session.createSQLQuery(sql);
+
+                        for(int i=0;catList!=null &&i< catList.size();i++){
+                            //System.out.println();
+                            squery.setInteger("prod", photo.getId());
+                            squery.setInteger("cat", catList.get(i).getId());
+                            squery.executeUpdate();
+                        }
+                    
                     
                     tx.commit();
                     result.setObj(editor);

@@ -694,6 +694,12 @@ li.editor.nav.valid {
     transform: scale(1.075);
 }
 
+#material-main-container{
+    overflow-y: scroll;
+    height: 100%;
+    padding-right: 0.5em;
+}
+
 
 .ui-resizable-s{
     height: 0px !important;
