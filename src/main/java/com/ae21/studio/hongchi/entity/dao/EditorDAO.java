@@ -24,13 +24,16 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -278,6 +281,9 @@ public class EditorDAO {
                 result.setTextItalic(0);
                 result.setFontName("");
                 result.setFontSize(14);
+                result.setIsHidden(0);
+                result.setTextUnder(0);
+                result.setIsFilp(0);
                 
                 if(type.equalsIgnoreCase("text")){
                     result.setColor("#000000");
@@ -389,6 +395,10 @@ public class EditorDAO {
         String isShareVal=request.getParameter("isShare");
         String hashtagVal=request.getParameter("hashtag");
         String folderVal=request.getParameter("folder");
+        
+        String textUnder[]=request.getParameterValues("textUnder");
+        String isHidden[]=request.getParameterValues("isHidden");
+        String isFilp[]=request.getParameterValues("isFilp");
         
         EditorInfo editor=null;
         EditorItem item=null;
@@ -516,6 +526,10 @@ public class EditorDAO {
                             try{
                                 item.setTextBold((textBold!=null && textBold[i]!=null && textBold[i].equalsIgnoreCase("1")?1:0));
                                 item.setTextItalic((textItalic!=null && textItalic[i]!=null && textItalic[i].equalsIgnoreCase("1")?1:0));
+                                item.setTextUnder((textUnder!=null && textUnder[i]!=null && textUnder[i].equalsIgnoreCase("1")?1:0));
+                                //System.out.println(item.getName()+":"+item.getTextUnder());
+                                item.setIsHidden((isHidden!=null && isHidden[i]!=null && isHidden[i].equalsIgnoreCase("1")?1:0));
+                                item.setIsFilp((isFilp!=null && isFilp[i]!=null && isFilp[i].equalsIgnoreCase("1")?1:0));
                             }catch(Exception ignore){
                                 ignore.printStackTrace();
                             }
@@ -763,11 +777,17 @@ public class EditorDAO {
         double cy = 0;
         
         int alpha=0;
+        int fontStyle=0;
         
         AffineTransform oldAT=null;
          Rectangle rect2=null;
          Font font=null;
          AlphaComposite alphaChannel=null;
+         
+         Map fontAttributes=null;
+         
+         AffineTransform txFilp=null;
+         AffineTransformOp op=null;
         try{
             result.setCode(0);
             result.setMsg("ERROR.NULL");
@@ -782,6 +802,7 @@ public class EditorDAO {
                 oldAT = g.getTransform();
                 for(int i=0; itemList!=null && i<itemList.size();i++){
                     item=itemList.get(i);
+                    if(item.getIsHidden()!=null && item.getIsHidden().intValue()==0){
                     //System.out.println("Processing item ("+item.getItemType()+")");
                     if(item.getItemType()!=null  && item.getItemType().equalsIgnoreCase("bg")){
                         
@@ -887,10 +908,15 @@ public class EditorDAO {
                             font=new Font(this.getFontName(item.getFontName()),Font.PLAIN, (int)fSize);
                         }
                         
-                       
+                        fontAttributes = font.getAttributes();
+                        if(item.getTextUnder()!=null && item.getTextUnder().intValue()==1){
+                            fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+                        }
+                        //System.out.println("B+I: "+(TextAttribute.UNDERLINE)+":"+TextAttribute.UNDERLINE_ON);
+                        
                        // FontMetrics m= g.getFontMetrics(font); // g is your current Graphics object
                         //double totalSize= (item.getFontSize()*2) * (m.getAscent() + m.getDescent()) / m.getAscent();
-                        g.setFont(font);
+                        g.setFont(font.deriveFont(fontAttributes));
                         //System.out.println("new("+i+"): "+newY+"("+item.getPosY()+")"+":"+newX+"("+item.getPosX()+")");
                         drawString(g, item.getTextDesc(), newY,newX);
                         
@@ -920,6 +946,14 @@ public class EditorDAO {
                                 alphaChannel = AlphaComposite.getInstance(
                                         AlphaComposite.SRC_OVER, 1f);
                                 g.setComposite(alphaChannel);
+                                
+                                if(item.getIsFilp()!=null && item.getIsFilp().intValue()==1){
+                                    // Flip the image horizontally
+                                    txFilp = AffineTransform.getScaleInstance(-1, 1);
+                                    txFilp.translate(-image.getWidth(null), 0);
+                                    op = new AffineTransformOp(txFilp, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+                                    image = op.filter(image, null);
+                                }
                                 
                                 if(item.getRotate()>0){
                                     //System.out.println("i("+i+")"+item.getName());
@@ -972,7 +1006,7 @@ public class EditorDAO {
                         }
                     }
                     g.setTransform(oldAT);
-
+                    }
                 }
                 
                 g.dispose();
@@ -1003,6 +1037,7 @@ public class EditorDAO {
                 result.setObj(editor);
                 result.setCode(1);
                 result.setMsg("label.success");
+                
                 
             }
         } catch (Exception e) {

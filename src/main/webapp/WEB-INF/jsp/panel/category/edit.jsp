@@ -32,10 +32,13 @@
                             <label for="name">名稱</label>
                             <input name="name"  id="name" placeholder="名稱" type="text" required="" value="${category.name}" maxlength="100"  />
                         </div>
+                        <!--
                         <div class="col-6 col-6-medium col-12-small">
                             <label for="url"><bean:message key="label.url" bundle="ae21studio"/><span class="required">*</span>(<bean:message key="label.url.desc" bundle="ae21studio"/>)</label>
                             <input type="text" name="url" id="url" class="small-plac" placeholder="<bean:message key="label.url.desc" bundle="ae21studio"/>" value="${category.url}" maxlength="100" required/>
                        </div>
+                        -->
+                        <input type="hidden" name="url" id="url" class="small-plac"  value="${category.url}" maxlength="100" />
                          <div class="col-12">
                             <label for="desc">簡介</label>
                             <textarea id="desc" name="desc" rows="5">${category.desc}</textarea>

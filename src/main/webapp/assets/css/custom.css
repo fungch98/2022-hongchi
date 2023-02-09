@@ -599,6 +599,15 @@ ul.sortable li{
     font-style: italic;
 }
 
+.editor-content-obj.underline pre{
+    text-decoration: underline;
+}
+
+.editor-content-obj.filp{
+  -webkit-transform: scaleX(-1) ;
+  transform: scaleX(-1);
+}
+
 .editor-content-obj img{
     max-width: 600px;
     max-height: 450px;
@@ -751,7 +760,22 @@ a.trim{
     padding:1em 1em 0em 1em;
 }
 
+.photo-album{
+    display:inline-block;
+}
+
 .photo-album img{
     max-height: 100px;
     overflow: hidden;
+}
+
+.photo-album.desc{
+    width: 100%;
+    display: block;
+    text-align: center;
+    font-size: 10pt;
+    text-decoration: none;
+    border-bottom-width: 0;
+    margin-top:-0.5em;
+    margin-bottom: 1em;
 }

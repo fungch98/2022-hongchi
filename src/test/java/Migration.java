@@ -17,9 +17,10 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
  */
 public class Migration {
      public static void main(String[] args) {
-          String root="P:\\temp\\Ernest\\HongChi\\migration\\20221126\\教學圖庫\\教學圖庫";
+          //String root="P:\\temp\\Ernest\\HongChi\\migration\\20221126\\教學圖庫\\教學圖庫";
+          String root="P:\\temp\\Ernest\\HongChi\\migration\\20230109";
           String target="/home/alexander21/project/hongchi";
-          String imgPath="P:\\Git\\DEV\\hongchi\\src\\main\\webapp\\images\\material";
+          //String imgPath="P:\\Git\\DEV\\hongchi\\src\\main\\webapp\\images\\material";
          ApplicationContext context;
          MigrationDAO migDAO=null;
          UserDAO userDAO=null;
@@ -31,9 +32,9 @@ public class Migration {
                    = new FileSystemXmlApplicationContext("P:/Git/DEV/hongchi/src/main/webapp/WEB-INF/applicationContext.xml");
              migDAO=(MigrationDAO)context.getBean("migDAO");
              userDAO=(UserDAO)context.getBean("userDAO");
-             //migDAO.migration2(root,target, userDAO.loadUser(0));
-             //migDAO.generateSearchIndex(0);
-             migDAO.addChatImage(imgPath);
+             migDAO.migration2(root,target, userDAO.loadUser(0));
+             migDAO.generateSearchIndex(0);
+            // migDAO.addChatImage(imgPath);
              //String fileName="南昌教學圖庫/食物/糖果 (3).jpg";
              /*String fileName="糖果(3).jpg";
              String [] item=fileName.split(Pattern.quote("."));

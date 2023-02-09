@@ -124,6 +124,12 @@ public class EditorItem implements Serializable {
     private Integer textBold;
     @Column(name = "text_italic")
     private Integer textItalic;
+     @Column(name = "text_under")
+    private Integer textUnder;
+      @Column(name = "is_hidden")
+    private Integer isHidden;
+       @Column(name = "is_filp")
+    private Integer isFilp;
      @Transient
     private String rgb="rgba(255,255,255,1)";
 
@@ -393,6 +399,31 @@ public class EditorItem implements Serializable {
     public void setTextItalic(Integer textItalic) {
         this.textItalic = textItalic;
     }
+
+    public Integer getTextUnder() {
+        return textUnder;
+    }
+
+    public void setTextUnder(Integer textUnder) {
+        this.textUnder = textUnder;
+    }
+
+    public Integer getIsHidden() {
+        return isHidden;
+    }
+
+    public void setIsHidden(Integer isHidden) {
+        this.isHidden = isHidden;
+    }
+
+    public Integer getIsFilp() {
+        return isFilp;
+    }
+
+    public void setIsFilp(Integer isFilp) {
+        this.isFilp = isFilp;
+    }
+    
     
     
 

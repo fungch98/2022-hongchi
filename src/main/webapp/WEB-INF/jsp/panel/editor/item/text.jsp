@@ -27,11 +27,11 @@
         </div>
         <div class="col-7 col-12-small" >
             <div class="row gtr-25">
-                <div class="col-4 col-6-medium col-4-small" >
+                <div class="col-3 col-4-medium col-4-small" >
                     <label for="${itemDetail.uuid}-fontSize"><bean:message key="label.editor.text.size"/></label>
                     <input type="number" id="${itemDetail.uuid}-fontSize" name="fontSize" value="${itemDetail.fontSize}" onchange="setTextStyle('${itemDetail.uuid}','size', this.value);"  />
                 </div>
-                 <div class="col-6" >
+                 <div class="col-5 col-4-medium col-4-small" >
                     <label for="${itemDetail.uuid}-fontName"><bean:message key="label.editor.text.font"/></label>
                     <select id="${itemDetail.uuid}-fontName" name="fontName" onchange="setTextStyle('${itemDetail.uuid}','font', this.value)">
                         <option value="times" <logic:notEmpty name="itemDetail" property="fontName"><logic:equal name="itemDetail" property="fontName" value="times">selected="selected"</logic:equal></logic:notEmpty>   >Times New Roman</option>
@@ -42,6 +42,10 @@
                         
                         
                     </select>
+                </div>
+                <div class="col-4 col-4-medium col-4-small" >
+                    <label for="${itemDetail.uuid}-color"><bean:message key="label.editor.text.color"/></label>
+                    <input type="text"  id="${itemDetail.uuid}-color" name="color" value="${itemDetail.color}" data-jscolor="{}" onchange="setTextStyle('${itemDetail.uuid}','color',this.value);">
                 </div>
                     <!--
                  <div class="col-4 col-6-medium col-4-small" >
@@ -70,11 +74,15 @@
                     </select>
                 </div>       
                 <input type="hidden" id="${itemDetail.uuid}-textAlign" name="textAlign" value="${itemDetail.textAlign}"  />
-               
                 <div class="col-4 col-6-medium col-4-small" >
-                    <label for="${itemDetail.uuid}-color"><bean:message key="label.editor.text.color"/></label>
-                    <input type="text"  id="${itemDetail.uuid}-color" name="color" value="${itemDetail.color}" data-jscolor="{}" onchange="setTextStyle('${itemDetail.uuid}','color',this.value);">
+                    <label for="${itemDetail.uuid}-textUnder"><bean:message key="label.editor.text.under"/>:</label>
+                    <select id="${itemDetail.uuid}-textUnder" name="textUnder" onchange="setTextStyle('${itemDetail.uuid}','under', this.value)">
+                        <option value="0" <logic:notEmpty name="itemDetail" property="textUnder"><logic:equal name="itemDetail" property="textUnder" value="0">selected="selected"</logic:equal></logic:notEmpty>   ><bean:message key="label.editor.text.normal"/></option>
+                        <option value="1" <logic:notEmpty name="itemDetail" property="textUnder"><logic:equal name="itemDetail" property="textUnder" value="1">selected="selected"</logic:equal></logic:notEmpty>><bean:message key="label.editor.text.under"/></option>
+                        
+                    </select>
                 </div>
+               
             </div>
         </div>
         <div class="col-3 col-6-medium">
@@ -102,6 +110,10 @@
       
                
             </div>
+                
+        <input type="hidden" id="${itemDetail.uuid}-isHidden" name="isHidden" value="${itemDetail.isHidden}"/>
+        <input type="hidden" id="${itemDetail.uuid}-isFilp" name="isFilp" value="${itemDetail.isFilp}"/>
+         
        <input type="hidden" id="${itemDetail.uuid}-name" name="name" value="${itemDetail.name}"/>
         <input type="hidden" id="${itemDetail.uuid}-rotate" name="rotate" value="${itemDetail.rotate}"  />
         <input type="hidden" id="${itemDetail.uuid}-itemType" name="itemType" value="${itemDetail.itemType}"/>

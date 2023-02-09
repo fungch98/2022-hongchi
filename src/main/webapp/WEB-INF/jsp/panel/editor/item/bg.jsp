@@ -38,5 +38,8 @@
         <input type="hidden" id="${itemDetail.uuid}-textAlign" name="textAlign" value="${itemDetail.textAlign}"  />
         <input type="hidden" id="${itemDetail.uuid}-textBold" name="textBold" value="${itemDetail.textBold}"  />
         <input type="hidden" id="${itemDetail.uuid}-textItalic" name="textItalic" value="${itemDetail.textItalic}"  />
-        
+        <input type="hidden" id="${itemDetail.uuid}-textUnder" name="textUnder" value="${itemDetail.textUnder}"/>
+        <input type="hidden" id="${itemDetail.uuid}-isHidden" name="isHidden" value="${itemDetail.isHidden}"/>
+        <input type="hidden" id="${itemDetail.uuid}-isFilp" name="isFilp" value="${itemDetail.isFilp}"/>
+         
     </div>

@@ -22,7 +22,7 @@
 
             <logic:iterate id="folder"  name="family" property="subFolder">
 
-                <div class="col-3 col-4-medium col-6-small">
+                <div class="col-3 col-2-medium col-3-small col-3-xsmall">
                     <a href="#" onclick="selectFolder('${folder.url}');return false;" class="alt3 filter-item cover-img-container">
                         <div class="image fit">
                             <img src="${pageContext.request.contextPath}/images/icon/folder.png"/>

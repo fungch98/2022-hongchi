@@ -269,7 +269,7 @@ public class PanelFolderController {
                 if(current==null){
                     if(uuid!=null && uuid.equalsIgnoreCase("new")){
                         current=new CategoryInfo();
-                        System.out.println("Current: "+parent.getUrl());
+                        //System.out.println("Current: "+parent.getUrl());
                         if(parent.getFamilyId()==0){
                             current.setFamilyId(parent.getId());
                         }else{

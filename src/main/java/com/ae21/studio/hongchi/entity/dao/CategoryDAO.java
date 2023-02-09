@@ -493,7 +493,7 @@ public class CategoryDAO {
                         }
                    
                     
-                        if(!this.isEmptyFolder(parent)){
+                        if(!this.isEmptyFolder(category)){
                             result.setCode(-3031);
                                 result.setMsg("ERROR.DEL.FOLDER.EMPTY");
                         }

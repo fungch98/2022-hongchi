@@ -690,8 +690,18 @@ div.footer.path a
     border-bottom-width: 0;
 }
 
+.config a{
+    margin-left: 0.2em;
+    padding:0.2em;
+}
 
-
+@media screen and (max-width: 780px) {
+.config a{
+    margin-left: 0.5em;
+    padding:0.2em;
+    font-size: 1.2em;
+}
+}
 
 
 th.record-setting-header{

@@ -16,7 +16,13 @@
                             
                             <a href="#" onclick="editItemContent('${itemDetail.uuid}');return false;"><i class="icon solid fa-edit"></i></a>
                         <logic:notEqual name="itemDetail" property="itemType" value="bg">
+                            <logic:notEqual  name="itemDetail" property="isHidden" value="0">
+                                <a href="#" onclick="showItem('${itemDetail.uuid}');return false;"><i id="item-${itemDetail.uuid}-list-eye" class="icon solid fa-eye-slash"></i></a>
+                            </logic:notEqual>
+                            <logic:equal  name="itemDetail" property="isHidden" value="0">
                                 <a href="#" onclick="showItem('${itemDetail.uuid}');return false;"><i id="item-${itemDetail.uuid}-list-eye" class="icon solid fa-eye"></i></a>
+                            </logic:equal>
+                                
                                 <a href="#" onclick="deleteItem('${itemDetail.uuid}');return false;"><i class="icon solid fa-trash delete"></i></a>
                         </logic:notEqual>
                         

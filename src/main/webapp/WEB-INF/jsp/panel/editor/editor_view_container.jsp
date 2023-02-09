@@ -50,9 +50,15 @@
                                     $("#${item.uuid}-posy").val(ui.position.left);
                                     }
                               });
+                              
+                               var isFilp=1;
+                              if($("#${item.uuid}-isFilp").val()!==undefined && $("#${item.uuid}-isFilp").val().trim()==='1'){
+                                    isFilp=-1;
+                              }
                               $( "#item-${item.uuid}-obj" ).rotatable({
                                     snap: true,
                                     degrees: ${item.rotate},
+                                    transforms: {scaleX:isFilp},
                                     rotate: function(e, ui){
                                         var degrees = ui.angle.current * 180/Math.PI
                                         if ( degrees < 0 ) {degrees += 360;}

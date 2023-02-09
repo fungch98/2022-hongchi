@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<div class="row gtr-25">
+<div class="row gtr-25 fit">
     <logic:notEmpty name="userPhotoList">
         <logic:iterate id="uPhoto" name="userPhotoList" scope="request" indexId="seq">
             <logic:notEmpty name="uPhoto">
@@ -24,9 +24,14 @@
                                     <img src="${pageContext.request.contextPath}${uPhoto.productUrl}" class="images fit" />
                                 </logic:equal>
                     </a>
+                    <a href="${pageContext.request.contextPath}/panel/photo/zh/${uPhoto.uuid}/view.html" class="photo-album desc" target="_blank">${uPhoto.name}</a>
                 </div>
             </logic:notEmpty>
         </logic:iterate>
+        <div class="col-3 col-4-large col-3-medium col-3-small"></div>
+         <div class="col-3 col-4-large col-3-medium col-3-small"></div>
+          <div class="col-3 col-4-large col-3-medium col-3-small"></div>
+           <div class="col-3 col-4-large col-3-medium col-3-small"></div>
     </logic:notEmpty>
     <div class="col-12">
         <div class="search_footer">

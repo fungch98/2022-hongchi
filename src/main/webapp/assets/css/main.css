@@ -520,6 +520,9 @@ input, select, textarea {
 				.row.gtr-50.gtr-uniform > * {
 					padding-top: 1.375em;
 				}
+                                .row.fit{
+                                    width: 100%;
+                                }
 
 		.row {
 			margin-top: 0;

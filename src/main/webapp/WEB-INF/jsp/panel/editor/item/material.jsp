@@ -9,11 +9,11 @@
         </header>
             <div class="row gtr-25">
                 
-                <div class="col-3 col-6-medium">
+                <div class="col-2 col-6-medium">
                     <label for="${itemDetail.uuid}-posx"><bean:message key="label.editor.item.x"/></label>
                     <input type="text" id="${itemDetail.uuid}-posx" name="posx" value="${itemDetail.posX}"  onchange="changePos('${itemDetail.uuid}');"/>
                 </div>
-                <div class="col-3 col-6-medium">
+                <div class="col-2 col-6-medium">
                     <label for="${itemDetail.uuid}-posy"><bean:message key="label.editor.item.y"/></label>
                     <input type="text" id="${itemDetail.uuid}-posy" name="posy" value="${itemDetail.posY}" onchange="changePos('${itemDetail.uuid}');" />
                 </div>
@@ -26,7 +26,13 @@
                     <input type="text" id="${itemDetail.uuid}-height" name="height" value="${itemDetail.height}" onchange="changeSize('${itemDetail.uuid}');" />
                 </div>
                 <input type="hidden" id="${itemDetail.uuid}-rotate" name="rotate" value="${itemDetail.rotate}"  />
-                
+                <div class="col-2 col-6-medium">
+                    <label for="${itemDetail.uuid}-isFilp"><bean:message key="label.editor.item.filp"/></label>
+                        <select id="${itemDetail.uuid}-isFilp" name="isFilp" onchange="filp('${itemDetail.uuid}',this.value);return false;">
+                            <option value="0" <logic:notEmpty name="itemDetail" property="isFilp"><logic:equal name="itemDetail" property="isFilp" value="0">selected="selected"</logic:equal></logic:notEmpty>   ><bean:message key="label.editor.text.normal"/></option>
+                            <option value="1" <logic:notEmpty name="itemDetail" property="isFilp"><logic:equal name="itemDetail" property="isFilp" value="1">selected="selected"</logic:equal></logic:notEmpty>><bean:message key="label.editor.item.filp"/></option>
+                        </select>
+                </div>
                 
                 
                 <div class="col-12">
@@ -34,7 +40,10 @@
                     <input type="text" id="${itemDetail.uuid}-name" name="name" value="${itemDetail.name}"  onchange="changeName('${itemDetail.uuid}',this.value);" maxlength="100"/>
                 </div>
             </div>
-        
+        <input type="hidden" id="${itemDetail.uuid}-textUnder" name="textUnder" value="${itemDetail.textUnder}"/>
+        <input type="hidden" id="${itemDetail.uuid}-isHidden" name="isHidden" value="${itemDetail.isHidden}"/>
+        <input type="hidden" id="${itemDetail.uuid}-isFilp" name="isFilp" value="${itemDetail.isFilp}"/>
+         
         <input type="hidden" id="${itemDetail.uuid}-color" name="color" value="${itemDetail.color}"/>
         <input type="hidden" id="${itemDetail.uuid}-itemType" name="itemType" value="${itemDetail.itemType}"/>
         <input type="hidden" id="${itemDetail.uuid}-uuid" name="uuid" value="${itemDetail.uuid}"/>

@@ -549,6 +549,7 @@ public class UploadDAO {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             result.setCode(-9999);
             result.setMsg("ERROR.NULL");
             //try {if (tx != null) {tx.rollback();}} catch (Exception ex) {ex.printStackTrace();}

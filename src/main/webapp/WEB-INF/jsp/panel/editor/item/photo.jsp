@@ -8,7 +8,17 @@
             <h4><bean:message key="label.editor.photo"/></h4>
         </header>
             <div class="row gtr-25">
-                
+                <div class="col-9 col-6-medium col-12-small">
+                    <label for="${itemDetail.uuid}-name"><bean:message key="label.editor.item.name"/></label>
+                    <input type="text" id="${itemDetail.uuid}-name" name="name" value="${itemDetail.name}"  onchange="changeName('${itemDetail.uuid}',this.value);" maxlength="100"/>
+                </div>
+                <div class="col-3 col-6-medium col-12-small">
+                     <label for="${itemDetail.uuid}-isFilp"><bean:message key="label.editor.item.filp"/></label>
+                     <select id="${itemDetail.uuid}-isFilp" name="isFilp" onchange="filp('${itemDetail.uuid}',this.value);return false;">
+                        <option value="0" <logic:notEmpty name="itemDetail" property="isFilp"><logic:equal name="itemDetail" property="isFilp" value="0">selected="selected"</logic:equal></logic:notEmpty>   ><bean:message key="label.editor.text.normal"/></option>
+                        <option value="1" <logic:notEmpty name="itemDetail" property="isFilp"><logic:equal name="itemDetail" property="isFilp" value="1">selected="selected"</logic:equal></logic:notEmpty>><bean:message key="label.editor.item.filp"/></option>
+                    </select>
+                </div>
                 <div class="col-3 col-6-medium">
                     <label for="${itemDetail.uuid}-posx"><bean:message key="label.editor.item.x"/></label>
                     <input type="text" id="${itemDetail.uuid}-posx" name="posx" value="${itemDetail.posX}"  onchange="changePos('${itemDetail.uuid}');"/>
@@ -29,12 +39,10 @@
                 
                 
                 
-                <div class="col-12">
-                    <label for="${itemDetail.uuid}-name"><bean:message key="label.editor.item.name"/></label>
-                    <input type="text" id="${itemDetail.uuid}-name" name="name" value="${itemDetail.name}"  onchange="changeName('${itemDetail.uuid}',this.value);" maxlength="100"/>
-                </div>
+                
             </div>
-        
+                
+               
         <input type="hidden" id="${itemDetail.uuid}-color" name="color" value="${itemDetail.color}"/>
         <input type="hidden" id="${itemDetail.uuid}-itemType" name="itemType" value="${itemDetail.itemType}"/>
         <input type="hidden" id="${itemDetail.uuid}-uuid" name="uuid" value="${itemDetail.uuid}"/>
@@ -60,5 +68,8 @@
         <input type="hidden" id="${itemDetail.uuid}-textAlign" name="textAlign" value="${itemDetail.textAlign}"  />
         <input type="hidden" id="${itemDetail.uuid}-textBold" name="textBold" value="${itemDetail.textBold}"  />
         <input type="hidden" id="${itemDetail.uuid}-textItalic" name="textItalic" value="${itemDetail.textItalic}"  />
+        <input type="hidden" id="${itemDetail.uuid}-textUnder" name="textUnder" value="${itemDetail.textUnder}"/>
+        <input type="hidden" id="${itemDetail.uuid}-isHidden" name="isHidden" value="${itemDetail.isHidden}"/>
         
+         
     </div>
