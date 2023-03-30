@@ -18,7 +18,7 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 public class Migration {
      public static void main(String[] args) {
           //String root="P:\\temp\\Ernest\\HongChi\\migration\\20221126\\教學圖庫\\教學圖庫";
-          String root="P:\\temp\\Ernest\\HongChi\\migration\\20230109";
+          String root="P:\\temp\\Ernest\\HongChi\\migration\\20230320\\教學圖庫";
           String target="/home/alexander21/project/hongchi";
           //String imgPath="P:\\Git\\DEV\\hongchi\\src\\main\\webapp\\images\\material";
          ApplicationContext context;

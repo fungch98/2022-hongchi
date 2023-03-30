@@ -6,7 +6,7 @@
 
     <div id="item-${itemDetail.uuid}" class="editor-content-container">
         <header  class="alt">
-            <h4><bean:message key="label.editor.bg"/>${itemDetail.bgColor}-${itemDetail.opacityVal}</h4>
+            <h4><bean:message key="label.editor.bg"/></h4>
         </header>
         
         <input type="hidden" id="${itemDetail.uuid}-itemType" name="itemType" value="${itemDetail.itemType}"/>
